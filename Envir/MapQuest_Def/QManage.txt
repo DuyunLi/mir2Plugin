@@ -1,0 +1,45 @@
+[@Login]
+#IF
+CHECKLEVELEX > 0
+#ACT
+;#CALL [\游戏登陆\登陆脚本.txt] @登陆设置
+
+activationcasket  
+SetSndacasket 1
+ShowGodBless 1
+$pa_init
+;聊天框固定公告范本
+SENDTOPCHATBOARDMSG 0 253 255 65535 热血传奇欢迎您！
+
+
+
+;血球触发功能，不需要可删除
+
+#if
+CHECKJOB warrior
+CHECKLEVELEX > 28
+#act
+PLAYMAGICBALLEFFECT 8 1300 14 150 -1 0 1 0 0 0
+PLAYMAGICBALLEFFECT 8 1320 14 150 -1 1 1 0 0 0
+break
+
+#if
+CHECKJOB wizard
+CHECKLEVELEX > 1
+#act
+PLAYMAGICBALLEFFECT 8 1300 14 150 -1 0 1 0 0 0
+PLAYMAGICBALLEFFECT 8 1320 14 150 -1 1 1 0 0 0
+break
+
+#if
+CHECKJOB taoist
+CHECKLEVELEX > 1
+#act
+PLAYMAGICBALLEFFECT 8 1300 14 150 -1 0 1 0 0 0
+PLAYMAGICBALLEFFECT 8 1420 14 150 -1 1 1 0 0 0
+break
+
+[@Startup]
+#if
+#act
+  $pa_init global

@@ -1,0 +1,50 @@
+[@升级装备初始化]
+{
+#if
+#act
+  ReturnBoxItem 0
+  OPENMERCHANTBIGDLG 9 311 0 4 0 -20 1 585 35 1
+  mov S$testStr 10
+  goto @显示对话框
+ [@显示对话框] 
+ #if
+ #say
+  <text:升级成长型装备:245:30>\
+  <ITEMBOX:0:9:42:275:230:50:50:22:>\
+  
+  <text:可放入成长型装备:240:310{FCOLOR=251}>\
+  
+  <text:[:235:315{FCOLOR=251}>
+  <text:灵玉、灵石、官印:235:315{FCOLOR=250}>
+  <text:]:235:315{FCOLOR=251}>\
+  <text:[:235:320{FCOLOR=251}>
+  <text:盾牌、斗笠、战马:235:320{FCOLOR=250}>
+  <text:]:235:320{FCOLOR=251}>\
+  <text:成长型装备升级后不会丢失原有强化属性:180:325{FCOLOR=253}>\
+  <text:暴击率增强：:10:60{FCOLOR=253}>\
+  <ImgNum:4:999:0:40:62>\
+  <text:需要材料：:10:95{FCOLOR=253}>\
+  <ItemShow:0:1:40:110:1>
+  <ItemShow:1:1:50:110:1>
+  <ItemShow:0:1:-42:160:1>
+  <ItemShow:1:1:-32:160:1>\
+  
+　<ImgEX:9:39:40:41:30:220/@升级按钮点击(<$str(S$testStr)>)>\
+
+
+  <text:忽视防御增强：:425:-20{FCOLOR=253}>\
+  <ImgNum:4:999:0:455:-18>\
+  <text:需要材料：:425:15{FCOLOR=253}>\
+  <ItemShow:0:1:455:30:1>
+  <ItemShow:1:1:465:30:1>
+  <ItemShow:0:1:373:80:1>
+  <ItemShow:1:1:383:80:1>\
+  
+　<ImgEX:9:39:40:41:445:140/@升级按钮点击2>\
+[@升级按钮点击]
+#if
+#act
+  SENDMSG 6 <$SCRIPTPARAM1>
+
+
+}

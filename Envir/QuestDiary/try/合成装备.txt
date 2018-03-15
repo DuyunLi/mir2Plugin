@@ -1,0 +1,334 @@
+[@合成装备初始化]
+{
+#if
+#act
+  mov S$SynthesisTypeStr
+  mov S$SynthesisDetailInfoListStr 
+  mov S$SynthesisDetailInfoListInfoStr 
+  mov S$SynthesisDetailInfoListInfoResultList.len 0
+  mov S$SynthesisDetailInfoListID 0
+  mov S$OpenSynthesisID 1
+
+  OPENMERCHANTBIGDLG 9 13 0 4 0 -20 1 485 70 1
+  $s_gets_proc 材料合成类型查询 ${$FCOLOR=250$}$ S$SynthesisTypeStr {0}
+  SendMsg 5 <$str(S$SynthesisTypeStr)>
+  $s_gets_proc 材料合成详细列表 <$str(S$OpenSynthesisID)> S$SynthesisDetailInfoListStr {0}
+  goto @显示对话框
+
+[@显示对话框]
+#if
+  equal S$SynthesisDetailInfoListID 0
+#say
+<$str(S$SynthesisTypeStr)>
+\ \
+<$str(S$SynthesisDetailInfoListStr)>
+\ \
+  <text:温馨提示：请点击需要锻造的物品:35:285{FCOLOR=253}>
+\ \
+;  <text:上一页:170:285/@点击上一页>
+;  <text:下一页:188:285/@点击上一页>
+#elsesay
+<$str(S$SynthesisTypeStr)>
+\ \
+  <text:需要材料：:35:165{FCOLOR=249}>
+  <text:合成结果：:230:165{FCOLOR=250}>
+\ \
+<$str(S$SynthesisDetailInfoList)>
+\ \
+<ItemShow:<$str(S$SynthesisInfoResultList[0][0])>:<$str(S$SynthesisInfoResultList[0][1])>:290:128:1>
+
+\ \
+<text:需要元宝：:290:155{FCOLOR=249}><ImgNum:5:<$str(S$SynthesisInfoResultList[0][2])>:0:290:151>\
+<text:合成数量：:290:165{FCOLOR=250}>
+<INPUTTEXT:1:290:163:50:19:255:7:0:0:2: : :160>
+<text:默认数量(1):295:165{FCOLOR=253}>\
+<imgex:9:509:510:509:280:172:1/@startSynthesis>
+<text:开始锻造:215:185:{FCOLOR=250}>
+<text:返回:250:185{FCOLOR=251}/@backSynthesis>
+[@sysclicktype]
+#if
+  equal S$SynthesisDetailInfoListID 0
+  equal S$OpenSynthesisID <$SCRIPTPARAM1>
+#act
+   Break
+#if
+#act
+  mov S$SynthesisDetailInfoListID  0
+  mov S$OpenSynthesisID <$SCRIPTPARAM1>
+  $s_gets_proc 材料合成详细列表 <$str(S$OpenSynthesisID)> S$SynthesisDetailInfoListStr {0}
+ 
+#if
+   $empty <$str(S$SynthesisDetailInfoListStr)>
+#act
+   mov S$SynthesisDetailInfoListStr 　
+#if
+#act  
+  goto @显示对话框
+
+[@sysclickdetail]
+#if
+#act
+  mov S$SynthesisDetailInfoListID <$SCRIPTPARAM1>
+  $s_gets_proc 材料合成需求列表查询 <$str(S$OpenSynthesisID)>,<$str(S$SynthesisDetailInfoListID)> S$SynthesisDetailInfoList {0}
+  $s_gets_proc 材料合成需求查询 <$str(S$OpenSynthesisID)>,<$str(S$SynthesisDetailInfoListID)>,1 S$SynthesisInfoResultList
+#if
+   $empty <$str(S$SynthesisDetailInfoList)>
+#act
+   mov S$SynthesisDetailInfoList 　
+#if
+#act   
+  goto @显示对话框
+ 
+[@backSynthesis]
+#if
+#act
+  mov S$SynthesisDetailInfoListID 0
+  goto @显示对话框
+[@startSynthesis]  
+#if
+  equal S$SynthesisDetailInfoListID 0
+#act
+  messagebox 合成错误,请重试!
+  goto @显示对话框
+  Break
+#if
+#act  
+  mov S$SynthesisResultCount <$NPCINPUT(1)>
+  mov N$SynthesisResultCount <$str(S$SynthesisResultCount)>
+#if
+  $empty <$str(S$SynthesisResultCount)>
+  equal N$SynthesisResultCount 0
+#act
+  mov N$SynthesisResultCount 1
+#or
+  equal N$SynthesisResultCount 0
+  large N$SynthesisResultCount 99
+#act  
+  messagebox 请输入1-99的数字
+  break
+#if
+#act
+  SHOWPROGRESSBARDLG 1 @锻造进度条完成 锻造『<$str(S$SynthesisInfoResultList[0][3])>』　%d%... 1 @锻造进度条中断
+
+
+[@进度条中断]
+#if
+#act
+  messagebox 你停止了锻造
+  
+  
+[@InputBoxFilter]
+#ACT
+SendMsg 5 输入了非法字符
+
+}
+
+
+[@合成装备开始]
+{
+#if
+  equal S$SynthesisDetailInfoListID 0
+#act
+  messagebox 合成错误,请重试!
+  Break
+  
+#or
+  equal N$SynthesisResultCount 0
+  large N$SynthesisResultCount 99
+#act  
+  messagebox 合成数量错误,请重试!
+  break
+#if
+#act
+  $s_gets_proc 材料合成需求列表执行 <$str(S$OpenSynthesisID)>,<$str(S$SynthesisDetailInfoListID)>,<$str(N$SynthesisResultCount)> S$SynthesisDetailInfoList
+  $s_gets_proc 材料合成需求查询 <$str(S$OpenSynthesisID)>,<$str(S$SynthesisDetailInfoListID)>,<$str(N$SynthesisResultCount)> S$SynthesisInfoResultList
+  mov N$SynthesisDetailInfoListCount <$str(S$SynthesisDetailInfoList.len)>
+ 
+#if
+  equal S$SynthesisInfoResultList.len 0
+#act
+  messagebox 合成错误,请重试!
+  Break 
+
+#if
+  equal S$SynthesisInfoResultList[0][2] 0  
+  equal S$SynthesisDetailInfoList.len 0
+#act
+  messagebox 『<$str(S$SynthesisInfoResultList[0][3])>』未开放锻造,请重试!
+  Break 
+#or
+  equal S$SynthesisInfoResultList[0][5] 0
+  not CheckBagSize <$str(S$SynthesisInfoResultList[0][5])>
+#act
+  messagebox 你的背包空格不足:<$str(S$SynthesisInfoResultList[0][5])>,无法锻造『<$str(S$SynthesisInfoResultList[0][3])>』,请重试!
+  Break 
+    
+  
+#if
+  not $pa_get 1 >= <$str(S$SynthesisInfoResultList[0][2])> N$Result
+#act
+  SendMsg 5 你的元宝不够,你当前元宝数量是:<$str(N$Result)>,无法进行锻造!
+  Break
+
+  
+#if
+  Large N$SynthesisDetailInfoListCount 0
+  not checkitem <$str(S$SynthesisDetailInfoList[0][0])> <$str(S$SynthesisDetailInfoList[0][1])> 
+#act
+  messagebox 你没有『<$str(S$SynthesisDetailInfoList[0][0])>』x<$str(S$SynthesisDetailInfoList[0][1])>无法进行升级!
+  break
+
+#if
+  Large N$SynthesisDetailInfoListCount 1
+  not checkitem <$str(S$SynthesisDetailInfoList[1][0])> <$str(S$SynthesisDetailInfoList[1][1])> 
+#act
+  messagebox 你没有『<$str(S$SynthesisDetailInfoList[1][0])>』x<$str(S$SynthesisDetailInfoList[1][1])>无法进行升级!
+  break
+#if
+  Large N$SynthesisDetailInfoListCount 2
+  not checkitem <$str(S$SynthesisDetailInfoList[2][0])> <$str(S$SynthesisDetailInfoList[2][1])> 
+#act
+  messagebox 你没有『<$str(S$SynthesisDetailInfoList[2][0])>』x<$str(S$SynthesisDetailInfoList[2][1])>无法进行升级!
+  break
+  
+#if
+  Large N$SynthesisDetailInfoListCount 3
+  not checkitem <$str(S$SynthesisDetailInfoList[3][0])> <$str(S$SynthesisDetailInfoList[3][1])> 
+#act
+  messagebox 你没有『<$str(S$SynthesisDetailInfoList[3][0])>』x<$str(S$SynthesisDetailInfoList[3][1])>无法进行升级!
+  break
+#if
+  Large N$SynthesisDetailInfoListCount 4
+  not checkitem <$str(S$SynthesisDetailInfoList[4][0])> <$str(S$SynthesisDetailInfoList[4][1])> 
+#act
+  messagebox 你没有『<$str(S$SynthesisDetailInfoList[4][0])>』x<$str(S$SynthesisDetailInfoList[4][1])>无法进行升级!
+  break
+#if
+  Large N$SynthesisDetailInfoListCount 5
+  not checkitem <$str(S$SynthesisDetailInfoList[5][0])> <$str(S$SynthesisDetailInfoList[5][1])> 
+#act
+  messagebox 你没有『<$str(S$SynthesisDetailInfoList[5][0])>』x<$str(S$SynthesisDetailInfoList[5][1])>无法进行升级!
+  break
+#if
+  Large N$SynthesisDetailInfoListCount 6
+  not checkitem <$str(S$SynthesisDetailInfoList[6][0])> <$str(S$SynthesisDetailInfoList[6][1])> 
+#act
+  messagebox 你没有『<$str(S$SynthesisDetailInfoList[6][0])>』x<$str(S$SynthesisDetailInfoList[6][1])>无法进行升级!
+  break
+#if
+  Large N$SynthesisDetailInfoListCount 7
+  not checkitem <$str(S$SynthesisDetailInfoList[7][0])> <$str(S$SynthesisDetailInfoList[7][1])> 
+#act
+  messagebox 你没有『<$str(S$SynthesisDetailInfoList[7][0])>』x<$str(S$SynthesisDetailInfoList[7][1])>无法进行升级!
+  break
+#if
+  Large N$SynthesisDetailInfoListCount 8
+  not checkitem <$str(S$SynthesisDetailInfoList[8][0])> <$str(S$SynthesisDetailInfoList[8][1])> 
+#act
+  messagebox 你没有『<$str(S$SynthesisDetailInfoList[8][0])>』x<$str(S$SynthesisDetailInfoList[8][1])>无法进行升级!
+  break
+ 
+#if
+  Large N$SynthesisDetailInfoListCount 9
+  not checkitem <$str(S$SynthesisDetailInfoList[9][0])> <$str(S$SynthesisDetailInfoList[9][1])> 
+#act
+  messagebox 你没有『<$str(S$SynthesisDetailInfoList[9][0])>』x<$str(S$SynthesisDetailInfoList[9][1])>无法进行升级!
+  break
+#if
+  Large N$SynthesisDetailInfoListCount 10
+  not checkitem <$str(S$SynthesisDetailInfoList[10][0])> <$str(S$SynthesisDetailInfoList[10][1])> 
+#act
+  messagebox 你没有『<$str(S$SynthesisDetailInfoList[10][0])>』x<$str(S$SynthesisDetailInfoList[10][1])>无法进行升级!
+  break
+#if
+  Large N$SynthesisDetailInfoListCount 11
+  not checkitem <$str(S$SynthesisDetailInfoList[11][0])> <$str(S$SynthesisDetailInfoList[11][1])> 
+#act
+  messagebox 你没有『<$str(S$SynthesisDetailInfoList[11][0])>』x<$str(S$SynthesisDetailInfoList[11][1])>无法进行升级!
+  break
+#if
+  Large N$SynthesisDetailInfoListCount 12
+  not checkitem <$str(S$SynthesisDetailInfoList[12][0])> <$str(S$SynthesisDetailInfoList[12][1])> 
+#act
+  messagebox 你没有『<$str(S$SynthesisDetailInfoList[12][0])>』x<$str(S$SynthesisDetailInfoList[12][1])>无法进行升级!
+  break
+  
+
+#if
+  Large N$SynthesisDetailInfoListCount 0
+#act
+  take <$str(S$SynthesisDetailInfoList[0][0])> <$str(S$SynthesisDetailInfoList[0][1])>
+
+#if
+  Large N$SynthesisDetailInfoListCount 1
+#act
+  take <$str(S$SynthesisDetailInfoList[1][0])> <$str(S$SynthesisDetailInfoList[1][1])>
+    
+#if
+  Large N$SynthesisDetailInfoListCount 2
+#act
+  take <$str(S$SynthesisDetailInfoList[2][0])> <$str(S$SynthesisDetailInfoList[2][1])>
+    
+#if
+  Large N$SynthesisDetailInfoListCount 3
+#act
+  take <$str(S$SynthesisDetailInfoList[3][0])> <$str(S$SynthesisDetailInfoList[3][1])>
+
+#if
+  Large N$SynthesisDetailInfoListCount 4
+#act
+  take <$str(S$SynthesisDetailInfoList[4][0])> <$str(S$SynthesisDetailInfoList[4][1])>
+
+#if
+  Large N$SynthesisDetailInfoListCount 5
+#act
+  take <$str(S$SynthesisDetailInfoList[5][0])> <$str(S$SynthesisDetailInfoList[5][1])>
+    
+#if
+  Large N$SynthesisDetailInfoListCount 6
+#act
+  take <$str(S$SynthesisDetailInfoList[6][0])> <$str(S$SynthesisDetailInfoList[6][1])>
+    
+#if
+  Large N$SynthesisDetailInfoListCount 7
+#act
+  take <$str(S$SynthesisDetailInfoList[7][0])> <$str(S$SynthesisDetailInfoList[7][1])>
+
+#if
+  Large N$SynthesisDetailInfoListCount 8
+#act
+  take <$str(S$SynthesisDetailInfoList[8][0])> <$str(S$SynthesisDetailInfoList[8][1])>
+
+#if
+  Large N$SynthesisDetailInfoListCount 9
+#act
+  take <$str(S$SynthesisDetailInfoList[9][0])> <$str(S$SynthesisDetailInfoList[9][1])>
+    
+#if
+  Large N$SynthesisDetailInfoListCount 10
+#act
+  take <$str(S$SynthesisDetailInfoList[10][0])> <$str(S$SynthesisDetailInfoList[10][1])>
+    
+#if
+  Large N$SynthesisDetailInfoListCount 11
+#act
+  take <$str(S$SynthesisDetailInfoList[11][0])> <$str(S$SynthesisDetailInfoList[11][1])>
+ 
+#if
+  Large N$SynthesisDetailInfoListCount 12
+#act
+  take <$str(S$SynthesisDetailInfoList[12][0])> <$str(S$SynthesisDetailInfoList[12][1])>
+                                     
+#if
+  not equal S$SynthesisInfoResultList[0][2] 0
+#act
+ $pa_set2 SynthesisGameGold   S$SynthesisInfoResultList[0][2]
+#if
+#act
+  give  <$str(S$SynthesisInfoResultList[0][3])> <$str(S$SynthesisInfoResultList[0][1])>
+#if
+  equal S$SynthesisInfoResultList[0][4] 1
+#act 
+  SendMsg 6 你成功的合成『<$str(S$SynthesisInfoResultList[0][3])>』x<$str(S$SynthesisInfoResultList[0][1])>!
+  SendMsg 1 %s成功的合成『<$str(S$SynthesisInfoResultList[0][3])>』x<$str(S$SynthesisInfoResultList[0][1])>!
+}

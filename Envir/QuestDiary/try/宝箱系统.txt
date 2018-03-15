@@ -1,0 +1,86 @@
+[@宝箱查看初始化]
+{
+#if
+#act
+  mov S$ExtractItems
+  mov S$CertainlyItems
+;  $executeGuid 27C4BEA9967E4084BD67C8F78A5E71C3
+  OPENMERCHANTBIGDLG 9 14 0 4 0 -20 1 485 70 1
+  goto @显示对话框
+  
+[@显示对话框]
+#if
+#act 
+#say
+  <text:请放入需要打开的宝箱：:80:75{FCOLOR=253}>\
+  <ITEMBOX:0:9:42:235:45:50:50:40:>\
+　<ImgEX:9:447:448:447:280:30/@打开按钮点击><text:开启宝箱:215:37{FCOLOR=251}>\
+#if
+  not $empty <$str(S$CertainlyItems)>
+#say
+  <text:以下物品必定获得一件：:20:55{FCOLOR=203}>\
+  <$str(S$CertainlyItems)>\
+#if
+  not $empty <$str(S$ExtractItems)>
+#say
+  <text:以下物品随机获得一件：:20:103{FCOLOR=209}>\
+  <$str(S$ExtractItems)>\
+  
+[@ItemOutBox0]
+#if
+#act
+  mov S$ExtractItems
+  mov S$CertainlyItems
+  goto @显示对话框
+  
+[@ItemIntoBox0]
+#if
+#act
+  mov N$BoxIdx <$BOXITEM[0].Idx>
+  mov S$ExtractItems
+  mov S$CertainlyItems
+  $s_gets_proc 打开宝箱必得物品查询 <$str(N$BoxIdx)> S$CertainlyItems {0}
+  $s_gets_proc 打开宝箱随机物品查询 <$str(N$BoxIdx)> S$ExtractItems {0}
+#if
+   $empty <$str(S$ExtractItems)> 
+   $empty <$str(S$CertainlyItems)> 
+#act
+  messagebox 当前物品不是宝箱,请放上宝箱再进行操作!
+  ReturnBoxItem  0
+  Break
+#elseact
+  goto @显示对话框
+[@打开按钮点击]
+#if
+#act
+  mov N$BoxIdx <$BOXITEM[0].Idx>
+  mov S$Offset 0
+#if
+  equal N$BoxIdx 0 
+#act
+  messagebox 打开宝箱失败,请重试!
+  break  
+#if
+#act
+  DelBoxItem 0 1
+  $box_set S$CertainlyResult <$str(N$BoxIdx)> S$Offset 1000 0
+#or
+  $empty <$str(S$CertainlyResult.name)>
+  equal S$CertainlyResult.count 0 
+#act
+  SendMsg 5 你的运气真不好,什么都没有获得.  
+#elseact
+  give <$str(S$CertainlyResult.name)> <$str(S$CertainlyResult.count)>
+  SendMsg 5 你的运气不错,获得了『<$str(S$CertainlyResult.name)>』x<$str(S$CertainlyResult.count)>.
+    
+}
+[@宝箱打开初始化]
+{
+
+}
+[@宝箱任务初始化]
+{
+#if
+#act
+SendMsg 5 打开宝箱任务
+}
