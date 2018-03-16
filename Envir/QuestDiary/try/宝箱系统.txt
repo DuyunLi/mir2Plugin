@@ -2,48 +2,31 @@
 {
 #if
 #act
-  mov S$ExtractItems
-  mov S$CertainlyItems
-;  $executeGuid 27C4BEA9967E4084BD67C8F78A5E71C3
+  mov S$DialogShowStr
   OPENMERCHANTBIGDLG 9 14 0 4 0 -20 1 485 70 1
   goto @显示对话框
   
 [@显示对话框]
 #if
-#act 
 #say
   <text:请放入需要打开的宝箱：:80:75{FCOLOR=253}>\
   <ITEMBOX:0:9:42:235:45:50:50:40:>\
-　<ImgEX:9:447:448:447:280:30/@打开按钮点击><text:开启宝箱:215:37{FCOLOR=251}>\
-#if
-  not $empty <$str(S$CertainlyItems)>
-#say
-  <text:以下物品必定获得一件：:20:55{FCOLOR=203}>\
-  <$str(S$CertainlyItems)>\
-#if
-  not $empty <$str(S$ExtractItems)>
-#say
-  <text:以下物品随机获得一件：:20:103{FCOLOR=209}>\
-  <$str(S$ExtractItems)>\
+  <$str(S$DialogShowStr)>\
   
 [@ItemOutBox0]
 #if
 #act
-  mov S$ExtractItems
-  mov S$CertainlyItems
+  mov S$DialogShowStr
   goto @显示对话框
   
 [@ItemIntoBox0]
 #if
 #act
   mov N$BoxIdx <$BOXITEM[0].Idx>
-  mov S$ExtractItems
-  mov S$CertainlyItems
-  $s_gets_proc 打开宝箱必得物品查询 <$str(N$BoxIdx)> S$CertainlyItems {0}
-  $s_gets_proc 打开宝箱随机物品查询 <$str(N$BoxIdx)> S$ExtractItems {0}
+  mov S$DialogShowStr
+  $s_gets_str 打开宝箱.查询.sql,<$str(N$BoxIdx)> S$DialogShowStr $js_打开宝箱.查询.view
 #if
-   $empty <$str(S$ExtractItems)> 
-   $empty <$str(S$CertainlyItems)> 
+  $empty <$str(S$DialogShowStr)> 
 #act
   messagebox 当前物品不是宝箱,请放上宝箱再进行操作!
   ReturnBoxItem  0
@@ -54,28 +37,96 @@
 #if
 #act
   mov N$BoxIdx <$BOXITEM[0].Idx>
-  mov S$Offset 0
 #if
   equal N$BoxIdx 0 
 #act
   messagebox 打开宝箱失败,请重试!
   break  
-#if
-#act
-  DelBoxItem 0 1
-  $box_set S$CertainlyResult <$str(N$BoxIdx)> S$Offset 1000 0
-#or
-  $empty <$str(S$CertainlyResult.name)>
-  equal S$CertainlyResult.count 0 
-#act
-  SendMsg 5 你的运气真不好,什么都没有获得.  
 #elseact
-  give <$str(S$CertainlyResult.name)> <$str(S$CertainlyResult.count)>
-  SendMsg 5 你的运气不错,获得了『<$str(S$CertainlyResult.name)>』x<$str(S$CertainlyResult.count)>.
-    
+  SHOWPROGRESSBARDLG 1 @宝箱打开进度条完成 打开宝箱,%d%... 1 @宝箱打开进度条中断
+  
 }
 [@宝箱打开初始化]
 {
+
+#if
+  equal N$BoxIdx 0 
+#act
+  messagebox 打开宝箱失败,请重试!
+  break  
+
+#if
+#act
+
+;不添加幸运值
+  mov S$Offset 0
+  DelBoxItem 0 1
+  mov S$ProbablyResult.count 0
+  $box_set S$ProbablyResult <$str(N$BoxIdx)> S$Offset 1000 0
+  $s_gets_str 打开宝箱.执行.必得.sql,<$str(N$BoxIdx)> S$CertainlyResult
+  mov N$CertainlyResultMax <$str(S$CertainlyResult.len)>
+  
+;获取宝箱随机物品  
+#if
+  equal S$ProbablyResult.count 0 
+  equal N$CertainlyResultMax 0
+#act
+  SendMsg 5 你的运气真不好,没有从宝箱抽中什么.  
+#elseact
+  give <$str(S$ProbablyResult.name)> <$str(S$ProbablyResult.count)>
+  SendMsg 5 你的运气不错,获得了『<$str(S$ProbablyResult.name)>』x<$str(S$ProbablyResult.count)>.
+;获取宝箱必定物品  
+#if
+  Large N$CertainlyResultMax 0
+#act
+  give S$CertainlyResult[0][1] S$CertainlyResult[0][2]
+  SendMsg 5 你从宝箱中拿取了『<$str(S$CertainlyResult[0][1])>』x<$str(S$CertainlyResult[0][2])>.
+#if
+  Large N$CertainlyResultMax 1
+#act
+  give S$CertainlyResult[1][1] S$CertainlyResult[1][2]
+  SendMsg 5 你从宝箱中拿取了『<$str(S$CertainlyResult[1][1])>』x<$str(S$CertainlyResult[1][2])>.
+#if
+  Large N$CertainlyResultMax 2
+#act
+  give S$CertainlyResult[2][1] S$CertainlyResult[2][2]
+  SendMsg 5 你从宝箱中拿取了『<$str(S$CertainlyResult[2][1])>』x<$str(S$CertainlyResult[2][2])>.
+#if
+  Large N$CertainlyResultMax 3
+#act
+  give S$CertainlyResult[3][1] S$CertainlyResult[3][2]
+  SendMsg 5 你从宝箱中拿取了『<$str(S$CertainlyResult[3][1])>』x<$str(S$CertainlyResult[3][2])>.
+  
+#if
+  Large N$CertainlyResultMax 4
+#act
+  give S$CertainlyResult[4][1] S$CertainlyResult[4][2]
+  SendMsg 5 你从宝箱中拿取了『<$str(S$CertainlyResult[4][1])>』x<$str(S$CertainlyResult[4][2])>.
+#if
+  Large N$CertainlyResultMax 5
+#act
+  give S$CertainlyResult[5][1] S$CertainlyResult[5][2]
+  SendMsg 5 你从宝箱中拿取了『<$str(S$CertainlyResult[5][1])>』x<$str(S$CertainlyResult[5][2])>.
+#if
+  Large N$CertainlyResultMax 6
+#act
+  give S$CertainlyResult[6][1] S$CertainlyResult[6][2]
+  SendMsg 5 你从宝箱中拿取了『<$str(S$CertainlyResult[6][1])>』x<$str(S$CertainlyResult[6][2])>.
+#if
+  Large N$CertainlyResultMax 7
+#act
+  give S$CertainlyResult[7][1] S$CertainlyResult[7][2]
+  SendMsg 5 你从宝箱中拿取了『<$str(S$CertainlyResult[7][1])>』x<$str(S$CertainlyResult[7][2])>.
+#if
+  Large N$CertainlyResultMax 8
+#act
+  give S$CertainlyResult[8][1] S$CertainlyResult[8][2]
+  SendMsg 5 你从宝箱中拿取了『<$str(S$CertainlyResult[8][1])>』x<$str(S$CertainlyResult[8][2])>.
+ 
+#if
+  Large N$CertainlyResultMax 9
+#act
+  messagebox 请联系管理员,宝箱中必定物品只能获取九件!
 
 }
 [@宝箱任务初始化]

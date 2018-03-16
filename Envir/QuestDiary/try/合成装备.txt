@@ -2,20 +2,53 @@
 {
 #if
 #act
-  mov S$SynthesisTypeStr
-  mov S$SynthesisDetailInfoListStr 
-  mov S$SynthesisDetailInfoListInfoStr 
-  mov S$SynthesisDetailInfoListInfoResultList.len 0
-  mov S$SynthesisDetailInfoListID 0
-  mov S$OpenSynthesisID 1
-
+  $executeGuid 8D090C7BA96F4D129CC43C9EB06FBCC7
+  mov S$SynthesisTypeStr 
+  mov S$SynthesisInfoStr 
+  mov S$SynthesisDetailStr 
+  mov N$SynthesisMarsterID 1
+  mov N$SynthesisDetailID 0
   OPENMERCHANTBIGDLG 9 13 0 4 0 -20 1 485 70 1
-  $s_gets_proc 材料合成类型查询 ${$FCOLOR=250$}$ S$SynthesisTypeStr {0}
-  SendMsg 5 <$str(S$SynthesisTypeStr)>
-  $s_gets_proc 材料合成详细列表 <$str(S$OpenSynthesisID)> S$SynthesisDetailInfoListStr {0}
+  $s_gets_str 材料合成.查询.类型.sql S$SynthesisTypeStr $js_材料合成.查询.类型.view
+  $s_gets_str 材料合成.查询.物品.sql,<$str(N$SynthesisMarsterID)>|材料合成.查询.分页统计.sql,<$str(N$SynthesisMarsterID)>,1,24 S$SynthesisInfoStr $js_材料合成.查询.物品.view
+  
+  ; mov S$SynthesisDetailID
+
+  ; mov S$SynthesisTypeStr
+  ; mov S$SynthesisDetailInfoListStr 
+  ; mov S$SynthesisDetailInfoListInfoStr 
+  ; mov S$SynthesisDetailInfoListInfoResultList.len 0
+  ; mov S$SynthesisDetailInfoListID 0
+  ; mov S$OpenSynthesisID 1
+
+  ; $s_gets_str 材料合成类型查询 ${$FCOLOR=250$}$ S$SynthesisTypeStr {0}
+  ; SendMsg 5 <$str(S$SynthesisTypeStr)>
+  ; $s_gets_str 材料合成详细列表 <$str(S$OpenSynthesisID)> S$SynthesisDetailInfoListStr {0}
   goto @显示对话框
 
 [@显示对话框]
+#if
+#say
+<$str(S$SynthesisTypeStr)>
+#if
+#say
+<$str(S$SynthesisInfoStr)>
+#if
+#say
+<$str(S$SynthesisDetailStr)>
+
+[@ClickSynthesisDetail]
+#if
+#act
+  mov N$SynthesisDetailID <$SCRIPTPARAM1>
+SendMsg 5 <$str(N$SynthesisDetailID)>
+[@ClickSynthesisMarster]
+#if
+#act
+  mov N$SynthesisMarsterID <$SCRIPTPARAM1>
+  $s_gets_str 材料合成.查询.物品.sql,<$str(N$SynthesisMarsterID)>|材料合成.查询.分页统计.sql,<$str(N$SynthesisMarsterID)>,1,24 S$SynthesisInfoStr $js_材料合成.查询.物品.view
+  goto @显示对话框
+[@hajhshdjasdkhaskjd]
 #if
   equal S$SynthesisDetailInfoListID 0
 #say
@@ -55,7 +88,7 @@
 #act
   mov S$SynthesisDetailInfoListID  0
   mov S$OpenSynthesisID <$SCRIPTPARAM1>
-  $s_gets_proc 材料合成详细列表 <$str(S$OpenSynthesisID)> S$SynthesisDetailInfoListStr {0}
+  $s_gets_str 材料合成详细列表 <$str(S$OpenSynthesisID)> S$SynthesisDetailInfoListStr {0}
  
 #if
    $empty <$str(S$SynthesisDetailInfoListStr)>
@@ -69,8 +102,8 @@
 #if
 #act
   mov S$SynthesisDetailInfoListID <$SCRIPTPARAM1>
-  $s_gets_proc 材料合成需求列表查询 <$str(S$OpenSynthesisID)>,<$str(S$SynthesisDetailInfoListID)> S$SynthesisDetailInfoList {0}
-  $s_gets_proc 材料合成需求查询 <$str(S$OpenSynthesisID)>,<$str(S$SynthesisDetailInfoListID)>,1 S$SynthesisInfoResultList
+  $s_gets_str 材料合成需求列表查询 <$str(S$OpenSynthesisID)>,<$str(S$SynthesisDetailInfoListID)> S$SynthesisDetailInfoList {0}
+  $s_gets_str 材料合成需求查询 <$str(S$OpenSynthesisID)>,<$str(S$SynthesisDetailInfoListID)>,1 S$SynthesisInfoResultList
 #if
    $empty <$str(S$SynthesisDetailInfoList)>
 #act
@@ -140,8 +173,8 @@ SendMsg 5 输入了非法字符
   break
 #if
 #act
-  $s_gets_proc 材料合成需求列表执行 <$str(S$OpenSynthesisID)>,<$str(S$SynthesisDetailInfoListID)>,<$str(N$SynthesisResultCount)> S$SynthesisDetailInfoList
-  $s_gets_proc 材料合成需求查询 <$str(S$OpenSynthesisID)>,<$str(S$SynthesisDetailInfoListID)>,<$str(N$SynthesisResultCount)> S$SynthesisInfoResultList
+;  $s_gets_str 材料合成需求列表执行 <$str(S$OpenSynthesisID)>,<$str(S$SynthesisDetailInfoListID)>,<$str(N$SynthesisResultCount)> S$SynthesisDetailInfoList
+;  $s_gets_str 材料合成需求查询 <$str(S$OpenSynthesisID)>,<$str(S$SynthesisDetailInfoListID)>,<$str(N$SynthesisResultCount)> S$SynthesisInfoResultList
   mov N$SynthesisDetailInfoListCount <$str(S$SynthesisDetailInfoList.len)>
  
 #if

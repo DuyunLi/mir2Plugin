@@ -2,20 +2,18 @@
 {
 #if
 #act
-  mov S$SynthesisBoxStr
-  mov S$SynthesisDetailInfoListBoxStr 
+  mov S$SynthesisBoxDialogStr
   ReturnBoxItem 0
   OPENMERCHANTBIGDLG 9 244 0 0 0 -20 1 405 35 1
   goto @显示对话框
 [@显示对话框]
-#if
-  CheckBoxItemCount 0  
-#elseact
-  mov S$SynthesisBoxStr
-  mov S$SynthesisDetailInfoListBoxStr 
   
 #if
-  CheckBoxItemCount 0  
+  not CheckBoxItemCount 0  
+#act
+  mov S$SynthesisBoxDialogStr
+  
+#if
 #say
 
   <text:特殊戒指升级:160:30>\
@@ -24,36 +22,21 @@
   <text:麻痹戒指、复活戒指、护身戒指、魔道麻痹戒指:30:163{FCOLOR=250}>
   <text:]:30:163{FCOLOR=251}>\
   <ITEMBOX:0:9:42:185:120:50:50:22:>\
-  <text:合成材料:20:163{FCOLOR=251}>
-  <text:物品展示:175:163{FCOLOR=253}>\
-　<$str(S$SynthesisDetailInfoListBoxStr)>\
-　<$str(S$SynthesisBoxStr)>\
-　<ImgEX:9:39:40:41:300:148/@升级按钮点击>\
-#elsesay
-  <text:特殊戒指升级:160:30>\
-  <text:将特殊戒指放入框内即可显示需要材料:100:158{FCOLOR=251}>\
-  <text:可放入特殊戒指[:30:163{FCOLOR=251}>
-  <text:麻痹戒指、复活戒指、护身戒指、魔道麻痹戒指:30:163{FCOLOR=250}>
-  <text:]:30:163{FCOLOR=251}>\
-  <ITEMBOX:0:9:42:185:120:50:50:22:>\
+　<$str(S$SynthesisBoxDialogStr)>\
 [@ItemOutBox0]
 #if
 #act
-  mov S$SynthesisBoxStr
+  mov S$SynthesisBoxDialogStr
   goto @显示对话框
   
 [@ItemIntoBox0]
 #if
 #act
   mov N$BoxIdx <$BOXITEM[0].Idx>
-  mov S$SynthesisBox
-  mov S$SynthesisDetailInfoListBoxStr 
-  $s_gets_proc 合成特戒查询 <$str(N$BoxIdx)> S$SynthesisBoxStr <ItemShow:{0}:{1}:225:154:1>
-  $s_gets_proc 合成特戒材料查询 <$str(N$BoxIdx)>,15,5 S$SynthesisDetailInfoListBoxStr <ItemShow:{0}:{1}:{2}:170:1>
-
-#or
-   $empty <$str(S$SynthesisBoxStr)> 
-   $empty <$str(S$SynthesisDetailInfoListBoxStr)> 
+  mov S$SynthesisBoxDialogStr 
+  $s_gets_str 合成特戒.查询.主体.sql,<$str(N$BoxIdx)>|合成特戒.查询.材料.sql,<$str(N$BoxIdx)> S$SynthesisBoxDialogStr $js_合成特戒.查询.view
+#if
+   $empty <$str(S$SynthesisBoxDialogStr)> 
 #act
   messagebox 当前物品无法升级!
   ReturnBoxItem  0
@@ -73,8 +56,8 @@ break
   mov N$BoxIdx <$BOXITEM[0].Idx>
   mov S$Synthesis.len 0 
   mov S$SynthesisDetailInfoList.len 0 
-  $s_gets_proc 合成特戒执行 <$str(N$BoxIdx)> S$Synthesis
-  $s_gets_proc 合成特戒材料执行 <$str(N$BoxIdx)> S$SynthesisDetailInfoList
+  $s_gets_str 合成特戒.执行.主体.sql,<$str(N$BoxIdx)> S$Synthesis
+  $s_gets_str 合成特戒.执行.材料.sql,<$str(N$BoxIdx)> S$SynthesisDetailInfoList
  
   mov N$SynthesisDetailInfoListCount <$str(S$SynthesisDetailInfoList.len)>
 #or
