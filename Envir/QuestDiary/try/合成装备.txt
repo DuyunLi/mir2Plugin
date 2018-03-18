@@ -8,131 +8,87 @@
   mov S$SynthesisDetailStr 
   mov N$SynthesisMarsterID 1
   mov N$SynthesisDetailID 0
+  mov N$SynthesisResultCount 1
   OPENMERCHANTBIGDLG 9 13 0 4 0 -20 1 485 70 1
   $s_gets_str 材料合成.查询.类型.sql S$SynthesisTypeStr $js_材料合成.查询.类型.view
   $s_gets_str 材料合成.查询.物品.sql,<$str(N$SynthesisMarsterID)>|材料合成.查询.分页统计.sql,<$str(N$SynthesisMarsterID)>,1,24 S$SynthesisInfoStr $js_材料合成.查询.物品.view
-  
-  ; mov S$SynthesisDetailID
-
-  ; mov S$SynthesisTypeStr
-  ; mov S$SynthesisDetailInfoListStr 
-  ; mov S$SynthesisDetailInfoListInfoStr 
-  ; mov S$SynthesisDetailInfoListInfoResultList.len 0
-  ; mov S$SynthesisDetailInfoListID 0
-  ; mov S$OpenSynthesisID 1
-
-  ; $s_gets_str 材料合成类型查询 ${$FCOLOR=250$}$ S$SynthesisTypeStr {0}
-  ; SendMsg 5 <$str(S$SynthesisTypeStr)>
-  ; $s_gets_str 材料合成详细列表 <$str(S$OpenSynthesisID)> S$SynthesisDetailInfoListStr {0}
   goto @显示对话框
 
 [@显示对话框]
 #if
+#act
 #say
 <$str(S$SynthesisTypeStr)>
 #if
+  equal N$SynthesisDetailID 0 
+#act
 #say
 <$str(S$SynthesisInfoStr)>
 #if
+  not equal N$SynthesisDetailID 0
 #say
+  <text:需要材料：:35:180{FCOLOR=249}>
+  <text:合成结果：:230:180{FCOLOR=250}>
+  \ \ \
 <$str(S$SynthesisDetailStr)>
-
+[@InputInteger18]
+#or
+  equal N18 0
+  large N18 99
+#act  
+  messagebox 请输入1-99的数字
+  break
+#if
+#act
+  mov N$SynthesisResultCount <$str(N18)>
+  goto @显示对话框
 [@ClickSynthesisDetail]
 #if
 #act
   mov N$SynthesisDetailID <$SCRIPTPARAM1>
-SendMsg 5 <$str(N$SynthesisDetailID)>
-[@ClickSynthesisMarster]
+  mov S$SynthesisDetailStr 
+  mov N$SynthesisResultCount 1
+  $s_gets_str 材料合成.查询.详情.主体.sql,<$str(N$SynthesisMarsterID)>,<$str(N$SynthesisDetailID)>|材料合成.查询.详情.材料.sql,<$str(N$SynthesisMarsterID)>,<$str(N$SynthesisDetailID)> S$SynthesisDetailStr $js_材料合成.查询.详情.view
 #if
+  $empty <$str(S$SynthesisDetailStr)>
 #act
-  mov N$SynthesisMarsterID <$SCRIPTPARAM1>
-  $s_gets_str 材料合成.查询.物品.sql,<$str(N$SynthesisMarsterID)>|材料合成.查询.分页统计.sql,<$str(N$SynthesisMarsterID)>,1,24 S$SynthesisInfoStr $js_材料合成.查询.物品.view
-  goto @显示对话框
-[@hajhshdjasdkhaskjd]
-#if
-  equal S$SynthesisDetailInfoListID 0
-#say
-<$str(S$SynthesisTypeStr)>
-\ \
-<$str(S$SynthesisDetailInfoListStr)>
-\ \
-  <text:温馨提示：请点击需要锻造的物品:35:285{FCOLOR=253}>
-\ \
-;  <text:上一页:170:285/@点击上一页>
-;  <text:下一页:188:285/@点击上一页>
-#elsesay
-<$str(S$SynthesisTypeStr)>
-\ \
-  <text:需要材料：:35:165{FCOLOR=249}>
-  <text:合成结果：:230:165{FCOLOR=250}>
-\ \
-<$str(S$SynthesisDetailInfoList)>
-\ \
-<ItemShow:<$str(S$SynthesisInfoResultList[0][0])>:<$str(S$SynthesisInfoResultList[0][1])>:290:128:1>
-
-\ \
-<text:需要元宝：:290:155{FCOLOR=249}><ImgNum:5:<$str(S$SynthesisInfoResultList[0][2])>:0:290:151>\
-<text:合成数量：:290:165{FCOLOR=250}>
-<INPUTTEXT:1:290:163:50:19:255:7:0:0:2: : :160>
-<text:默认数量(1):295:165{FCOLOR=253}>\
-<imgex:9:509:510:509:280:172:1/@startSynthesis>
-<text:开始锻造:215:185:{FCOLOR=250}>
-<text:返回:250:185{FCOLOR=251}/@backSynthesis>
-[@sysclicktype]
-#if
-  equal S$SynthesisDetailInfoListID 0
-  equal S$OpenSynthesisID <$SCRIPTPARAM1>
-#act
-   Break
-#if
-#act
-  mov S$SynthesisDetailInfoListID  0
-  mov S$OpenSynthesisID <$SCRIPTPARAM1>
-  $s_gets_str 材料合成详细列表 <$str(S$OpenSynthesisID)> S$SynthesisDetailInfoListStr {0}
- 
-#if
-   $empty <$str(S$SynthesisDetailInfoListStr)>
-#act
-   mov S$SynthesisDetailInfoListStr 　
+  messagebox 当前物品没有开放合成!
+  Break
+  
 #if
 #act  
   goto @显示对话框
-
-[@sysclickdetail]
+[@ClickSynthesisMarster]
 #if
+  not equal N$SynthesisDetailID 0
 #act
-  mov S$SynthesisDetailInfoListID <$SCRIPTPARAM1>
-  $s_gets_str 材料合成需求列表查询 <$str(S$OpenSynthesisID)>,<$str(S$SynthesisDetailInfoListID)> S$SynthesisDetailInfoList {0}
-  $s_gets_str 材料合成需求查询 <$str(S$OpenSynthesisID)>,<$str(S$SynthesisDetailInfoListID)>,1 S$SynthesisInfoResultList
-#if
-   $empty <$str(S$SynthesisDetailInfoList)>
-#act
-   mov S$SynthesisDetailInfoList 　
-#if
-#act   
+  mov N$SynthesisMarsterID <$SCRIPTPARAM1>
+  mov N$SynthesisDetailID 0
+  $s_gets_str 材料合成.查询.物品.sql,<$str(N$SynthesisMarsterID)>|材料合成.查询.分页统计.sql,<$str(N$SynthesisMarsterID)>,1,24 S$SynthesisInfoStr $js_材料合成.查询.物品.view
   goto @显示对话框
- 
+  Break
+  
+#if
+  not equal N$SynthesisMarsterID <$SCRIPTPARAM1>
+#act
+  mov N$SynthesisMarsterID <$SCRIPTPARAM1>
+  mov N$SynthesisDetailID 0
+  $s_gets_str 材料合成.查询.物品.sql,<$str(N$SynthesisMarsterID)>|材料合成.查询.分页统计.sql,<$str(N$SynthesisMarsterID)>,1,24 S$SynthesisInfoStr $js_材料合成.查询.物品.view
+  goto @显示对话框
+  break
+
 [@backSynthesis]
 #if
 #act
-  mov S$SynthesisDetailInfoListID 0
+  mov N$SynthesisDetailID 0
   goto @显示对话框
 [@startSynthesis]  
 #if
-  equal S$SynthesisDetailInfoListID 0
+  equal N$SynthesisDetailID 0
 #act
   messagebox 合成错误,请重试!
   goto @显示对话框
   Break
-#if
-#act  
-  mov S$SynthesisResultCount <$NPCINPUT(1)>
-  mov N$SynthesisResultCount <$str(S$SynthesisResultCount)>
-#if
-  $empty <$str(S$SynthesisResultCount)>
-  equal N$SynthesisResultCount 0
-#act
-  mov N$SynthesisResultCount 1
 #or
   equal N$SynthesisResultCount 0
   large N$SynthesisResultCount 99
@@ -141,15 +97,9 @@ SendMsg 5 <$str(N$SynthesisDetailID)>
   break
 #if
 #act
-  SHOWPROGRESSBARDLG 1 @锻造进度条完成 锻造『<$str(S$SynthesisInfoResultList[0][3])>』　%d%... 1 @锻造进度条中断
+  SHOWPROGRESSBARDLG 1 @锻造进度条完成 锻造物品,%d%... 1 @锻造进度条中断
 
 
-[@进度条中断]
-#if
-#act
-  messagebox 你停止了锻造
-  
-  
 [@InputBoxFilter]
 #ACT
 SendMsg 5 输入了非法字符
@@ -160,7 +110,7 @@ SendMsg 5 输入了非法字符
 [@合成装备开始]
 {
 #if
-  equal S$SynthesisDetailInfoListID 0
+  equal N$SynthesisDetailID 0
 #act
   messagebox 合成错误,请重试!
   Break
@@ -173,8 +123,8 @@ SendMsg 5 输入了非法字符
   break
 #if
 #act
-;  $s_gets_str 材料合成需求列表执行 <$str(S$OpenSynthesisID)>,<$str(S$SynthesisDetailInfoListID)>,<$str(N$SynthesisResultCount)> S$SynthesisDetailInfoList
-;  $s_gets_str 材料合成需求查询 <$str(S$OpenSynthesisID)>,<$str(S$SynthesisDetailInfoListID)>,<$str(N$SynthesisResultCount)> S$SynthesisInfoResultList
+  $s_gets_str 材料合成.执行.材料.sql,<$str(N$SynthesisMarsterID)>,<$str(N$SynthesisDetailID)>,<$str(N$SynthesisResultCount)> S$SynthesisDetailInfoList
+  $s_gets_str 材料合成.执行.主体.sql,<$str(N$SynthesisMarsterID)>,<$str(N$SynthesisDetailID)>,<$str(N$SynthesisResultCount)> S$SynthesisInfoResultList
   mov N$SynthesisDetailInfoListCount <$str(S$SynthesisDetailInfoList.len)>
  
 #if
