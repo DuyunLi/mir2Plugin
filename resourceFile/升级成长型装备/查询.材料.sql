@@ -1,8 +1,10 @@
-SELECT det.srcIdx,
-       det.srcCount
-  FROM SynthesisDetail det
+SELECT d.srcIdx,
+       d.srcCount
+  FROM synthesis syn
        JOIN
-       Synthesis syn ON syn.idx = det.synthesisID
- WHERE syn.srcIdx = {0} AND 
+       synthesisDetail d ON d.synthesisID = syn.idx
+ WHERE syn.MarsterID = 0 AND 
+       syn.type IN (2, 3) AND 
        syn.isActive = 1 AND 
-       syn.type = 1;
+       syn.srcIdx = {0} AND 
+       d.upLevel = {1};
