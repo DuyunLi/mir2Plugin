@@ -1,10 +1,9 @@
-SELECT det.srcIdx,
-       srcCount
-  FROM SynthesisDetail det
+SELECT resultIdx,
+       resultCount,
+       gameGold
+  FROM synthesis syn
        JOIN
-       Synthesis syn ON det.synthesisID = syn.idx
+       stditems std ON std.idx = syn.resultIdx
  WHERE isactive = 1 AND 
        marsterID = {0} AND 
        syn.idx = {1}
- ORDER BY det.extend1;
-;
