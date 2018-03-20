@@ -1,4 +1,5 @@
-SELECT d.srcIdx,
+SELECT d.synthesisID,
+       d.srcIdx,
        d.srcCount
   FROM synthesis syn
        JOIN
