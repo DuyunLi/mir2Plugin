@@ -2,7 +2,6 @@
 {
 #if
 #act
-  $executeGuid 8D090C7BA96F4D129CC43C9EB06FBCC7
   mov S$SynthesisTypeStr 
   mov S$SynthesisInfoStr 
   mov S$SynthesisDetailStr 
