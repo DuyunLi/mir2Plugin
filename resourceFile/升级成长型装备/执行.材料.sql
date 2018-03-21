@@ -1,10 +1,12 @@
-SELECT items.name AS name,
-       det.srcCount
-  FROM synthesisdetail AS det
+SELECT item.name,
+       d.srcCount
+  FROM synthesis syn
        JOIN
-       Synthesis syn ON syn.idx = det.synthesisID
+       synthesisDetail d ON d.synthesisID = syn.idx
        JOIN
-       stditems AS items ON items.idx = det.srcIdx
-WHERE syn.srcIdx = {0} AND 
+       stditems item ON item.idx = d.srcIDx
+ WHERE syn.MarsterID = 0 AND 
+       syn.type IN (2, 3) AND 
        syn.isActive = 1 AND 
-       syn.type = 1;
+       d.synthesisID = {0} AND 
+       uplevel = {1};
