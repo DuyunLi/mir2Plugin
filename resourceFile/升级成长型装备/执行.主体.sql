@@ -2,7 +2,9 @@ SELECT g.gameGold,
        g.point g,
        g.pointType,
        g.showmsg,
-       g.suffix
+       g.suffix,
+       g.looks,
+       g.effect
   FROM synthesis syn
        JOIN
        synthesisGrowth g ON g.synthesisID = syn.idx AND 
