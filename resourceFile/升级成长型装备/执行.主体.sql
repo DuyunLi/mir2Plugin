@@ -1,6 +1,8 @@
 SELECT g.gameGold,
        g.point g,
-       g.pointType
+       g.pointType,
+       g.showmsg,
+       g.suffix
   FROM synthesis syn
        JOIN
        synthesisGrowth g ON g.synthesisID = syn.idx AND 

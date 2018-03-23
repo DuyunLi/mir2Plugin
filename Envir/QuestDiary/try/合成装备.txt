@@ -304,7 +304,7 @@ SendMsg 5 输入了非法字符
 #if
   not equal S$SynthesisInfoResultList[0][2] 0
 #act
- $pa_set2 SynthesisGameGold   S$SynthesisInfoResultList[0][2]
+ $pa_set2 SynthesisGameGold   <$str(S$SynthesisInfoResultList[0][2])>
 #if
 #act
   give  <$str(S$SynthesisInfoResultList[0][3])> <$str(S$SynthesisInfoResultList[0][1])>
