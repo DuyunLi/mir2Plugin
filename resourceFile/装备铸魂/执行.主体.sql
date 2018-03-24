@@ -1,11 +1,10 @@
-SELECT std2.name srcName,
-       std.name toName,
-       resultCount cnt,
-       extend2
-  FROM synthesis
+SELECT syn.idx,
+       item.name,
+       syn.gamegold
+  FROM synthesis syn
        JOIN
-       stditems std ON std.idx = resultIdx
-       JOIN
-       stditems std2 ON std2.idx = srcidx
- WHERE srcIdx = {0} AND 
-       type = 1;
+       stditems item ON item.idx = syn.srcIdx
+ WHERE syn.srcIdx = {0} AND 
+       syn.type = 10 AND 
+       syn.isActive = 1
+ ORDER BY syn.extend1;

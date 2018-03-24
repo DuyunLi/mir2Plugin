@@ -1,10 +1,11 @@
-SELECT items.name AS name,
+SELECT item.name,
        det.srcCount
-  FROM synthesisdetail AS det
+  FROM SynthesisDetail det
        JOIN
        Synthesis syn ON syn.idx = det.synthesisID
        JOIN
-       stditems AS items ON items.idx = det.srcIdx
-WHERE syn.srcIdx = {0} AND 
+       stditems item ON item.idx = det.srcIdx
+ WHERE syn.srcIdx = {0} AND 
        syn.isActive = 1 AND 
-       syn.type = 1;
+       syn.type = 10
+ ORDER BY det.extend1;
