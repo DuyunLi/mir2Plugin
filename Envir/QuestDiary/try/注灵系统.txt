@@ -3,8 +3,21 @@
 #if
 #act
   mov S$SynthesisBoxDialogStr
+  $executeGuid 8D090C7BA96F4D129CC43C9EB06FBCC7
+  $executeGuid FFCDEA492F3F4E4BB7B9492F16922B6A
   ReturnBoxItem 0
-  OPENMERCHANTBIGDLG 9 403 0 4 0 -20 1 460 50 1
+  OPENMERCHANTBIGDLG 9 0 0 4 0 -20 1 353 0 1
   goto @显示对话框
 [@显示对话框]
+#if
+#say
+  <ITEMBOX:0:-1:0:165:167:50:50:*:请放入需要注灵的装备>\
+  <ITEMBOX:1:9:42:280:164:50:50:40:请放入注灵的材料>\
+  <Img:72:9:33:210:>\
+  <text:灵魂等级：[SSS]:120:216{FCOLOR=251}>\
+  <text:灵魂属性：:90:230{FCOLOR=253}>\
+  <text:灵魂属性：:90:232{FCOLOR=253}>\
+  <text:灵魂属性：:90:234{FCOLOR=253}>\
+  <text:灵魂属性：:90:236{FCOLOR=253}>\
+  <imgex:9:573:574:575:120:280:/@洗练装备(1)><text:开始洗练:45:291{FCOLOR=251}>\
 }

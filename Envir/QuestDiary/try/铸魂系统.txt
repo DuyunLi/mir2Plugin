@@ -9,5 +9,189 @@
 [@显示对话框]
 #if
 #say
-  <looks:595:50:50:0>
+  <text:武器、衣服铸魂:203:85{FCOLOR=253}>\
+  <ITEMBOX:0:9:42:235:167:50:50:10,11,5:请放入武器、衣服>\
+  <text:请放入武器或者衣服:195:290{FCOLOR=251}>\
+  <text:武器可以获得强大的攻击属性加成:160:293{FCOLOR=250}>\
+  <text:衣服可以获得强大的防御和血量加成:155:296{FCOLOR=250}>\
+<$str(S$SynthesisBoxDialogStr)>\
+
+
+[@ItemOutBox0]
+#if
+#act
+  mov S$SynthesisBoxDialogStr
+  goto @显示对话框
+  
+[@ItemIntoBox0]
+#if
+#act
+  mov N$BoxIdx <$BOXITEM[0].Idx>
+  mov S$EquipName <$BOXITEM[0].NAME_G>
+#if
+  Equal N$BoxIdx 0
+#act
+  messagebox 当前物品无法铸魂!
+  ReturnBoxItem  0
+  break
+  
+  
+#if
+  $empty <$str(S$EquipName)>
+#act
+  mov S$EquipName <$BOXITEM[0].NAME>
+
+#if
+  $empty <$str(S$EquipName)>
+#act
+  messagebox 当前物品无法铸魂!
+  ReturnBoxItem  0
+  break
+#if
+  CheckContainsText <$str(S$EquipName)>  ≮铸魂≯
+#act
+  messagebox 当前物品已经铸魂!
+  break
+  
+#if
+#act  
+  mov S$SynthesisBoxDialogStr 
+  inc S$SynthesisBoxDialogStr <ItemShow:1:1:160:50:1>
+  inc S$SynthesisBoxDialogStr <ItemShow:2:1:250:50:1>\
+  ;inc S$SynthesisBoxDialogStr <ItemShow:3:1:160:90:1>
+  ;inc S$SynthesisBoxDialogStr <ItemShow:4:1:250:90:1>\
+
+  inc S$SynthesisBoxDialogStr <text:需要元宝：:250:114{FCOLOR=251}>
+  inc S$SynthesisBoxDialogStr <ImgNum:4:99999:-7:245:101>\
+  inc S$SynthesisBoxDialogStr <ImgEX:9:530:530:531:208:130/@确认按钮点击>\
+  $s_gets_str 装备铸魂.查询.主体.sql,<$str(N$BoxIdx)>|装备铸魂.查询.材料.sql,<$str(N$BoxIdx)> S$SynthesisBoxDialogStr $js_装备铸魂.查询.view
+#if
+   $empty <$str(S$SynthesisBoxDialogStr)> 
+#act
+  messagebox 当前物品无法铸魂!
+  ReturnBoxItem  0
+  Break
+#elseact
+  goto @显示对话框
+[@确认按钮点击]
+#if
+#act
+  mov S$Synthesis.len 0
+  mov S$SynthesisDetailInfoList.len 0
+
+#if
+  CheckBoxItemCount 0  
+#elseact
+  messagebox 请放入需要升级的物品!
+  Break
+#if
+#act
+  mov N$BoxIdx <$BOXITEM[0].Idx>
+  mov S$EquipName <$BOXITEM[0].NAME_G>
+#if
+  Equal N$BoxIdx 0
+#act
+  messagebox 当前物品无法铸魂!
+  ReturnBoxItem  0
+  break
+#if
+  $empty <$str(S$EquipName)>
+#act
+  mov S$EquipName <$BOXITEM[0].NAME>
+
+#if
+  $empty <$str(S$EquipName)>
+#act
+  messagebox 当前物品无法铸魂!
+  ReturnBoxItem  0
+  break
+#if
+  CheckContainsText S$EquipName ≮铸魂≯
+#act
+  messagebox 当前物品已经铸魂!
+  ReturnBoxItem  0
+  break
+  
+#if
+#act
+  $s_gets_str 装备铸魂.执行.主体.sql,<$str(N$BoxIdx)> S$Synthesis
+  $s_gets_str 装备铸魂.执行.材料.sql,<$str(N$BoxIdx)> S$SynthesisDetailInfoList
+  mov N$SynthesisDetailInfoListCount <$str(S$SynthesisDetailInfoList.len)>
+#if
+  equal <$str(S$Synthesis.len)> 0
+#act
+  messagebox 当前物品无法铸魂!
+  ReturnBoxItem  0
+  Break  
+
+
+#if
+  not $pa_get 1 >= <$str(S$Synthesis[0][2])> N$Result
+#act
+  SendMsg 5 你的元宝不够,你当前元宝数量是:<$str(N$Result)>,无法进行铸魂!
+  Break  
+  
+#if
+  Large N$SynthesisDetailInfoListCount 0
+  not checkitem <$str(S$SynthesisDetailInfoList[0][0])> <$str(S$SynthesisDetailInfoList[0][1])> 
+#act
+  messagebox 你没有『<$str(S$SynthesisDetailInfoList[0][0])>』x<$str(S$SynthesisDetailInfoList[0][1])>无法进行升级!
+  break
+#if
+  Large N$SynthesisDetailInfoListCount 1
+  not checkitem <$str(S$SynthesisDetailInfoList[1][0])> <$str(S$SynthesisDetailInfoList[1][1])> 
+#act
+  messagebox 你没有『<$str(S$SynthesisDetailInfoList[1][0])>』x<$str(S$SynthesisDetailInfoList[1][1])>无法进行升级!
+  break 
+
+#if
+  Large N$SynthesisDetailInfoListCount 2
+  not checkitem <$str(S$SynthesisDetailInfoList[2][0])> <$str(S$SynthesisDetailInfoList[2][1])> 
+#act
+  messagebox 你没有『<$str(S$SynthesisDetailInfoList[2][0])>』x<$str(S$SynthesisDetailInfoList[2][1])>无法进行升级!
+  break 
+#if
+  Large N$SynthesisDetailInfoListCount 3
+  not checkitem <$str(S$SynthesisDetailInfoList[3][0])> <$str(S$SynthesisDetailInfoList[3][1])> 
+#act
+  messagebox 你没有『<$str(S$SynthesisDetailInfoList[3][0])>』x<$str(S$SynthesisDetailInfoList[3][1])>无法进行升级!
+  break   
+
+#if
+  Large N$SynthesisDetailInfoListCount 0
+#act
+  take <$str(S$SynthesisDetailInfoList[0][0])> <$str(S$SynthesisDetailInfoList[0][1])>
+  
+#if
+  Large N$SynthesisDetailInfoListCount 1
+#act
+  take <$str(S$SynthesisDetailInfoList[1][0])> <$str(S$SynthesisDetailInfoList[1][1])> 
+
+#if
+  Large N$SynthesisDetailInfoListCount 2
+#act
+  take <$str(S$SynthesisDetailInfoList[2][0])> <$str(S$SynthesisDetailInfoList[2][1])>  
+#if
+  Large N$SynthesisDetailInfoListCount 3
+#act
+  take <$str(S$SynthesisDetailInfoList[3][0])> <$str(S$SynthesisDetailInfoList[3][1])> 
+       
+#if
+  not equal S$Synthesis[0][2] 0
+#act
+ $pa_set2 SynthesisGameGold   <$str(S$Synthesis[0][2])>
+ 
+#if
+#act
+  mov S$DBName <$str(S$Synthesis[0][1])>
+  LockUpdateItem boxitem0
+  ChangeItemName  boxitem0 <$str(S$DBName)>≮铸魂≯
+  UpdateItem boxitem0
+  SendMsg 6 你成功的将『<$str(S$Synthesis[0][1])>』进行了铸魂,属性得到了极大的提升!
+  SendMsg 1 %s成功的将『<$str(S$Synthesis[0][1])>』进行了铸魂,属性得到了极大的提升!
+  
+#if  
+#act
+  mov S$SynthesisBoxDialogStr 
+  goto @显示对话框
 }

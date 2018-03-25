@@ -35,6 +35,11 @@
   goto @显示对话框
 [@打开按钮点击]
 #if
+  CheckBoxItemCount 0  
+#elseact
+  messagebox 请放入需要打开的宝箱!
+  Break
+#if
 #act
   mov N$BoxIdx <$BOXITEM[0].Idx>
 #if
@@ -48,6 +53,12 @@
 }
 [@宝箱打开初始化]
 {
+
+#if
+  CheckBoxItemCount 0  
+#elseact
+  messagebox 请放入需要打开的宝箱!
+  Break
 
 #if
   equal N$BoxIdx 0 

@@ -3,8 +3,42 @@
 #if
 #act
   mov S$SynthesisBoxDialogStr
+  mov N$IsLuck 6
   ReturnBoxItem 0
-  OPENMERCHANTBIGDLG 9 403 0 4 0 -20 1 460 50 1
+  OPENMERCHANTBIGDLG 9 569 0 4 0 -20 1 520 50 1
   goto @显示对话框
 [@显示对话框]
+#if
+#say
+  <text:装备强化:240:40{FCOLOR=253}>\
+  <text:装备强化栏:150:100{FCOLOR=251}>\
+  <ITEMBOX:0:9:42:170:150:50:50:*:请放入需要强化的装备>\
+  <text:强化等级：:140:170{FCOLOR=250}><ImgNum:8:21:-3:140:160|提示信息/@测试>\
+  <text:强化材料:108:189{FCOLOR=251}>\
+  <text:幸运符:220:174{FCOLOR=251}>\
+  <img:<$str(N$IsLuck)>:9:195:154/@使用幸运符>\
+  <ItemShow:0:1:110:165:-1>\
+  <ItemShow:0:1:210:149:-1/@使用幸运符>\
+  <text:1、请将需要强化的装备放入装备强化栏:55:190{FCOLOR=250}>\
+  <text:2、如果需要使用幸运符,点击幸运符图标即可:55:192{FCOLOR=250}>\
+  <text:强化说明：强化越高,几率越低,使用幸运符可以获得成功率的提升:100:240{FCOLOR=70}>\
+  <text:注意：强化不会导致装备被破坏,但是失败后有几率会掉星:120:255{FCOLOR=253}>\
+  <text:装备名称七个字:380:-83{FCOLOR=253}>\
+  <text:属性加成：:350:-38{FCOLOR=250}>\
+  <text:绿色代表强化成功加成属性:360:-34{FCOLOR=70}>\
+  <text:物理防御：10:360:-30{FCOLOR=255}><text:(+15):362:-30{FCOLOR=250}>\
+  <text:魔法防御：10:360:-28{FCOLOR=255}><text:(+15):362:-28{FCOLOR=250}>\
+  <text:物理攻击：10:360:-26{FCOLOR=255}><text:(+15):362:-26{FCOLOR=250}>\
+  <text:魔法攻击：10:360:-24{FCOLOR=255}><text:(+15):362:-24{FCOLOR=250}>\
+  <text:道术攻击：10:360:-22{FCOLOR=255}><text:(+15):362:-22{FCOLOR=250}>\
+  <imgex:9:573:574:575:370:0:/@开始强化(1)><text:开始强化:295:11{FCOLOR=251}>\
+[@使用幸运符]
+#if
+  EQUAL N$IsLuck 7
+#act
+  mov N$IsLuck 6
+  goto @显示对话框
+#elseact  
+  mov N$IsLuck 7
+  goto @显示对话框
 }
