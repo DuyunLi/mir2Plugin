@@ -24,6 +24,13 @@
   goto @显示对话框
   
 [@ItemIntoBox0]
+
+#if
+  not CheckBoxItemCount 0  
+#act
+  SendMsg 5 请放入需要铸魂的装备
+  break
+
 #if
 #act
   mov N$BoxIdx <$BOXITEM[0].Idx>
@@ -55,15 +62,6 @@
   
 #if
 #act  
-  mov S$SynthesisBoxDialogStr 
-  inc S$SynthesisBoxDialogStr <ItemShow:1:1:160:50:1>
-  inc S$SynthesisBoxDialogStr <ItemShow:2:1:250:50:1>\
-  ;inc S$SynthesisBoxDialogStr <ItemShow:3:1:160:90:1>
-  ;inc S$SynthesisBoxDialogStr <ItemShow:4:1:250:90:1>\
-
-  inc S$SynthesisBoxDialogStr <text:需要元宝：:250:114{FCOLOR=251}>
-  inc S$SynthesisBoxDialogStr <ImgNum:4:99999:-7:245:101>\
-  inc S$SynthesisBoxDialogStr <ImgEX:9:530:530:531:208:130/@确认按钮点击>\
   $s_gets_str 装备铸魂.查询.主体.sql,<$str(N$BoxIdx)>|装备铸魂.查询.材料.sql,<$str(N$BoxIdx)> S$SynthesisBoxDialogStr $js_装备铸魂.查询.view
 #if
    $empty <$str(S$SynthesisBoxDialogStr)> 
