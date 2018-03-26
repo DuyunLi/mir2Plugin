@@ -8,6 +8,9 @@
   $executeGuid FFCDEA492F3F4E4BB7B9492F16922B6A
   mov N$IsLuck 6
   mov N$IsProtect 6
+  mov N$LuckCount 0
+  mov N$ProtectCount 0
+  mov N$MaterialID 1130
   mov N$NextRate 100
   ReturnBoxItem 0
   OPENMERCHANTBIGDLG 9 569 0 4 0 -20 1 520 50 1
@@ -24,6 +27,29 @@
   mov N$UpgradeCount 0     
 
 #if
+  equal N$LuckCount 0
+#act
+  mov N$IsLuck 6
+  
+#if
+  not CheckBoxItemCount 0  
+#act
+  mov N$NextRate 100
+#elseact 
+  mov N$NextRate <$str(S$UpgradeSearchResult[0][0])>
+    
+#if
+  equal N$IsLuck 7
+#act
+  inc N$NextRate <$str(S$UpgradeSearchResult[0][1])>
+#if
+  large N$NextRate 100
+#act
+  mov N$NextRate 100
+  
+  
+  
+#if
 #say
   <text:装备强化:240:40{FCOLOR=253}>\
   <text:装备强化栏:152:90{FCOLOR=251}>\
@@ -36,9 +62,9 @@
   <Img:<$str(N$IsLuck)>:9:80:185/@使用幸运石><text:幸运石:82:189{FCOLOR=251}>
   <text:强化材料:103:172{FCOLOR=251}>
   <Img:<$str(N$IsProtect)>:9:120:185/@使用守护符><text:守护符:122:189{FCOLOR=251}>\
-　<ItemShow:0:1:78:195:-1/@使用幸运石>
-　<ItemShow:0:1:98:177:-1>
-　<ItemShow:0:1:118:195:-1/@使用守护符>\
+　<ItemShow:1128:<$str(N$LuckCount)>:78:195:-1/@使用幸运石>
+　<ItemShow:<$str(N$MaterialID)>:1:96:177:-1>
+　<ItemShow:1129:<$str(N$ProtectCount)>:116:195:-1/@使用守护符>\
   <text:1、请将需要强化的装备放入装备强化栏:50:229{FCOLOR=250}>\
   <text:2、如果需要使用幸运石、守护符,点击图标即可:50:232{FCOLOR=250}>\
   <text:强化说明：强化越高,几率越低,使用幸运符可以获得成功率的提升:100:272{FCOLOR=70}>\
@@ -50,7 +76,7 @@
 #if
 #act
   mov S$SynthesisBoxDialogStr
-  mov N$NextRate 100
+  mov S$SynthesisBoxDialogButtonStr
   goto @显示对话框
   
 [@ItemIntoBox0]
@@ -65,15 +91,26 @@
 #if
   not CheckBoxItemCount 0  
 #act
-  mov S$SynthesisBoxDialogStr 
+  mov S$SynthesisBoxDialogStr
+  mov S$SynthesisBoxDialogButtonStr
+  goto @显示对话框
   break
 
 #if
 #act
+  mov S$SynthesisBoxDialogStr
+  mov S$SynthesisBoxDialogButtonStr
   mov N$BoxIdx <$BOXITEM[0].Idx>
   mov S$EquipName <$BOXITEM[0].NAME_G>
   mov N$StdMode <$BOXITEM[0].STDMODE>
-  mov N$Overlap 2
+  mov N$UpgradeCount <$BOXITEM[0].UPGRADECOUNT>
+  mov N$NeedLevel <$BOXITEM[0].NeedLevel>
+  mov N$MaterialID 1130
+  inc N$UpgradeCount 1
+  mov N$Overlap 2  
+  mov N$LuckCount 0
+  mov N$ProtectCount 0
+  $compute iif({0}<61,1130,iif({0}<71,1131,iif({0}<81,1132,iif({0}<91,1133,iif({0}<101,1134,iif({0}<111,1135,iif({0}<121,1136,iif({0}<131,1137,iif({0}<141,1138,iif({0}<151,1139,1139)))))))))) <$str(N$NeedLevel)> N$MaterialID 
   GetDBIdxItemFieldValue N$BoxIdx Overlap N$Overlap
   
 #If
@@ -81,6 +118,7 @@
 #act
   messagebox 无法强化首饰盒与神佑装备!
   ReturnBoxItem  0
+  goto @显示对话框
   break
    
   
@@ -89,6 +127,7 @@
 #act
   messagebox 当前物品无法强化!
   ReturnBoxItem  0
+  goto @显示对话框
   break
   
   
@@ -102,6 +141,7 @@
 #act
   messagebox 当前物品无法强化!
   ReturnBoxItem  0
+  goto @显示对话框
   break
 #if
   CheckStringlength <$str(S$EquipName)> <= 5
@@ -111,6 +151,21 @@
   CheckStringlength <$str(S$EquipName)> <= 7
 #act
   mov S$EquipName 　<$str(S$EquipName)>
+
+#if
+#act
+  $s_gets_str 装备强化.查询.主体.sql,<$str(N$UpgradeCount)>,<$str(N$BoxIdx)>,<$str(N$StdMode)> S$UpgradeSearchResult
+  mov N$LuckCount <$str(S$UpgradeSearchResult[0][3])>
+  mov N$ProtectCount <$str(S$UpgradeSearchResult[0][4])>
+  
+#if
+  equal S$UpgradeSearchResult.len 0
+#act
+  messagebox 当前物品无法强化!
+  ReturnBoxItem  0
+  goto @显示对话框
+  break  
+  
   
 #or
   equal N$StdMode 5
@@ -122,15 +177,19 @@
 #act
   mov S$SynthesisBoxDialogStr
   mov S$SynthesisBoxDialogButtonStr
+  GetDBIdxItemFieldValue N$BoxIdx Dc2 N$MaxDC 
+  GetDBIdxItemFieldValue N$BoxIdx Sc2 N$MaxSC 
+  GetDBIdxItemFieldValue N$BoxIdx Mc2 N$MaxMC 
   inc S$SynthesisBoxDialogStr <text:<$str(S$EquipName)>:380:-53{FCOLOR=253}>\
-  inc S$SynthesisBoxDialogStr <text:属性加成：:340:-8{FCOLOR=250}>\
-  inc S$SynthesisBoxDialogStr <text:绿色代表强化成功加成属性:350:-4{FCOLOR=70}>\
-  inc S$SynthesisBoxDialogStr <text:该部位无法强化物理防御:350:0{FCOLOR=35}>\
-  inc S$SynthesisBoxDialogStr <text:该部位无法强化魔法防御:350:2{FCOLOR=35}>\
-  inc S$SynthesisBoxDialogStr <text:物理攻击：<$BOXITEM[0].LDC>-<$BOXITEM[0].HDC>:350:4{FCOLOR=255}><text:(+15):352:4{FCOLOR=250}>\
-  inc S$SynthesisBoxDialogStr <text:魔法攻击：<$BOXITEM[0].LMC>-<$BOXITEM[0].HMC>:350:6{FCOLOR=255}><text:(+15):352:6{FCOLOR=250}>\
-  inc S$SynthesisBoxDialogStr <text:道术攻击：<$BOXITEM[0].LSC>-<$BOXITEM[0].HSC>:350:8{FCOLOR=255}><text:(+15):352:8{FCOLOR=250}>\
-  inc S$SynthesisBoxDialogButtonStr <imgex:9:573:574:575:370:30:/@开始强化(1)><text:开始强化:295:41{FCOLOR=251}>\  
+  inc S$SynthesisBoxDialogStr <text:失败掉级：:340:-16{FCOLOR=250}><ImgNum:5:<$str(S$UpgradeSearchResult[0][2])>:-3:340:-20>\
+  inc S$SynthesisBoxDialogStr <text:属性加成：:340:-11{FCOLOR=250}>\
+  inc S$SynthesisBoxDialogStr <text:绿色代表成功后总加成属性:350:-9{FCOLOR=70}>\
+  inc S$SynthesisBoxDialogStr <text:该部位无法强化物理防御:350:-7{FCOLOR=35}>\
+  inc S$SynthesisBoxDialogStr <text:该部位无法强化魔法防御:350:-5{FCOLOR=35}>\
+  inc S$SynthesisBoxDialogStr <text:物理攻击：<$BOXITEM[0].LDC>-<$str(N$MaxDC)>:350:-3{FCOLOR=255}><text:(+<$str(S$UpgradeSearchResult[0][7])>):352:-3{FCOLOR=250}>\
+  inc S$SynthesisBoxDialogStr <text:魔法攻击：<$BOXITEM[0].LMC>-<$str(N$MaxMC)>:350:-1{FCOLOR=255}><text:(+<$str(S$UpgradeSearchResult[0][8])>):352:-1{FCOLOR=250}>\
+  inc S$SynthesisBoxDialogStr <text:道术攻击：<$BOXITEM[0].LSC>-<$str(N$MaxSC)>:350:1{FCOLOR=255}><text:(+<$str(S$UpgradeSearchResult[0][9])>):352:1{FCOLOR=250}>\
+  inc S$SynthesisBoxDialogButtonStr <imgex:9:573:574:575:370:25:/@开始强化(1)><text:开始强化:295:36{FCOLOR=251}>\  
   goto @显示对话框
   break
 #or
@@ -144,15 +203,22 @@
 #act
   mov S$SynthesisBoxDialogStr
   mov S$SynthesisBoxDialogButtonStr
+  GetDBIdxItemFieldValue N$BoxIdx Ac2 N$MaxAC 
+  GetDBIdxItemFieldValue N$BoxIdx MAc2 N$MaxMAC 
+  GetDBIdxItemFieldValue N$BoxIdx Dc2 N$MaxDC 
+  GetDBIdxItemFieldValue N$BoxIdx Sc2 N$MaxSC 
+  GetDBIdxItemFieldValue N$BoxIdx Mc2 N$MaxMC 
   inc S$SynthesisBoxDialogStr <text:<$str(S$EquipName)>:380:-53{FCOLOR=253}>\
-  inc S$SynthesisBoxDialogStr <text:属性加成：:340:-8{FCOLOR=250}>\
-  inc S$SynthesisBoxDialogStr <text:绿色代表强化成功加成属性:350:-4{FCOLOR=70}>\
-  inc S$SynthesisBoxDialogStr <text:物理防御：<$BOXITEM[0].LAC>-<$BOXITEM[0].HAC>:350:0{FCOLOR=255}><text:(+15):352:0{FCOLOR=250}>\
-  inc S$SynthesisBoxDialogStr <text:魔法防御：<$BOXITEM[0].LMAC>-<$BOXITEM[0].HMAC>:350:2{FCOLOR=255}><text:(+15):352:2{FCOLOR=250}>\
-  inc S$SynthesisBoxDialogStr <text:物理攻击：<$BOXITEM[0].LDC>-<$BOXITEM[0].HDC>:350:4{FCOLOR=255}><text:(+15):352:4{FCOLOR=250}>\
-  inc S$SynthesisBoxDialogStr <text:魔法攻击：<$BOXITEM[0].LMC>-<$BOXITEM[0].HMC>:350:6{FCOLOR=255}><text:(+15):352:6{FCOLOR=250}>\
-  inc S$SynthesisBoxDialogStr <text:道术攻击：<$BOXITEM[0].LSC>-<$BOXITEM[0].HSC>:350:8{FCOLOR=255}><text:(+15):352:8{FCOLOR=250}>\
-  inc S$SynthesisBoxDialogButtonStr <imgex:9:573:574:575:370:30:/@开始强化(1)><text:开始强化:295:41{FCOLOR=251}>\  
+  inc S$SynthesisBoxDialogStr <text:失败掉级：:340:-16{FCOLOR=250}><ImgNum:5:<$str(S$UpgradeSearchResult[0][2])>:-3:340:-20>\
+  inc S$SynthesisBoxDialogStr <text:属性加成：:340:-11{FCOLOR=250}>\
+  inc S$SynthesisBoxDialogStr <text:绿色代表成功后总加成属性:350:-9{FCOLOR=70}>\
+  inc S$SynthesisBoxDialogStr <text:物理防御：<$BOXITEM[0].LAC>-<$str(N$MaxAC)>:350:-7{FCOLOR=255}><text:(+<$str(S$UpgradeSearchResult[0][5])>):352:-7{FCOLOR=250}>\
+  inc S$SynthesisBoxDialogStr <text:魔法防御：<$BOXITEM[0].LMAC>-<$str(N$MaxMAC)>:350:-5{FCOLOR=255}><text:(+<$str(S$UpgradeSearchResult[0][6])>):352:-5{FCOLOR=250}>\
+  inc S$SynthesisBoxDialogStr <text:物理攻击：<$BOXITEM[0].LDC>-<$str(N$MaxDC)>:350:-3{FCOLOR=255}><text:(+<$str(S$UpgradeSearchResult[0][7])>):352:-3{FCOLOR=250}>\
+  inc S$SynthesisBoxDialogStr <text:魔法攻击：<$BOXITEM[0].LMC>-<$str(N$MaxMC)>:350:-1{FCOLOR=255}><text:(+<$str(S$UpgradeSearchResult[0][8])>):352:-1{FCOLOR=250}>\
+  inc S$SynthesisBoxDialogStr <text:道术攻击：<$BOXITEM[0].LSC>-<$str(N$MaxSC)>:350:1{FCOLOR=255}><text:(+<$str(S$UpgradeSearchResult[0][9])>):352:1{FCOLOR=250}>\
+  inc S$SynthesisBoxDialogButtonStr <imgex:9:573:574:575:370:25:/@开始强化(1)><text:开始强化:295:36{FCOLOR=251}>\   
+  
   goto @显示对话框
   break
  
@@ -160,17 +226,18 @@
 #if
 #act
   messagebox 当前类型装备无法进行强化 
+  goto @显示对话框
   
 
   
 [@开始强化]
 #if
 #act
- mov S$SynthesisBoxDialogButtonStr <imgex:9:576:576:576:370:30:><text:开始强化:295:41{FCOLOR=251}>\  
+ mov S$SynthesisBoxDialogButtonStr <imgex:9:576:576:576:370:25:><text:开始强化:295:36{FCOLOR=251}>\  
  goto @显示对话框
  mov N$NextStep 1
  SHOWPROGRESSBARDLG 2 @强化进度条完成 正在强化,%d%... 1 @强化进度条中断
- DELAYGOTO 1500 @开始强化执行
+ DELAYGOTO 1800 @开始强化执行
 
 [@开始强化执行]
 #if
@@ -218,14 +285,25 @@
 #act
   mov N$UpgradeCount <$BOXITEM[0].UPGRADECOUNT>
   inc N$UpgradeCount 1
+  $s_gets_str 装备强化.执行.材料.sql,<$str(N$UpgradeCount)>,<$str(N$BoxIdx)>,<$str(N$StdMode)> S$UpgradeDetailExcute
+  
+#if
+   equal <$str(S$UpgradeDetailExcute.len)> 0
+#act
+  messagebox 当前物品无法强化!
+  ReturnBoxItem  0
+  break
+
+#if
+#act   
   SetUpgradeItem 0
 #if
   equal N$StdMode 5
   ;武器强化位置 0,1,2
 #act  
-  CHANGEITEMADDVALUE  boxitem0 0 + 1
-  CHANGEITEMADDVALUE  boxitem0 1 + 1
-  CHANGEITEMADDVALUE  boxitem0 2 + 1
+  CHANGEITEMADDVALUE  boxitem0 0 = S$UpgradeDetailExcute[0][2]
+  CHANGEITEMADDVALUE  boxitem0 1 = S$UpgradeDetailExcute[0][3]
+  CHANGEITEMADDVALUE  boxitem0 2 = S$UpgradeDetailExcute[0][4]
   
 #or
   equal N$StdMode 19
@@ -235,9 +313,9 @@
   equal N$StdMode 24
   ;特殊位置强化位置 2,3,4
 #act  
-  CHANGEITEMADDVALUE  boxitem0 2 + 1
-  CHANGEITEMADDVALUE  boxitem0 3 + 1
-  CHANGEITEMADDVALUE  boxitem0 4 + 1
+  CHANGEITEMADDVALUE  boxitem0 2 = S$UpgradeDetailExcute[0][2]
+  CHANGEITEMADDVALUE  boxitem0 3 = S$UpgradeDetailExcute[0][3]
+  CHANGEITEMADDVALUE  boxitem0 4 = S$UpgradeDetailExcute[0][4]
 #or
   equal N$StdMode 10
   equal N$StdMode 11
@@ -248,18 +326,17 @@
   equal N$StdMode 64
   ;普通位置强化位置 0,1,2,3,4
 #act  
-  CHANGEITEMADDVALUE  boxitem0 0 + 1
-  CHANGEITEMADDVALUE  boxitem0 1 + 1
-  CHANGEITEMADDVALUE  boxitem0 2 + 1
-  CHANGEITEMADDVALUE  boxitem0 3 + 1
-  CHANGEITEMADDVALUE  boxitem0 4 + 1
+  CHANGEITEMADDVALUE  boxitem0 0 = S$UpgradeDetailExcute[0][0]
+  CHANGEITEMADDVALUE  boxitem0 1 = S$UpgradeDetailExcute[0][1]
+  CHANGEITEMADDVALUE  boxitem0 2 = S$UpgradeDetailExcute[0][2]
+  CHANGEITEMADDVALUE  boxitem0 3 = S$UpgradeDetailExcute[0][3]
+  CHANGEITEMADDVALUE  boxitem0 4 = S$UpgradeDetailExcute[0][4]
   
 #if
 #act  
   ChangeItemUpgradeCount boxitem0 = <$str(N$UpgradeCount)>
   UpdateItem boxitem0
   goto  @updateBoxDialog
-  goto @显示对话框
   
   
 [@使用幸运石]
@@ -267,10 +344,12 @@
   EQUAL N$IsLuck 7
 #act
   mov N$IsLuck 6
-  goto @显示对话框
 #elseact  
   mov N$IsLuck 7
+#if
+#act
   goto @显示对话框
+    
 [@使用守护符]
 #if
   EQUAL N$IsProtect 7

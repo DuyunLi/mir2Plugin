@@ -1,4 +1,5 @@
-SELECT CASE WHEN 1 = 0 THEN det.probability + det.luckRate ELSE det.probability END probability,
+SELECT CASE WHEN 7 = {3} AND 
+                 luckCnt > 0 THEN det.probability + det.luckRate ELSE det.probability END probability,
        ms.failLevel,
        ms.luckCnt,
        ms.protectCnt
