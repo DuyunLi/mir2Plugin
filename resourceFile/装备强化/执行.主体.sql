@@ -1,11 +1,14 @@
-SELECT std2.name srcName,
-       std.name toName,
-       resultCount cnt,
-       extend2
-  FROM synthesis
+SELECT CASE WHEN 1 = 0 THEN det.probability + det.luckRate ELSE det.probability END probability,
+       ms.failLevel,
+       ms.luckCnt,
+       ms.protectCnt
+  FROM upgradeDetail det
        JOIN
-       stditems std ON std.idx = resultIdx
-       JOIN
-       stditems std2 ON std2.idx = srcidx
- WHERE srcIdx = {0} AND 
-       type = 1;
+       upgradeMarster ms ON ms.upLevel = det.upLevel
+ WHERE det.upLevel = {0} AND 
+       (det.srcIdx = {1} OR 
+        det.srcIdx = 0) AND 
+       (det.stdmode = {2} OR 
+        det.stdmode = 0) 
+ ORDER BY CASE WHEN det.srcIdx > 0 THEN 0 WHEN det.stdmode > 0 THEN 1 ELSE 2 END
+ LIMIT 1;
