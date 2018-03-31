@@ -24,7 +24,15 @@
 #act
   mov N$UpgradeCount <$BOXITEM[0].UPGRADECOUNT>
 #elseact
-  mov N$UpgradeCount 0     
+  mov N$UpgradeCount 0  
+  mov N$IsLuck 6
+  mov N$IsProtect 6
+  mov N$LuckCount 0
+  mov N$ProtectCount 0
+  mov N$MaterialID 1130
+  mov N$NextRate 100 
+  mov S$SynthesisBoxDialogStr
+  mov S$SynthesisBoxDialogButtonStr
 
 #if
   equal N$LuckCount 0
@@ -226,6 +234,7 @@
 #if
 #act
   messagebox 当前类型装备无法进行强化 
+  ReturnBoxItem  0
   goto @显示对话框
   
 
@@ -252,6 +261,7 @@
   not CheckBoxItemCount 0  
 #act
   SendMsg 5 请放入需要强化的装备
+  goto  @updateBoxDialog
   break
 
 #if
@@ -269,6 +279,7 @@
 #act
   messagebox 当前物品无法强化!
   ReturnBoxItem  0
+  goto  @updateBoxDialog
   break
 
   
@@ -277,6 +288,7 @@
 #act
   messagebox 无法强化首饰盒与神佑装备!
   ReturnBoxItem  0
+  goto  @updateBoxDialog
   break
    
   
@@ -285,13 +297,109 @@
 #act
   mov N$UpgradeCount <$BOXITEM[0].UPGRADECOUNT>
   inc N$UpgradeCount 1
-  $s_gets_str 装备强化.执行.材料.sql,<$str(N$UpgradeCount)>,<$str(N$BoxIdx)>,<$str(N$StdMode)> S$UpgradeDetailExcute
+  $compute iif({0}<61,'一{1}',iif({0}<71,'二{1}',iif({0}<81,'三{1}',iif({0}<91,'四{1}',iif({0}<101,'五{1}',iif({0}<111,'六{1}',iif({0}<121,'七{1}',iif({0}<131,'八{1}',iif({0}<141,'九{1}',iif({0}<151,'十{1}','十{1}')))))))))) <$str(N$NeedLevel)>,级强化石 S$MaterialName 
+  $s_gets_str 装备强化.执行.主体.sql,<$str(N$UpgradeCount)>,<$str(N$BoxIdx)>,<$str(N$StdMode)>,<$str(N$IsLuck)> S$UpgradeMarsterExcute
+
   
+#if
+   equal <$str(S$UpgradeMarsterExcute.len)> 0
+#act
+  messagebox 当前物品无法强化!
+  ReturnBoxItem  0
+  goto  @updateBoxDialog
+  break
+  
+#if
+  equal N$IsLuck 7
+  not equal S$UpgradeMarsterExcute[0][2] 0
+  not CheckItem 幸运石 S$UpgradeMarsterExcute[0][2]
+#act
+  messagebox 你选择了使用『幸运石』,但是你的包裹没有足够的数量,强化中断! 
+  goto  @updateBoxDialog
+  break
+#if
+  EQUAL N$IsProtect 7
+  not equal S$UpgradeMarsterExcute[0][3] 0
+  not CheckItem 守护符 S$UpgradeMarsterExcute[0][3]
+#act
+  messagebox 你选择了使用『守护符』,但是你的包裹没有足够的数量,强化中断! 
+  goto  @updateBoxDialog
+  break
+#if
+  not CheckItem <$str(S$MaterialName)> 1
+#act
+  messagebox 你的包裹没有足够数量的『<$str(S$MaterialName)>』,强化中断! 
+  goto  @updateBoxDialog
+  break  
+#if
+  equal N$IsLuck 7
+  not equal S$UpgradeMarsterExcute[0][2] 0
+#act
+  take 幸运石 S$UpgradeMarsterExcute[0][2]
+#if
+  EQUAL N$IsProtect 7
+  not equal S$UpgradeMarsterExcute[0][3] 0
+#act
+  take 幸运石 S$UpgradeMarsterExcute[0][3]
+#if
+#act
+  take <$str(S$MaterialName)> 1
+  mov N$UpgradeFailLevel 0
+  mov N$UpgradeResult 0
+  $randomrang <$str(S$UpgradeMarsterExcute[0][0])> S$UpgradeResult
+#if  
+  equal S$UpgradeResult -1
+#act
+  mov N$UpgradeResult 0
+#elseact
+  mov N$UpgradeResult 1
+#if
+  EQUAL N$IsProtect 7
+#act
+  $randomrang 0.01,85,12,5 N$UpgradeFailLevel
+  mov N$UpgradeFailLevelBase <$str(S$UpgradeMarsterExcute[0][1])>
+  dec N$UpgradeFailLevelBase <$str(N$UpgradeFailLevel)>   
+#elseact 
+  mov N$UpgradeFailLevelBase <$str(S$UpgradeMarsterExcute[0][1])>
+#if
+  small N$UpgradeFailLevelBase 0
+#act 
+  mov   N$UpgradeFailLevel 0
+#elseact 
+  mov   N$UpgradeFailLevel  <$str(N$UpgradeFailLevelBase)>
+#if
+#act
+   SendMsg 5 <$str(S$UpgradeMarsterExcute[0][1])>,<$str(N$UpgradeFailLevel)>
+  
+#if
+  equal N$UpgradeResult 0
+  not equal N$UpgradeFailLevel 0
+#act
+  SendCenterMsg 180 251 强化失败!你的『<$str(S$EquipName)>』强化等级降低<$str(N$UpgradeFailLevel)>级! 0 
+  dec N$UpgradeCount 1
+  dec N$UpgradeCount <$str(N$UpgradeFailLevel)>
+#if
+  equal N$UpgradeResult 0
+  equal N$UpgradeFailLevel 0  
+#act
+  SendCenterMsg 180 251 强化失败!你的『<$str(S$EquipName)>』没有发生改变! 0 
+  goto  @updateBoxDialog
+  break  
+  
+#if
+  small N$UpgradeCount 0
+#act
+  mov N$UpgradeCount 0  
+
+#if
+#act
+  $s_gets_str 装备强化.执行.材料.sql,<$str(N$UpgradeCount)>,<$str(N$BoxIdx)>,<$str(N$StdMode)> S$UpgradeDetailExcute  
 #if
    equal <$str(S$UpgradeDetailExcute.len)> 0
 #act
   messagebox 当前物品无法强化!
   ReturnBoxItem  0
+  goto  @updateBoxDialog
   break
 
 #if
@@ -304,7 +412,7 @@
   CHANGEITEMADDVALUE  boxitem0 0 = S$UpgradeDetailExcute[0][2]
   CHANGEITEMADDVALUE  boxitem0 1 = S$UpgradeDetailExcute[0][3]
   CHANGEITEMADDVALUE  boxitem0 2 = S$UpgradeDetailExcute[0][4]
-  
+  mov N$IsUpgrade 1
 #or
   equal N$StdMode 19
   equal N$StdMode 20
@@ -316,6 +424,7 @@
   CHANGEITEMADDVALUE  boxitem0 2 = S$UpgradeDetailExcute[0][2]
   CHANGEITEMADDVALUE  boxitem0 3 = S$UpgradeDetailExcute[0][3]
   CHANGEITEMADDVALUE  boxitem0 4 = S$UpgradeDetailExcute[0][4]
+  mov N$IsUpgrade 1
 #or
   equal N$StdMode 10
   equal N$StdMode 11
@@ -331,9 +440,94 @@
   CHANGEITEMADDVALUE  boxitem0 2 = S$UpgradeDetailExcute[0][2]
   CHANGEITEMADDVALUE  boxitem0 3 = S$UpgradeDetailExcute[0][3]
   CHANGEITEMADDVALUE  boxitem0 4 = S$UpgradeDetailExcute[0][4]
+  mov N$IsUpgrade 1
+#if
+  equal N$IsUpgrade 0
+#act
+  messagebox 强化错误,请重试!
+  UpdateItem boxitem0
+  ReturnBoxItem  0
+  goto  @updateBoxDialog
+  break
+#if
+  equal N$UpgradeResult 1
+  equal N$UpgradeCount 5
+  CheckFluteCount boxitem0 < 1
+#act
+  SETFLUTECOUNT boxitem0 1
+  SendCenterMsg 180 251 你的装备『<$str(S$EquipName)>』已经升级到了Lv.<$str(N$UpgradeCount)>级,获得一个宝石镶嵌孔洞! 0 
+  SendCenterMsg 253 251 <$USERNAME>的装备『<$str(S$EquipName)>』已经升级到了Lv.<$str(N$UpgradeCount)>级,获得一个宝石镶嵌孔洞! 1 
+
+#if
+  equal N$UpgradeResult 1
+  equal N$UpgradeCount 9
+  CheckFluteCount boxitem0 < 2
+#act
+  SETFLUTECOUNT boxitem0 2
+  SendCenterMsg 180 251 你的装备『<$str(S$EquipName)>』已经升级到了Lv.<$str(N$UpgradeCount)>级,获得一个宝石镶嵌孔洞! 0 
+  SendCenterMsg 253 251 <$USERNAME>的装备『<$str(S$EquipName)>』已经升级到了Lv.<$str(N$UpgradeCount)>级,获得一个宝石镶嵌孔洞! 1 
+  
+#if
+  equal N$UpgradeResult 1
+  equal N$UpgradeCount 13
+  CheckFluteCount boxitem0 < 3
+#act
+  SETFLUTECOUNT boxitem0 3
+  SendCenterMsg 180 251 你的装备『<$str(S$EquipName)>』已经升级到了Lv.<$str(N$UpgradeCount)>级,获得一个宝石镶嵌孔洞! 0 
+  SendCenterMsg 253 251 <$USERNAME>的装备『<$str(S$EquipName)>』已经升级到了Lv.<$str(N$UpgradeCount)>级,获得一个宝石镶嵌孔洞! 1 
+   
+
+#if
+  equal N$UpgradeResult 1
+  equal N$UpgradeCount 12
+#act  
+  SendCenterMsg 253 251 <$USERNAME>成功的将装备『<$str(S$EquipName)>』强化到Lv.<$str(N$UpgradeCount)>,太厉害了,有谁还能超越他吗! 1 
+
+#if
+  equal N$UpgradeResult 1
+  equal N$UpgradeCount 13
+#act  
+  SendCenterMsg 253 251 <$USERNAME>成功的将装备『<$str(S$EquipName)>』强化到Lv.<$str(N$UpgradeCount)>,太厉害了,有谁还能超越他吗! 1 
+
+#if
+  equal N$UpgradeResult 1
+  equal N$UpgradeCount 14
+#act  
+  SendCenterMsg 253 251 <$USERNAME>成功的将装备『<$str(S$EquipName)>』强化到Lv.<$str(N$UpgradeCount)>,太厉害了,有谁还能超越他吗! 1 
+
+#if
+  equal N$UpgradeResult 1
+  equal N$UpgradeCount 15
+#act  
+  SendCenterMsg 253 251 <$USERNAME>成功的将装备『<$str(S$EquipName)>』强化到Lv.<$str(N$UpgradeCount)>,神兵出世,天下震惊!! 1 
+
+#if
+  equal N$UpgradeResult 1
+  equal N$UpgradeCount 16
+#act  
+  SendCenterMsg 253 251 <$USERNAME>成功的将装备『<$str(S$EquipName)>』强化到Lv.<$str(N$UpgradeCount)>,神兵出世,天下震惊!! 1 
+
+#if
+  equal N$UpgradeResult 1
+  equal N$UpgradeCount 17
+#act  
+  SendCenterMsg 253 251 <$USERNAME>成功的将装备『<$str(S$EquipName)>』强化到Lv.<$str(N$UpgradeCount)>,神兵出世,无出其右,天下震惊!!! 1 
+
+#if
+  equal N$UpgradeResult 1
+  equal N$UpgradeCount 18
+#act  
+  SendCenterMsg 253 251 <$USERNAME>成功的将装备『<$str(S$EquipName)>』强化到Lv.<$str(N$UpgradeCount)>,神兵出世,天下无双,大家快去围观吧!!! 1 
+
+
+#if
+  equal N$UpgradeResult 1  
+#act  
+  SendCenterMsg 180 251 强化成功!你的『<$str(S$EquipName)>』发出一阵耀眼的光芒,!属性获得了极大的提升! 0 
   
 #if
 #act  
+  mov N$IsUpgrade 0
   ChangeItemUpgradeCount boxitem0 = <$str(N$UpgradeCount)>
   UpdateItem boxitem0
   goto  @updateBoxDialog
