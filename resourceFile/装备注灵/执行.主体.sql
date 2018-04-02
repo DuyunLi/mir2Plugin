@@ -1,11 +1,16 @@
-SELECT std2.name srcName,
-       std.name toName,
-       resultCount cnt,
-       extend2
-  FROM synthesis
+SELECT idx,
+       attr.probability * sc.probability probability,
+       type ext1,
+       value ext2,
+       valueType ext3
+  FROM soulAttribute attr
        JOIN
-       stditems std ON std.idx = resultIdx
+       soulConfig sc ON sc.level = attr.level
        JOIN
-       stditems std2 ON std2.idx = srcidx
- WHERE srcIdx = {0} AND 
-       type = 1;
+       soulConfig sc1 ON sc1.name = '{3}'
+ WHERE attr.level <= {0} % 255 AND 
+       attr.level <= sc1.level AND 
+       (attr.stdmode = 0 OR 
+        attr.stdmode = {1}) AND 
+       (attr.srcIdx = 0 OR 
+        attr.srcIdx = {2}) ;
