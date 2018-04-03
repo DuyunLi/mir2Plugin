@@ -1,8 +1,8 @@
 SELECT  ( CASE WHEN ect.description IS NULL
                     OR length(ect.description) = 0 THEN ect.name + ': +'
                ELSE ect.description
-          END ) | attr.value
-        | CASE WHEN attr.valueType = 0 THEN ''
+          END ) || attr.value
+        || CASE WHEN attr.valueType = 0 THEN ''
                ELSE '%'
           END customName ,
         sc.color ,
@@ -16,6 +16,8 @@ FROM    soulAttribute attr
 WHERE   attr.isActive = 1
         AND sc.isActive = 1
         AND ect.isActive = 1
+        and msc.level >= sc.level 
+        and msc.level <= sc.level + 2
         AND {0} % 255 >= attr.level
         AND ( ( {0} / 255 > 0
                 AND {1} = attr.type
