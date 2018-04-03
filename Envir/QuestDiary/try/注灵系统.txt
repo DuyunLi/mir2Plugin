@@ -5,6 +5,7 @@
   $executeGuid 8D090C7BA96F4D129CC43C9EB06FBCC7
   $executeGuid FFCDEA492F3F4E4BB7B9492F16922B6A
   ReturnBoxItem 0
+  ReturnBoxItem 1
   OPENMERCHANTBIGDLG 9 0 0 4 0 -20 1 353 0 1
   goto @显示对话框
   mov N$ButtonShow 0
@@ -20,7 +21,7 @@
 #act
   mov S$SoulBoxDialogButtonStr
 #if
-  $empty <$str(S$SoulBoxDialogStr)>
+  not CheckBoxItemCount 0
 #act
   mov S$SoulBoxDialogStr <text:灵魂等级：[未放入]:115:216{FCOLOR=7}>  
 #if
@@ -78,7 +79,38 @@
   GetCustomItemValue boxitem0 2 N$SoulList[2][0] N$SoulList[2][1]
   GetCustomItemAbil  boxitem0 3 1 N$SoulList[3][2]
   GetCustomItemValue boxitem0 3 N$SoulList[3][0] N$SoulList[3][1]
-  $s_gets_str 装备注灵.查询.主体.sql,<$str(N$SoulList[0][0])>,<$str(N$SoulList[1][2])>,<$str(N$SoulList[1][0])>,<$str(N$SoulList[1][1])>,<$str(N$SoulList[2][2])>,<$str(N$SoulList[2][0])>,<$str(N$SoulList[2][1])>,<$str(N$SoulList[3][2])>,<$str(N$SoulList[3][0])>,<$str(N$SoulList[3][1])> S$SoulBoxDialogStr $js_装备注灵.查询.view
+  $s_gets_str 装备注灵.查询.主体.sql,<$str(N$SoulList[0][0])>,<$str(N$SoulList[1][2])>,<$str(N$SoulList[1][0])>,<$str(N$SoulList[1][1])>,<$str(N$SoulList[2][2])>,<$str(N$SoulList[2][0])>,<$str(N$SoulList[2][1])>,<$str(N$SoulList[3][2])>,<$str(N$SoulList[3][0])>,<$str(N$SoulList[3][1])> S$SoulBoxDialogSearch
+  mov N$SearchCount <$str(S$SoulBoxDialogSearch.len)>
+#if
+  equal  N$SearchCount 0
+#act
+  inc S$SoulBoxDialogStr <text:灵魂等级：[D]:120:216{FCOLOR=7}>\
+#elseact 
+  inc S$SoulBoxDialogStr <text:灵魂等级：[<$str(S$SoulBoxDialogSearch[0][4])>]:120:216{FCOLOR=<$str(S$SoulBoxDialogSearch[0][3])>}>\  
+#if
+  Large  N$SearchCount 0
+#act
+  inc S$SoulBoxDialogStr <text:灵魂属性：[<$str(S$SoulBoxDialogSearch[0][2])>]<$str(S$SoulBoxDialogSearch[0][0])>:75:230{FCOLOR=<$str(S$SoulBoxDialogSearch[0][1])>}>\  
+#elseact 
+  inc S$SoulBoxDialogStr \ 
+#if
+  Large  N$SearchCount 1
+#act
+  inc S$SoulBoxDialogStr <text:灵魂属性：[<$str(S$SoulBoxDialogSearch[1][2])>]<$str(S$SoulBoxDialogSearch[1][0])>:75:232{FCOLOR=<$str(S$SoulBoxDialogSearch[1][1])>}>\  
+#elseact 
+  inc S$SoulBoxDialogStr \ 
+#if
+  Large  N$SearchCount 2
+#act
+  inc S$SoulBoxDialogStr <text:灵魂属性：[<$str(S$SoulBoxDialogSearch[2][2])>]<$str(S$SoulBoxDialogSearch[2][0])>:75:234{FCOLOR=<$str(S$SoulBoxDialogSearch[2][1])>}>\  
+#elseact 
+  inc S$SoulBoxDialogStr \ 
+#if
+  Large  N$SearchCount 3
+#act
+  inc S$SoulBoxDialogStr <text:灵魂属性：[<$str(S$SoulBoxDialogSearch[3][2])>]<$str(S$SoulBoxDialogSearch[3][0])>:75:236{FCOLOR=<$str(S$SoulBoxDialogSearch[3][1])>}>\  
+#elseact 
+  inc S$SoulBoxDialogStr \
   
 #if
   CheckBoxItemCount 0
@@ -115,7 +147,7 @@
   mov S$SoulBoxDialogButtonStr <imgex:9:576:576:576:120:280:><text:开始洗练:45:291{FCOLOR=251}>\
   mov N$ButtonShow 1 
   goto @显示对话框
-  DELAYGOTO 800 @对话框按钮可用
+  DELAYGOTO 500 @对话框按钮可用
   mov N$BoxIdx <$BOXITEM[1].Idx> 
   GetCustomItemValue boxitem0 0 N$SoulList[0][0] N$SoulList[0][1]
   $s_gets_str 装备注灵.查询.几率.sql,<$str(N$BoxIdx)>,<$str(N$SoulList[0][0])> S$RateList
