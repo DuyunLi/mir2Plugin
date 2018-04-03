@@ -4,8 +4,6 @@
 #act
   mov S$SynthesisBoxDialogStr
   mov S$SynthesisBoxDialogButtonStr
-  $executeGuid 8D090C7BA96F4D129CC43C9EB06FBCC7
-  $executeGuid FFCDEA492F3F4E4BB7B9492F16922B6A
   mov N$IsLuck 6
   mov N$IsProtect 6
   mov N$LuckCount 0
@@ -367,9 +365,6 @@
   mov   N$UpgradeFailLevel 0
 #elseact 
   mov   N$UpgradeFailLevel  <$str(N$UpgradeFailLevelBase)>
-#if
-#act
-   SendMsg 5 <$str(S$UpgradeMarsterExcute[0][1])>,<$str(N$UpgradeFailLevel)>
   
 #if
   equal N$UpgradeResult 0

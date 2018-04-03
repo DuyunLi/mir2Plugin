@@ -2,22 +2,229 @@
 {
 #if
 #act
-  mov S$SynthesisBoxDialogStr
   $executeGuid 8D090C7BA96F4D129CC43C9EB06FBCC7
   $executeGuid FFCDEA492F3F4E4BB7B9492F16922B6A
   ReturnBoxItem 0
   OPENMERCHANTBIGDLG 9 0 0 4 0 -20 1 353 0 1
   goto @显示对话框
+  mov N$ButtonShow 0
 [@显示对话框]
+
+#if
+  not CheckBoxItemCount 0
+#act
+  mov S$SoulBoxDialogStr
+  mov S$SoulBoxDialogButtonStr
+#if    
+  not CheckBoxItemCount 1
+#act
+  mov S$SoulBoxDialogButtonStr
+#if
+  $empty <$str(S$SoulBoxDialogStr)>
+#act
+  mov S$SoulBoxDialogStr <text:灵魂等级：[未放入]:115:216{FCOLOR=7}>  
 #if
 #say
   <ITEMBOX:0:-1:0:165:167:50:50:*:请放入需要注灵的装备>\
   <ITEMBOX:1:9:42:280:164:50:50:40:请放入注灵的材料>\
   <Img:72:9:33:210:>\
-  <text:灵魂等级：[SSS]:120:216{FCOLOR=251}>\
-  <text:灵魂属性：:90:230{FCOLOR=253}>\
-  <text:灵魂属性：:90:232{FCOLOR=253}>\
-  <text:灵魂属性：:90:234{FCOLOR=253}>\
-  <text:灵魂属性：:90:236{FCOLOR=253}>\
-  <imgex:9:573:574:575:120:280:/@洗练装备(1)><text:开始洗练:45:291{FCOLOR=251}>\
+  <$str(S$SoulBoxDialogStr)>\
+  <$str(S$SoulBoxDialogButtonStr)>\
+  
+
+[@ItemOutBox0]
+#if
+#act
+  mov S$SoulBoxDialogStr
+  mov S$SoulBoxDialogButtonStr
+  goto @显示对话框
+  
+[@ItemIntoBox0]
+#if
+  not CheckBoxItemCount 0  
+#act
+  messagebox  请放入需要强化的装备
+  break
+#elseact
+  goto  @updateBoxDialog
+  goto @显示对话框
+  
+[@ItemOutBox1]
+#if
+#act
+  mov S$SoulBoxDialogButtonStr
+  goto @显示对话框
+
+[@ItemIntoBox1]
+#if
+#act
+  mov N$ButtonShow 0
+  goto  @updateBoxDialog  
+  goto @显示对话框
+[@updateBoxDialog]  
+#if
+  not CheckBoxItemCount 0  
+#act
+  mov S$SoulBoxDialogStr
+  mov S$SoulBoxDialogButtonStr
+  break
+#elseact
+  mov S$SoulBoxDialogStr
+  mov S$SoulBoxDialogButtonStr
+  GetCustomItemValue boxitem0 0 N$SoulList[0][0] N$SoulList[0][1]
+  GetCustomItemAbil   boxitem0 1 1 N$SoulList[1][2]
+  GetCustomItemValue boxitem0 1 N$SoulList[1][0] N$SoulList[1][1]
+  GetCustomItemAbil   boxitem0 2 1 N$SoulList[2][2]
+  GetCustomItemValue boxitem0 2 N$SoulList[2][0] N$SoulList[2][1]
+  GetCustomItemAbil  boxitem0 3 1 N$SoulList[3][2]
+  GetCustomItemValue boxitem0 3 N$SoulList[3][0] N$SoulList[3][1]
+  $s_gets_str 装备注灵.查询.主体.sql,<$str(N$SoulList[0][0])>,<$str(N$SoulList[1][2])>,<$str(N$SoulList[1][0])>,<$str(N$SoulList[1][1])>,<$str(N$SoulList[2][2])>,<$str(N$SoulList[2][0])>,<$str(N$SoulList[2][1])>,<$str(N$SoulList[3][2])>,<$str(N$SoulList[3][0])>,<$str(N$SoulList[3][1])> S$SoulBoxDialogStr $js_装备注灵.查询.view
+  
+#if
+  CheckBoxItemCount 0
+  CheckBoxItemCount 1
+  equal N$ButtonShow 0
+#act  
+  mov S$SoulBoxDialogButtonStr <imgex:9:573:574:575:120:280:/@洗练装备><text:开始洗练:45:291{FCOLOR=251}>\
+#if
+  CheckBoxItemCount 0
+  CheckBoxItemCount 1
+  equal N$ButtonShow 1
+#act  
+  mov S$SoulBoxDialogButtonStr <imgex:9:576:576:576:120:280:><text:开始洗练:45:291{FCOLOR=251}>\
+[@对话框按钮可用]  
+#if
+#act  
+  mov N$ButtonShow 0
+  mov S$SoulBoxDialogButtonStr <imgex:9:573:574:575:120:280:/@洗练装备><text:开始洗练:45:291{FCOLOR=251}>\
+  goto @显示对话框
+  
+[@洗练装备]
+#or
+  not CheckBoxItemCount 0
+#act
+  messagebox 请放入需要注灵的装备!!!
+  break
+#or
+  not CheckBoxItemCount 1
+#act
+  messagebox 请放入注灵需要的材料!!!
+  break
+#if
+#act
+  mov S$SoulBoxDialogButtonStr <imgex:9:576:576:576:120:280:><text:开始洗练:45:291{FCOLOR=251}>\
+  mov N$ButtonShow 1 
+  goto @显示对话框
+  DELAYGOTO 800 @对话框按钮可用
+  mov N$BoxIdx <$BOXITEM[1].Idx> 
+  GetCustomItemValue boxitem0 0 N$SoulList[0][0] N$SoulList[0][1]
+  $s_gets_str 装备注灵.查询.几率.sql,<$str(N$BoxIdx)>,<$str(N$SoulList[0][0])> S$RateList
+   mov N$CurrentCount  <$str(S$RateList[0][2])>
+   mov N$CurrentLevel  <$str(S$RateList[0][3])>
+#if
+  equal  S$RateList.len 0 
+#act
+  messagebox 这件材料无法进行注灵!!
+  Break
+#elseact 
+  DelBoxItem 1 1  
+#if
+  equal S$RateList[0][0] 0
+#act
+  mov S$RateListResult[0] -1
+#elseact
+   $randomRang <$str(S$RateList[0][0])>,-1 S$RateListResult[0]
+#if
+  equal S$RateListResult[0] 0
+#act
+  inc N$CurrentCount 1  
+
+#if
+  equal S$RateList[0][1] 0
+#act
+  mov S$RateListResult[1] -1
+#elseact
+   $randomRang <$str(S$RateList[0][1])>,-1 S$RateListResult[1]
+#if
+  equal S$RateListResult[1] 0
+#act
+  inc N$CurrentLevel 1  
+  
+#if
+#act
+  $compute <$str(N$CurrentCount)>*255+<$str(N$CurrentLevel)> $empty$ N$ResultValue
+  $compute iif({0}=0,'D',iif({0}=1,'C',iif({0}=2,'B',iif({0}=3,'A',iif({0}=4,'S',iif({0}=5,'SS',iif({0}=6,'SSS','SSS'))))))) N$CurrentLevel S$LevelString
+  $compute iif({0}=0,7,iif({0}=1,250,iif({0}=2,254,iif({0}=3,253,iif({0}=4,243,iif({0}=5,70,iif({0}=6,58,58))))))) N$CurrentLevel S$LevelColor
+  SetCustomItemTextColor boxitem0  <$str(S$LevelColor)>
+  SetCustomItemText boxitem0 [灵魂属性:<$str(S$LevelString)>]
+#if
+  not equal N$CurrentCount 0
+#act
+  SetUpgradeItem 0
+  $randomSQL 装备注灵.执行.主体.sql,<$str(N$ResultValue)>,<$BOXITEM[0].STDMODE>,<$BOXITEM[0].Idx> S$ExecuteSoulList <$str(N$CurrentCount)>
+  SetCustomItemValue boxitem0 0 = <$str(N$ResultValue)>
+  MOV N$ExecuteSoulMax <$str(S$ExecuteSoulList.len)>
+  SetCustomItemValue boxitem0 1 = 0
+  SetCustomItemValue boxitem0 2 = 0
+  SetCustomItemValue boxitem0 3 = 0
+  SetCustomItemValue boxitem0 4 = 0
+#elseact
+  goto  @updateBoxDialog  
+  goto @显示对话框  
+  break  
+  
+#if   
+  Large N$ExecuteSoulMax 0
+#act
+  SetCustomItemAbil  boxitem0 1 2 1
+  SetCustomItemValue boxitem0 1 = <$str(S$ExecuteSoulList[0][2])>
+  SetCustomItemAbil  boxitem0 1 0 <$str(S$ExecuteSoulList[0][4])>
+  SetCustomItemAbil  boxitem0 1 1 <$str(S$ExecuteSoulList[0][1])>
+  SetCustomItemAbil  boxitem0 1 3 <$str(S$ExecuteSoulList[0][3])>
+#if   
+  Large N$ExecuteSoulMax 1  
+#act
+  SetCustomItemAbil  boxitem0 2 2 2
+  SetCustomItemValue boxitem0 2 = <$str(S$ExecuteSoulList[1][2])>
+  SetCustomItemAbil  boxitem0 2 0 <$str(S$ExecuteSoulList[1][4])>
+  SetCustomItemAbil  boxitem0 2 1 <$str(S$ExecuteSoulList[1][1])>
+  SetCustomItemAbil  boxitem0 2 3 <$str(S$ExecuteSoulList[1][3])>
+#if   
+  Large N$ExecuteSoulMax 2  
+#act
+  SetCustomItemAbil  boxitem0 3 2 3
+  SetCustomItemValue boxitem0 3 = <$str(S$ExecuteSoulList[2][2])>
+  SetCustomItemAbil  boxitem0 3 0 <$str(S$ExecuteSoulList[2][4])>
+  SetCustomItemAbil  boxitem0 3 1 <$str(S$ExecuteSoulList[2][1])>
+  SetCustomItemAbil  boxitem0 3 3 <$str(S$ExecuteSoulList[2][3])>
+#if   
+  Large N$ExecuteSoulMax 3  
+#act
+  SetCustomItemAbil  boxitem0 4 2 4
+  SetCustomItemValue boxitem0 4 = <$str(S$ExecuteSoulList[3][2])>
+  SetCustomItemAbil  boxitem0 4 0 <$str(S$ExecuteSoulList[3][4])>
+  SetCustomItemAbil  boxitem0 4 1 <$str(S$ExecuteSoulList[3][1])>
+  SetCustomItemAbil  boxitem0 4 3 <$str(S$ExecuteSoulList[3][3])>
+#if
+#act
+  UpdateItem boxitem0
+  goto  @updateBoxDialog  
+  goto @显示对话框  
+  ;SendMsg 5 <$str(N$ResultValue)>
+  ;SendMsg 5 注灵个数:<$str(S$ExecuteSoulList.len)>
+  ;SendMsg 5 随机ID:<$str(S$ExecuteSoulList[0][0])>
+  ;SendMsg 5 自定义类型:<$str(S$ExecuteSoulList[0][1])>
+  ;SendMsg 5 自定义值:<$str(S$ExecuteSoulList[0][2])>
+  ;SendMsg 5 自定义值的类型:<$str(S$ExecuteSoulList[0][3])>
+  ;SendMsg 5 自定义颜色:<$str(S$ExecuteSoulList[0][4])>
+  ;SendMsg 5 自定义ID:<$str(S$ExecuteSoulList[1][0])>
+  ;SendMsg 5 自定义类型:<$str(S$ExecuteSoulList[1][1])>
+  ;SendMsg 5 自定义值:<$str(S$ExecuteSoulList[1][2])>
+  ;SendMsg 5 自定义值的类型:<$str(S$ExecuteSoulList[1][3])>
+  ;SendMsg 5 自定义颜色:<$str(S$ExecuteSoulList[1][4])>
+  ;SendMsg 5 自定义ID:<$str(S$ExecuteSoulList[2][0])>
+  ;SendMsg 5 自定义类型:<$str(S$ExecuteSoulList[2][1])>
+  ;SendMsg 5 自定义值:<$str(S$ExecuteSoulList[2][2])>
+  ;SendMsg 5 自定义值的类型:<$str(S$ExecuteSoulList[2][3])>
+  ;SendMsg 5 自定义颜色:<$str(S$ExecuteSoulList[2][4])>
 }

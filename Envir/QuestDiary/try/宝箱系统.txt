@@ -72,72 +72,125 @@
 ;不添加幸运值
   mov S$Offset 0
   DelBoxItem 0 1
-  mov S$ProbablyResult.count 0
-  $box_set S$ProbablyResult <$str(N$BoxIdx)> S$Offset 1000 0
-  $s_gets_str 打开宝箱.执行.必得.sql,<$str(N$BoxIdx)> S$CertainlyResult
-  mov N$CertainlyResultMax <$str(S$CertainlyResult.len)>
-  
+  mov S$BoxResultMax.len 0
+  $box_open S$BoxResultMax <$str(N$BoxIdx)> S$Offset 100 0 0
+  mov N$BoxResultMax <$str(S$BoxResultMax.len)>
 ;获取宝箱随机物品  
 #if
-  equal S$ProbablyResult.count 0 
-  equal N$CertainlyResultMax 0
+  equal N$BoxResultMax 0 
 #act
   SendMsg 5 你的运气真不好,没有从宝箱抽中什么.  
-#elseact
-  give <$str(S$ProbablyResult.name)> <$str(S$ProbablyResult.count)>
-  SendMsg 5 你的运气不错,获得了『<$str(S$ProbablyResult.name)>』x<$str(S$ProbablyResult.count)>.
+  break
 ;获取宝箱必定物品  
 #if
-  Large N$CertainlyResultMax 0
+  Large N$BoxResultMax 0
 #act
-  give S$CertainlyResult[0][1] S$CertainlyResult[0][2]
-  SendMsg 5 你从宝箱中拿取了『<$str(S$CertainlyResult[0][1])>』x<$str(S$CertainlyResult[0][2])>.
+  give S$BoxResultMax[0][1] S$BoxResultMax[0][2]
+  SendMsg 5 你从宝箱中拿取了『<$str(S$BoxResultMax[0][1])>』x<$str(S$BoxResultMax[0][2])>.
 #if
-  Large N$CertainlyResultMax 1
+  Large N$BoxResultMax 1
 #act
-  give S$CertainlyResult[1][1] S$CertainlyResult[1][2]
-  SendMsg 5 你从宝箱中拿取了『<$str(S$CertainlyResult[1][1])>』x<$str(S$CertainlyResult[1][2])>.
+  give S$BoxResultMax[1][1] S$BoxResultMax[1][2]
+  SendMsg 5 你从宝箱中拿取了『<$str(S$BoxResultMax[1][1])>』x<$str(S$BoxResultMax[1][2])>.
 #if
-  Large N$CertainlyResultMax 2
+  Large N$BoxResultMax 2
 #act
-  give S$CertainlyResult[2][1] S$CertainlyResult[2][2]
-  SendMsg 5 你从宝箱中拿取了『<$str(S$CertainlyResult[2][1])>』x<$str(S$CertainlyResult[2][2])>.
+  give S$BoxResultMax[2][1] S$BoxResultMax[2][2]
+  SendMsg 5 你从宝箱中拿取了『<$str(S$BoxResultMax[2][1])>』x<$str(S$BoxResultMax[2][2])>.
 #if
-  Large N$CertainlyResultMax 3
+  Large N$BoxResultMax 3
 #act
-  give S$CertainlyResult[3][1] S$CertainlyResult[3][2]
-  SendMsg 5 你从宝箱中拿取了『<$str(S$CertainlyResult[3][1])>』x<$str(S$CertainlyResult[3][2])>.
+  give S$BoxResultMax[3][1] S$BoxResultMax[3][2]
+  SendMsg 5 你从宝箱中拿取了『<$str(S$BoxResultMax[3][1])>』x<$str(S$BoxResultMax[3][2])>.
   
 #if
-  Large N$CertainlyResultMax 4
+  Large N$BoxResultMax 4
 #act
-  give S$CertainlyResult[4][1] S$CertainlyResult[4][2]
-  SendMsg 5 你从宝箱中拿取了『<$str(S$CertainlyResult[4][1])>』x<$str(S$CertainlyResult[4][2])>.
+  give S$BoxResultMax[4][1] S$BoxResultMax[4][2]
+  SendMsg 5 你从宝箱中拿取了『<$str(S$BoxResultMax[4][1])>』x<$str(S$BoxResultMax[4][2])>.
 #if
-  Large N$CertainlyResultMax 5
+  Large N$BoxResultMax 5
 #act
-  give S$CertainlyResult[5][1] S$CertainlyResult[5][2]
-  SendMsg 5 你从宝箱中拿取了『<$str(S$CertainlyResult[5][1])>』x<$str(S$CertainlyResult[5][2])>.
+  give S$BoxResultMax[5][1] S$BoxResultMax[5][2]
+  SendMsg 5 你从宝箱中拿取了『<$str(S$BoxResultMax[5][1])>』x<$str(S$BoxResultMax[5][2])>.
 #if
-  Large N$CertainlyResultMax 6
+  Large N$BoxResultMax 6
 #act
-  give S$CertainlyResult[6][1] S$CertainlyResult[6][2]
-  SendMsg 5 你从宝箱中拿取了『<$str(S$CertainlyResult[6][1])>』x<$str(S$CertainlyResult[6][2])>.
+  give S$BoxResultMax[6][1] S$BoxResultMax[6][2]
+  SendMsg 5 你从宝箱中拿取了『<$str(S$BoxResultMax[6][1])>』x<$str(S$BoxResultMax[6][2])>.
 #if
-  Large N$CertainlyResultMax 7
+  Large N$BoxResultMax 7
 #act
-  give S$CertainlyResult[7][1] S$CertainlyResult[7][2]
-  SendMsg 5 你从宝箱中拿取了『<$str(S$CertainlyResult[7][1])>』x<$str(S$CertainlyResult[7][2])>.
+  give S$BoxResultMax[7][1] S$BoxResultMax[7][2]
+  SendMsg 5 你从宝箱中拿取了『<$str(S$BoxResultMax[7][1])>』x<$str(S$BoxResultMax[7][2])>.
 #if
-  Large N$CertainlyResultMax 8
+  Large N$BoxResultMax 8
 #act
-  give S$CertainlyResult[8][1] S$CertainlyResult[8][2]
-  SendMsg 5 你从宝箱中拿取了『<$str(S$CertainlyResult[8][1])>』x<$str(S$CertainlyResult[8][2])>.
+  give S$BoxResultMax[8][1] S$BoxResultMax[8][2]
+  SendMsg 5 你从宝箱中拿取了『<$str(S$BoxResultMax[8][1])>』x<$str(S$BoxResultMax[8][2])>.
+#if
+  Large N$BoxResultMax 9
+#act
+  give S$BoxResultMax[9][1] S$BoxResultMax[9][2]
+  SendMsg 5 你从宝箱中拿取了『<$str(S$BoxResultMax[9][1])>』x<$str(S$BoxResultMax[9][2])>.
+
+#if
+  Large N$BoxResultMax 10
+#act
+  give S$BoxResultMax[10][1] S$BoxResultMax[10][2]
+  SendMsg 5 你从宝箱中拿取了『<$str(S$BoxResultMax[10][1])>』x<$str(S$BoxResultMax[10][2])>.
+#if
+  Large N$BoxResultMax 11
+#act
+  give S$BoxResultMax[11][1] S$BoxResultMax[11][2]
+  SendMsg 5 你从宝箱中拿取了『<$str(S$BoxResultMax[11][1])>』x<$str(S$BoxResultMax[11][2])>.
+#if
+  Large N$BoxResultMax 12
+#act
+  give S$BoxResultMax[12][1] S$BoxResultMax[12][2]
+  SendMsg 5 你从宝箱中拿取了『<$str(S$BoxResultMax[12][1])>』x<$str(S$BoxResultMax[12][2])>.
+#if
+  Large N$BoxResultMax 13
+#act
+  give S$BoxResultMax[13][1] S$BoxResultMax[13][2]
+  SendMsg 5 你从宝箱中拿取了『<$str(S$BoxResultMax[13][1])>』x<$str(S$BoxResultMax[13][2])>.
+  
+#if
+  Large N$BoxResultMax 14
+#act
+  give S$BoxResultMax[14][1] S$BoxResultMax[14][2]
+  SendMsg 5 你从宝箱中拿取了『<$str(S$BoxResultMax[14][1])>』x<$str(S$BoxResultMax[14][2])>.
+#if
+  Large N$BoxResultMax 15
+#act
+  give S$BoxResultMax[15][1] S$BoxResultMax[15][2]
+  SendMsg 5 你从宝箱中拿取了『<$str(S$BoxResultMax[15][1])>』x<$str(S$BoxResultMax[15][2])>.
+#if
+  Large N$BoxResultMax 16
+#act
+  give S$BoxResultMax[16][1] S$BoxResultMax[16][2]
+  SendMsg 5 你从宝箱中拿取了『<$str(S$BoxResultMax[16][1])>』x<$str(S$BoxResultMax[16][2])>.
+#if
+  Large N$BoxResultMax 17
+#act
+  give S$BoxResultMax[17][1] S$BoxResultMax[17][2]
+  SendMsg 5 你从宝箱中拿取了『<$str(S$BoxResultMax[17][1])>』x<$str(S$BoxResultMax[17][2])>.
+#if
+  Large N$BoxResultMax 18
+#act
+  give S$BoxResultMax[18][1] S$BoxResultMax[18][2]
+  SendMsg 5 你从宝箱中拿取了『<$str(S$BoxResultMax[18][1])>』x<$str(S$BoxResultMax[18][2])>.
+#if
+  Large N$BoxResultMax 19
+#act
+  give S$BoxResultMax[19][1] S$BoxResultMax[19][2]
+  SendMsg 5 你从宝箱中拿取了『<$str(S$BoxResultMax[19][1])>』x<$str(S$BoxResultMax[19][2])>.
+ 
  
 #if
-  Large N$CertainlyResultMax 9
+  Large N$BoxResultMax 20
 #act
-  messagebox 请联系管理员,宝箱中必定物品只能获取九件!
+  messagebox 请联系管理员,宝箱中最多获取二十件物品!
 
 }
 [@宝箱任务初始化]
