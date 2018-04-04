@@ -4,13 +4,13 @@
 #act
   mov S$SynthesisBoxDialogStr
   ReturnBoxItem 0
-  OPENMERCHANTBIGDLG 9 403 0 4 0 -20 1 460 50 1
+  OPENMERCHANTBIGDLG 9 17 0 4 0 -20 1 460 50 1
   goto @显示对话框
 [@显示对话框]
 #if
 #say
   <text:武器、衣服铸魂:203:85{FCOLOR=253}>\
-  <ITEMBOX:0:9:42:235:167:50:50:10,11,5:请放入武器、衣服>\
+  <ITEMBOX:0:9:5:235:167:50:50:10,11,5:请放入武器、衣服>\
   <text:请放入武器或者衣服:195:290{FCOLOR=251}>\
   <text:武器可以获得强大的攻击属性加成:160:293{FCOLOR=250}>\
   <text:衣服可以获得强大的防御和血量加成:155:296{FCOLOR=250}>\

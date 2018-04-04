@@ -34,4 +34,5 @@ WHERE   attr.isActive = 1
                    AND {8} = attr.value
                    AND {9} = attr.valueType
                  )
-            );
+            )
+            order by sc.level desc;

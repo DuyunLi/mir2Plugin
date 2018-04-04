@@ -16,4 +16,5 @@ SELECT idx,
        (attr.stdmode = 0 OR 
         attr.stdmode = {1}) AND 
        (attr.srcIdx = 0 OR 
-        attr.srcIdx = {2});
+        attr.srcIdx = {2}) 
+ ORDER BY sc.level desc;

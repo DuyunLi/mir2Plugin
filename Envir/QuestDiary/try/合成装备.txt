@@ -8,7 +8,7 @@
   mov N$SynthesisMarsterID 1
   mov N$SynthesisDetailID 0
   mov N$SynthesisResultCount 1
-  OPENMERCHANTBIGDLG 9 13 0 4 0 -20 1 485 70 1
+  OPENMERCHANTBIGDLG 9 2 0 4 0 -20 1 485 70 1
   $s_gets_str 材料合成.查询.类型.sql S$SynthesisTypeStr $js_材料合成.查询.类型.view
   $s_gets_str 材料合成.查询.物品.sql,<$str(N$SynthesisMarsterID)>|材料合成.查询.分页统计.sql,<$str(N$SynthesisMarsterID)>,1,24 S$SynthesisInfoStr $js_材料合成.查询.物品.view
   goto @显示对话框

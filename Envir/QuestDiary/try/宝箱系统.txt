@@ -3,14 +3,14 @@
 #if
 #act
   mov S$DialogShowStr
-  OPENMERCHANTBIGDLG 9 14 0 4 0 -20 1 485 70 1
+  OPENMERCHANTBIGDLG 9 3 0 4 0 -20 1 485 70 1
   goto @显示对话框
   
 [@显示对话框]
 #if
 #say
   <text:请放入需要打开的宝箱：:80:75{FCOLOR=253}>\
-  <ITEMBOX:0:9:42:235:45:50:50:40:>\
+  <ITEMBOX:0:9:5:235:45:50:50:40:>\
   <$str(S$DialogShowStr)>\
   
 [@ItemOutBox0]

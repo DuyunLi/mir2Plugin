@@ -4,7 +4,7 @@
 #act
   mov S$SynthesisBoxDialogStr
   ReturnBoxItem 0
-  OPENMERCHANTBIGDLG 9 244 0 0 0 -20 1 405 35 1
+  OPENMERCHANTBIGDLG 9 8 0 4 0 -20 1 405 35 1
   goto @显示对话框
 [@显示对话框]
   
@@ -21,7 +21,7 @@
   <text:可放入特殊戒指[:30:163{FCOLOR=251}>
   <text:麻痹戒指、复活戒指、护身戒指、魔道麻痹戒指:30:163{FCOLOR=250}>
   <text:]:30:163{FCOLOR=251}>\
-  <ITEMBOX:0:9:42:185:120:50:50:22:>\
+  <ITEMBOX:0:9:5:185:120:50:50:22:#可放入麻痹戒指、复活戒指、护身戒指、魔道麻痹戒指>\
 　<$str(S$SynthesisBoxDialogStr)>\
 [@ItemOutBox0]
 #if
