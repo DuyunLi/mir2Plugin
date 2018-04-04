@@ -4,7 +4,7 @@
 #act
   ReturnBoxItem 0
   mov S$SynthesisBoxDialogStr
-  OPENMERCHANTBIGDLG 9 16 0 4 0 -20 1 585 35 1
+  OPENMERCHANTBIGDLG 9 16 0 4 0 -70 1 585 35 1
   mov S$testStr 10
   goto @显示对话框
  [@显示对话框] 

@@ -3,7 +3,7 @@
 #if
 #act
   mov S$DialogShowStr
-  OPENMERCHANTBIGDLG 9 3 0 4 0 -20 1 485 70 1
+  OPENMERCHANTBIGDLG 9 3 0 4 0 -40 1 485 70 1
   goto @显示对话框
   
 [@显示对话框]
