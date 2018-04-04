@@ -91,42 +91,42 @@
   Large  N$SearchCount 0
 #act
   SetStringBlank S$SoulBoxDialogSearch[0][2] 3 0
-  inc S$SoulBoxDialogStr <text:灵魂属性：[<$str(S$SoulBoxDialogSearch[0][2])>]<$str(S$SoulBoxDialogSearch[0][0])>:68:206{FCOLOR=<$str(S$SoulBoxDialogSearch[0][1])>}>\  
+  inc S$SoulBoxDialogStr <text:灵魂属性：[<$str(S$SoulBoxDialogSearch[0][2])>]<$str(S$SoulBoxDialogSearch[0][0])>:75:206{FCOLOR=<$str(S$SoulBoxDialogSearch[0][1])>}>\  
 #elseact 
   inc S$SoulBoxDialogStr \ 
 #if
   Large  N$SearchCount 1
 #act
   SetStringBlank S$SoulBoxDialogSearch[1][2] 3 0
-  inc S$SoulBoxDialogStr <text:灵魂属性：[<$str(S$SoulBoxDialogSearch[1][2])>]<$str(S$SoulBoxDialogSearch[1][0])>:68:208{FCOLOR=<$str(S$SoulBoxDialogSearch[1][1])>}>\  
+  inc S$SoulBoxDialogStr <text:灵魂属性：[<$str(S$SoulBoxDialogSearch[1][2])>]<$str(S$SoulBoxDialogSearch[1][0])>:75:208{FCOLOR=<$str(S$SoulBoxDialogSearch[1][1])>}>\  
 #elseact 
   inc S$SoulBoxDialogStr \ 
 #if
   Large  N$SearchCount 2
 #act
   SetStringBlank S$SoulBoxDialogSearch[2][2] 3 0
-  inc S$SoulBoxDialogStr <text:灵魂属性：[<$str(S$SoulBoxDialogSearch[2][2])>]<$str(S$SoulBoxDialogSearch[2][0])>:68:210{FCOLOR=<$str(S$SoulBoxDialogSearch[2][1])>}>\  
+  inc S$SoulBoxDialogStr <text:灵魂属性：[<$str(S$SoulBoxDialogSearch[2][2])>]<$str(S$SoulBoxDialogSearch[2][0])>:75:210{FCOLOR=<$str(S$SoulBoxDialogSearch[2][1])>}>\  
 #elseact 
   inc S$SoulBoxDialogStr \ 
 #if
   Large  N$SearchCount 3
 #act
   SetStringBlank S$SoulBoxDialogSearch[3][2] 3 0
-  inc S$SoulBoxDialogStr <text:灵魂属性：[<$str(S$SoulBoxDialogSearch[3][2])>]<$str(S$SoulBoxDialogSearch[3][0])>:68:212{FCOLOR=<$str(S$SoulBoxDialogSearch[3][1])>}>\  
+  inc S$SoulBoxDialogStr <text:灵魂属性：[<$str(S$SoulBoxDialogSearch[3][2])>]<$str(S$SoulBoxDialogSearch[3][0])>:75:212{FCOLOR=<$str(S$SoulBoxDialogSearch[3][1])>}>\  
 #elseact 
   inc S$SoulBoxDialogStr \
  #if
   Large  N$SearchCount 4
 #act
   SetStringBlank S$SoulBoxDialogSearch[4][2] 3 0
-  inc S$SoulBoxDialogStr <text:灵魂属性：[<$str(S$SoulBoxDialogSearch[4][2])>]<$str(S$SoulBoxDialogSearch[4][0])>:68:214{FCOLOR=<$str(S$SoulBoxDialogSearch[4][1])>}>\  
+  inc S$SoulBoxDialogStr <text:灵魂属性：[<$str(S$SoulBoxDialogSearch[4][2])>]<$str(S$SoulBoxDialogSearch[4][0])>:75:214{FCOLOR=<$str(S$SoulBoxDialogSearch[4][1])>}>\  
 #elseact 
   inc S$SoulBoxDialogStr \ 
 #if
   Large  N$SearchCount 5
 #act
   SetStringBlank S$SoulBoxDialogSearch[5][2] 3 0
-  inc S$SoulBoxDialogStr <text:灵魂属性：[<$str(S$SoulBoxDialogSearch[5][2])>]<$str(S$SoulBoxDialogSearch[5][0])>:68:216{FCOLOR=<$str(S$SoulBoxDialogSearch[5][1])>}>\  
+  inc S$SoulBoxDialogStr <text:灵魂属性：[<$str(S$SoulBoxDialogSearch[5][2])>]<$str(S$SoulBoxDialogSearch[5][0])>:75:216{FCOLOR=<$str(S$SoulBoxDialogSearch[5][1])>}>\  
 #elseact 
   inc S$SoulBoxDialogStr \ 
 #if
@@ -159,26 +159,62 @@
   not CheckBoxItemCount 0
 #act
   messagebox 请放入需要注灵的装备!!!
+  mov S$SoulBoxDialogButtonStr <imgex:9:32:33:34:115:240:/@洗练装备><text:开始洗练:40:251{FCOLOR=251}>\
+  goto @显示对话框
   break
 #if
   not CheckBoxItemCount 1
 #act
   messagebox 请放入注灵需要的材料!!!
+  mov S$SoulBoxDialogButtonStr <imgex:9:32:33:34:115:240:/@洗练装备><text:开始洗练:40:251{FCOLOR=251}>\
+  goto @显示对话框
   break
+  
 #if
 #act
-  mov N$ButtonShow 1 
+  mov N$StdMode <$BOXITEM[0].StdMode> 
+#or
+  equal N$StdMode 5
+  equal N$StdMode 19
+  equal N$StdMode 20
+  equal N$StdMode 21
+  equal N$StdMode 23
+  equal N$StdMode 24
+  equal N$StdMode 10
+  equal N$StdMode 11
+  equal N$StdMode 15
+  equal N$StdMode 26
+  equal N$StdMode 22
+  equal N$StdMode 62
+  equal N$StdMode 64
+  equal N$StdMode 28
+  equal N$StdMode 30
+  equal N$StdMode 90
+  equal N$StdMode 63
+  equal N$StdMode 65
+  equal N$StdMode 12
+  equal N$StdMode 16
+#elseact
+  messagebox 当前装备类型无法进行注灵!!!
+  mov S$SoulBoxDialogButtonStr <imgex:9:32:33:34:115:240:/@洗练装备><text:开始洗练:40:251{FCOLOR=251}>\
   goto @显示对话框
-  DELAYGOTO 500 @对话框按钮可用
+  break
+    
+#if
+#act
   mov N$BoxIdx <$BOXITEM[1].Idx> 
   GetCustomItemValue boxitem0 0 N$SoulList[0][0] N$SoulList[0][1]
   $s_gets_str 装备注灵.查询.几率.sql,<$str(N$BoxIdx)>,<$str(N$SoulList[0][0])> S$RateList
    mov N$CurrentCount  <$str(S$RateList[0][2])>
    mov N$CurrentLevel  <$str(S$RateList[0][3])>
-#if
-  equal  S$RateList.len 0 
+#or
+  equal S$RateList.len 0
+  equal S$RateList[0][0] -1 
+  equal S$RateList[0][1] -1 
 #act
-  messagebox 这件材料无法进行注灵!!
+  messagebox 这件材料无法在当前装备上进行注灵!!
+  mov S$SoulBoxDialogButtonStr <imgex:9:32:33:34:115:240:/@洗练装备><text:开始洗练:40:251{FCOLOR=251}>\
+  goto @显示对话框
   Break
 #elseact 
   DelBoxItem 1 1  
