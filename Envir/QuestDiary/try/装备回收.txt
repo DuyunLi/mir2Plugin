@@ -3,8 +3,6 @@
 #if
 #act
   goto @查询回收显示数值
-  $executeGuid 8D090C7BA96F4D129CC43C9EB06FBCC7
-  $executeGuid FFCDEA492F3F4E4BB7B9492F16922B6A
   OPENMERCHANTBIGDLG 9 4 0 4 0 -40 1 365 21 1
   goto @显示回收界面
   
