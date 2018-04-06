@@ -124,7 +124,7 @@
 
 
 #if
-  not $pa_get 1 >= <$str(S$Synthesis[0][2])> N$Result
+  not $pa_get GameGold >= <$str(S$Synthesis[0][2])> N$Result
 #act
   SendMsg 5 你的元宝不够,你当前元宝数量是:<$str(N$Result)>,无法进行铸魂!
   Break  

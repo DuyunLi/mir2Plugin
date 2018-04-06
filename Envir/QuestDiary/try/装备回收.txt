@@ -1,0 +1,93 @@
+[@装备回收初始化]
+{
+#if
+#act
+  goto @查询回收显示数值
+  $executeGuid 8D090C7BA96F4D129CC43C9EB06FBCC7
+  $executeGuid FFCDEA492F3F4E4BB7B9492F16922B6A
+  OPENMERCHANTBIGDLG 9 4 0 4 0 -40 1 365 21 1
+  goto @显示回收界面
+  
+[@显示回收界面]
+#if
+#say
+  <text:装备回收:160:20>\
+  <imgex:9:83:84:85:120:305:/@开始回收装备>\
+  <text:当前元宝数量：:20:75{FCOLOR=251}><ImgNum:1:<$str(N$ResultPoint)>:-3:15:74>\
+  <text:你的回收总数：:20:78{FCOLOR=251}><ImgNum:1:<$str(N$UserRecoverySum)>:-3:15:77>\
+  <text:全服回收总数：:20:81{FCOLOR=251}><ImgNum:1:<$str(N$GlobalRecoverySum)>:-3:15:80>\
+  <text:[提醒]点击按钮会回收包裹中所有能回收的装备和物品:25:92{FCOLOR=243}>\
+  <text:      请将重要物品存放在仓库中再操作:25:94{FCOLOR=243}>\
+  <text:[奖励]每次回收总数量达到一定数量会有几率给予奖励:25:102{FCOLOR=250}>\
+  <text:[奖励]个人回收总数量达到一定数量会给予奖励:25:104{FCOLOR=250}>\
+  <text:[奖励]全服回收总数量达到一定数量开启红包天降活动:25:106{FCOLOR=250}>\
+  <text:[UP]会员等级越高回收的比例会有所上升:25:112{FCOLOR=254}>\
+  <text:[UP]推荐系统每日结算会给予大量奖励:25:114{FCOLOR=254}>\
+[@查询回收显示数值]
+#if
+#act
+  $pa_get2 GameGold N$ResultPoint
+  $pa_get2 RecoveryUserSum N$UserRecoverySum
+  $pa_get2 RecoveryGlobalSum N$GlobalRecoverySum
+ 
+[@开始回收装备]
+#if
+#act
+ mov N$NextStep 1
+ SHOWPROGRESSBARDLG 1 @回收进度条完成 正在进行收回... 1 @回收进度条中断
+ DELAYGOTO 900 @开始回收执行  
+ 
+[@开始回收执行] 
+
+#if
+  equal N$NextStep 1
+#elseact
+  SENDMSG 7 你停止了回收动作,回收失败  
+  break  
+#if
+#act
+  mov N$NextStep 0
+#if
+#act   
+  $s_gets_str 回收处理.查询.sql S$RecoveryItems
+#if
+ equal S$RecoveryItems.len 0 
+#act
+  break 
+#elseact
+  mov N$RecoveryBase 0 
+  mov N$RecoverySum 0 
+  $each @回收循环开启 <$str(S$RecoveryItems.len)> N0
+#if
+  equal N$RecoverySum 0 
+  equal N$RecoveryBase 0 
+#act
+  sendmsg 7 你的背包没有可以回收的装备,请勿乱点!!!
+  Break
+#if
+#act  
+  $pa_get2 RecoveryGlobalSum N$GlobalRecoverySum
+  $pa_get2 RecoveryUserSum N$UserRecoverySum
+  $s_gets_str 回收处理.回收比例查询.sql,<$str(N$RecoverySum)>,<$str(N$UserRecoverySum)>,<$str(N$GlobalRecoverySum)>,0 S$RecoveryRate
+  $randomRang <$str(S$RecoveryRate[0][0])> S$RecoveryRate[0][0]
+  $compute iif({0}=-1,0,iif({0}=0,5,iif({0}=1,10,iif({0}=2,15,iif({0}=3,20,iif({0}=4,30,iif({0}=5,50,iif({0}=6,0,0)))))))) <$str(S$RecoveryRate[0][0])> S$RecoveryRate[0][0]
+  $percentage <$str(N$RecoveryBase)> 100,<$str(S$RecoveryRate[0][0])>,<$str(S$RecoveryRate[0][1])>,<$str(S$RecoveryRate[0][3])>  N$RecoveryBase
+  SendMsg 0 玩家{<$USERNAME>|251:249:1}回收了{<$str(N$RecoverySum)>|251:249:1}件物品,获得了[{<$str(N$RecoveryBase)>|251:249:1}]元宝的奖励!
+  SendMsg 0 其中数量奖励[{<$str(S$RecoveryRate[0][0])>%|250:249:1}]+个人总数数量奖励[{<$str(S$RecoveryRate[0][1])>%|250:249:1}]+会员奖励[{<$str(S$RecoveryRate[0][3])>%|250:249:1}]
+  $pa_set2 Recovery <$str(N$RecoveryBase)>
+  $pa_set2 RGoldPoolSet <$str(N$RecoveryBase)>
+  $pa_set2 RecoveryUserSumSet <$str(N$RecoverySum)>
+  $pa_set2 RecoveryGlobalSumSet <$str(N$RecoverySum)>
+  goto @查询回收显示数值
+  goto @显示回收界面
+#if
+  equal S$RecoveryRate[0][2] 1
+#act
+  messagebox 全服红包!  
+[@回收循环开启]
+#if
+#act
+  TakeBagItem <$str(S$RecoveryItems[<$str(N0)>][1])> 52 0 0 0 0 N1 0 1
+  $compute <$str(N$RecoveryBase)>+<$str(S$RecoveryItems[<$str(N0)>][0])>*<$str(N1)> $emoty$ N$RecoveryBase
+  inc N$RecoverySum <$str(N1)>
+}
