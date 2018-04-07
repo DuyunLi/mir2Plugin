@@ -3,14 +3,14 @@ WITH GiftLevel AS (
       FROM (
                SELECT vg.Level,
                       1 type
-                 FROM vipUser vu
+                 FROM vipconfig vg
                       JOIN
-                      vipconfig vg ON vg.Level <= (vu.level + 1) 
+                      vipUser vu ON vg.Level <= (vu.level + 1) AND 
+                                    vu.AccountID = '{0}'
                       LEFT JOIN
                       vipgiftLevelLog vgl ON vgl.Level = vg.Level AND 
                                              vgl.AccountID = vu.accountID
-                WHERE vu.AccountID = '{0}' AND 
-                      vgl.Level IS NULL AND 
+                WHERE vgl.Level IS NULL AND 
                       vg.Level != 0
                UNION ALL
                SELECT CASE WHEN vu.Level + 1 > 10 THEN 10 ELSE vu.Level + 1 END Level,
@@ -19,8 +19,8 @@ WITH GiftLevel AS (
                 WHERE vu.AccountID = '{0}'
            )
            t
-     GROUP BY t.level
-     ORDER BY t.level
+     GROUP BY t.level,type
+     ORDER BY t.level,type
      LIMIT 1
 )
 SELECT srcIdx,
@@ -31,4 +31,4 @@ SELECT srcIdx,
        JOIN
        GiftLevel gl ON gl.level = vg.level AND 
                        vg.type = 1
- WHERE vg.IsActive = 1
+ WHERE vg.IsActive = 1;

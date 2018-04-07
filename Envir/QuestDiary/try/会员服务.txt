@@ -12,11 +12,13 @@
 #act
   $s_gets_str 会员系统.会员服务信息查询.sql,<$USERID> S$VIPConfig
   $s_gets_str 会员系统.会员礼包展示.sql,<$USERID> S$GiftItems
+  $s_get_int 会员系统.会员每日礼包展示.sql,<$USERID> N$IsVipDayGift
   mov N$GiftCount <$str(S$GiftItems.len)>
   mov S1 
   mov S0 当前
   mov s2
   mov s3 
+  mov s4
 #if
   not equal  S$VIPConfig[0][0] 0
 #act  
@@ -51,9 +53,19 @@
 #act
   mov S2 \  
   mov S2 \  
-  mov s3 <imgex:9:35:35:35:60:137:><text:领取完毕:-15:148{FCOLOR=250}>\ 
-#elseact
+  mov s3 <imgex:9:35:35:35:60:137:><text:领取完毕:-15:148{FCOLOR=7}>\ 
+#if
+  not equal N$GiftCount 0
+  equal S$GiftItems[0][3] 2
+#act
+  mov s3 <imgex:9:35:35:35:60:137:><text:已领取:-10:148{FCOLOR=7}>\ 
+  
+#if
+  not equal N$GiftCount 0
+  not equal S$GiftItems[0][3] 2
+#act
   mov s3 <imgex:9:32:33:34:60:137:/@领取会员升级礼包(<$str(S$GiftItems[0][2])>)><text:领取礼包:-15:148{FCOLOR=250}>\ 
+  
 #if
   Large N$GiftCount 0 
 #act
@@ -93,7 +105,12 @@
   Large N$GiftCount 0 
 #act
   inc S2 \ 
-  
+#if
+  equal N$IsVipDayGift 0
+#act 
+  mov s4 <imgex:9:35:35:35:235:86:><text:已领取:167:97{FCOLOR=7}>
+#elseact
+  mov s4 <imgex:9:32:33:34:235:86:/@每日礼包领取><text:每日礼包:160:97{FCOLOR=254}> 
 #if  
 #say
 
@@ -102,8 +119,9 @@
 <Img:<$str(S$VIPConfig[0][1])>:9:30:43:|<$str(S1)>>
 <text:<-查看特权:35:50{FCOLOR=251}>\
 <text:升级还需充值：:30:64{FCOLOR=70}><ImgNum:5:<$str(S$VIPConfig[0][3])>:-3:30:60>\
- <ProgressBar:40:72:9:71:70:1:100:0:0:0:<$str(S$VIPConfig[0][2])>:<$str(S$VIPConfig[0][4])>:0:255:0:-2:%r%>\
-<imgex:9:39:40:41:310:0:/@进行充值><text:充值得好礼:215:16{AUTOCOLOR=250,251,253,254}>\  
+<ProgressBar:40:72:9:71:70:1:100:0:0:0:<$str(S$VIPConfig[0][2])>:<$str(S$VIPConfig[0][4])>:0:255:0:-2:%r%>\
+;<imgex:9:39:40:41:310:0:/@进行充值><text:充值得好礼:215:16{AUTOCOLOR=250,251,253,254}>\  
+\
 <Img:72:9:18:80:>\ 
 <Img:47:9:205:65:>\
 <text:会员礼包:88:67{FCOLOR=251}><text:会员特权:272:71{FCOLOR=251}>\
@@ -113,8 +131,8 @@
 <imgex:9:32:33:34:195:40:/@进入会员地图(2)><text:会员地图:120:51{FCOLOR=250}>\
 <imgex:9:32:33:34:235:63:/@打开远程仓库><text:远程仓库:160:74{FCOLOR=243}>
 <imgex:9:32:33:34:195:63:/@打开回收界面><text:远程回收:120:74{FCOLOR=243}>\
-<imgex:9:32:33:34:235:86:/@每日礼包领取><text:每日礼包:160:97{FCOLOR=254}>
-<Img:<$str(N$isShowMsg)>:9:200:96:@游戏消息屏蔽><text:屏蔽掉落提示:203:99{FCOLOR=254}/@游戏消息屏蔽>\
+<$str(s4)>
+<Img:<$str(N$isShowMsg)>:9:200:96:@游戏消息屏蔽><text:屏蔽掉落提示:203:99{FCOLOR=254}/@游戏消息屏蔽>\
 
 [@进入会员地图]
 #IF
@@ -137,6 +155,58 @@
 #elseact
   messagebox  你还不是会员,无法使用
   break
+  
+#if
+  $s_execute 会员系统.领取会员每日礼包log.sql,<$userID>
+#act
+  $s_gets_str 会员系统.领取会员每日礼包.sql,<$userID> S$GiftItems
+  mov N$GiftCount <$str(S$GiftItems.len)>
+#elseact
+  messagebox \\你今天已经领取过这个礼包了,或者你还不是VIP!!  
+  Break
+#if
+  Large  N$GiftCount 0
+#act
+  give S$GiftItems[0][0] S$GiftItems[0][1]
+#if
+  Large  N$GiftCount 1
+#act
+  give S$GiftItems[1][0] S$GiftItems[1][1]
+#if
+  Large  N$GiftCount 2
+#act
+  give S$GiftItems[2][0] S$GiftItems[2][1]
+#if
+  Large  N$GiftCount 3
+#act
+  give S$GiftItems[3][0] S$GiftItems[3][1]  
+#if
+  Large  N$GiftCount 4
+#act
+  give S$GiftItems[4][0] S$GiftItems[4][1]  
+#if
+  Large  N$GiftCount 5
+#act
+  give S$GiftItems[5][0] S$GiftItems[5][1]  
+#if
+  Large  N$GiftCount 6
+#act
+  give S$GiftItems[6][0] S$GiftItems[6][1]  
+#if
+  Large  N$GiftCount 7
+#act
+  give S$GiftItems[7][0] S$GiftItems[7][1]  
+#if
+  Large  N$GiftCount 8
+#act
+  give S$GiftItems[8][0] S$GiftItems[8][1]  
+  
+#if
+  not equal N$GiftCount 0
+#act
+  SendCenterMsg 253 251 <$USERNAME>领取了『Vip每日礼包』,获得了大量的物资! 1
+  goto @显示对话框    
+  
 [@领取会员升级礼包]
 #IF
   CHECKMEMBERLEVEL > 0
@@ -146,7 +216,7 @@
 #if
   $s_execute 会员系统.领取会员礼包log.sql,<$userID>,<$SCRIPTPARAM1>
 #act
-  $s_gets_str 会员系统.领取会员礼包.sql,<$userID>,<$SCRIPTPARAM1>,1 S$GiftItems
+  $s_gets_str 会员系统.领取会员礼包.sql,<$userID>,<$SCRIPTPARAM1> S$GiftItems
   mov N$GiftCount <$str(S$GiftItems.len)>
 
 #elseact
@@ -192,14 +262,13 @@
 #if
   not equal N$GiftCount 0
 #act
-  SendCenterMsg 180 251 你领取了『Vip<$SCRIPTPARAM1>礼包』,获得了大量的物资! 0 
   SendCenterMsg 253 251 <$USERNAME>领取了『Vip<$SCRIPTPARAM1>礼包』,获得了大量的物资! 1
   goto @显示对话框  
 [@进行充值]
 #if
 #act
-  $pa_set2 Recharge 1000
-  DELAYGOTO 1 @显示对话框
+ ;$pa_set2 Recharge 1000
+ ;DELAYGOTO 1 @显示对话框
 
 [@打开回收界面]
 #if

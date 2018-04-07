@@ -2,7 +2,7 @@ SELECT i.name,
        count
   FROM vipuser vu
        JOIN
-       vipGift vg ON vg.type = {2} AND 
+       vipGift vg ON vg.type = 1 AND 
                      vg.level = {1} AND 
                      vg.isactive = 1 AND 
                      vg.IsTitle = 0
