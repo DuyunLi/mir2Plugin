@@ -10,30 +10,195 @@
 [@显示对话框]
 #if
 #act
-  $s_gets_str 会员系统.会员服务信息查询.sql,<$UserID> S$VIPConfig
+  $s_gets_str 会员系统.会员服务信息查询.sql,<$USERID> S$VIPConfig
+  $s_gets_str 会员系统.会员礼包展示.sql,<$USERID> S$GiftItems
+  mov N$GiftCount <$str(S$GiftItems.len)>
+  mov S1 
+  mov S0 当前
+  mov s2
+  mov s3 
+#if
+  not equal  S$VIPConfig[0][0] 0
+#act  
   
+#if
+  equal S$VIPConfig[0][0] 0
+#act
+  mov S0 下一
+  inc S1 ^253#下一等级特权:^253#-爆率+<$str(S$VIPConfig[0][8])>%、回收比例+<$str(S$VIPConfig[0][9])>%、经验加成+<$str(S$VIPConfig[0][10])>%^253#-可以进入专属地图^253#-可以领取每日大礼包
+
+#if
+  equal S$VIPConfig[0][0] 10
+#act
+    mov s0 当前 
+  inc S1 250#Vip<$str(S$VIPConfig[0][0])>等级特权:^250#-爆率+<$str(S$VIPConfig[0][5])>%、回收比例+<$str(S$VIPConfig[0][6])>%、经验加成+<$str(S$VIPConfig[0][7])>%^250#-可以进入专属地图^250#-可以领取每日大礼包
+#or
+  equal S$VIPConfig[0][0] 1
+  equal S$VIPConfig[0][0] 2
+  equal S$VIPConfig[0][0] 3
+  equal S$VIPConfig[0][0] 4
+  equal S$VIPConfig[0][0] 5
+  equal S$VIPConfig[0][0] 6
+  equal S$VIPConfig[0][0] 7
+  equal S$VIPConfig[0][0] 8
+  equal S$VIPConfig[0][0] 9
+#act
+  mov s0 当前 
+  inc S1 250#Vip<$str(S$VIPConfig[0][0])>等级特权:^250#-爆率+<$str(S$VIPConfig[0][5])>%、回收比例+<$str(S$VIPConfig[0][6])>%、经验加成+<$str(S$VIPConfig[0][7])>%^250#-可以进入专属地图^250#-可以领取每日大礼包
+  inc S1 ^-^253#下一等级特权:^253#-爆率+<$str(S$VIPConfig[0][8])>%、回收比例+<$str(S$VIPConfig[0][9])>%、经验加成+<$str(S$VIPConfig[0][10])>%^253#-可以进入专属地图^253#-可以领取每日大礼包
+#if
+  equal N$GiftCount 0
+#act
+  mov S2 \  
+  mov S2 \  
+  mov s3 <imgex:9:35:35:35:60:137:><text:领取完毕:-15:148{FCOLOR=250}>\ 
+#elseact
+  mov s3 <imgex:9:32:33:34:60:137:/@领取会员升级礼包(<$str(S$GiftItems[0][2])>)><text:领取礼包:-15:148{FCOLOR=250}>\ 
+#if
+  Large N$GiftCount 0 
+#act
+  inc S2  <ItemShow:<$str(S$GiftItems[0][0])>:<$str(S$GiftItems[0][1])>:40:72:-1> 
+  
+#if
+  Large N$GiftCount 1 
+#act
+  inc S2  <ItemShow:<$str(S$GiftItems[1][0])>:<$str(S$GiftItems[1][1])>:45:72:-1> 
+  
+#if
+  Large N$GiftCount 2 
+#act
+  inc S2  <ItemShow:<$str(S$GiftItems[2][0])>:<$str(S$GiftItems[2][1])>:50:72:-1> 
+
+#if
+  Large N$GiftCount 0 
+#act
+  inc S2 \ 
+#if
+  Large N$GiftCount 3 
+#act
+  inc S2  <ItemShow:<$str(S$GiftItems[3][0])>:<$str(S$GiftItems[3][1])>:40:103:-1> 
+  
+#if
+  Large N$GiftCount 4 
+#act
+  inc S2  <ItemShow:<$str(S$GiftItems[4][0])>:<$str(S$GiftItems[4][1])>:45:103:-1> 
+  
+#if
+  Large N$GiftCount 5 
+#act
+  inc S2  <ItemShow:<$str(S$GiftItems[5][0])>:<$str(S$GiftItems[5][1])>:50:103:-1> 
+    
+ 
+#if
+  Large N$GiftCount 0 
+#act
+  inc S2 \ 
+  
+#if  
 #say
 
-<Img:<$str(S$VIPConfig[0][1])>:9:220:7:><text:当前会员等级：:-17:70{FCOLOR=70}><Img:<$str(S$VIPConfig[0][1])>:9:-17:63:>\
-<text:升级还需充值：:30:84{FCOLOR=70}><ImgNum:5:<$str(S$VIPConfig[0][3])>:-3:30:80>\
- <ProgressBar:40:92:9:71:70:1:100:0:0:0:<$str(S$VIPConfig[0][2])>:<$str(S$VIPConfig[0][4])>:0:255:0:-2:%r%>\
-<imgex:9:39:40:41:300:20:/@进行充值><text:充值得好礼:205:36{AUTOCOLOR=250,251,253,254}>\  
-<Img:72:9:18:100:>\ 
-<Img:47:9:205:85:>\
-<text:会员礼包:88:87{FCOLOR=251}><text:会员特权:272:91{FCOLOR=251}>\
-<ItemShow:1:1:40:92:-1><ItemShow:12:1:45:92:-1><ItemShow:12:1:50:92:-1>\
-<ItemShow:1:1:40:123:-1><ItemShow:12:1:45:123:-1><ItemShow:12:1:50:123:-1>\
-<imgex:9:32:33:34:60:157:/@领取会员升级礼包><text:领取礼包:-15:168{FCOLOR=250}>\ 
-<imgex:9:32:33:34:235:60:/@进入会员地图><text:会员地图:160:71{FCOLOR=250}>
-<imgex:9:32:33:34:195:60:@进入会员地图><text:会员地图:120:71{FCOLOR=250}>\
-<imgex:9:32:33:34:235:83:/@打开远程仓库><text:远程仓库:160:94{FCOLOR=243}>
-<imgex:9:32:33:34:195:83:/@打开回收界面><text:远程回收:120:94{FCOLOR=243}>\
-<imgex:9:32:33:34:235:106:/@每日礼包领取><text:每日礼包:160:117{FCOLOR=254}>
-<Img:<$str(N$isShowMsg)>:9:200:116:@游戏消息屏蔽><text:屏蔽掉落提示:203:119{FCOLOR=254}/@游戏消息屏蔽>\
+<Img:<$str(S$VIPConfig[0][1])>:9:220:7:>\
+<text:<$str(S0)>会员等级：:30:50{FCOLOR=70}>
+<Img:<$str(S$VIPConfig[0][1])>:9:30:43:|<$str(S1)>>
+<text:<-查看特权:35:50{FCOLOR=251}>\
+<text:升级还需充值：:30:64{FCOLOR=70}><ImgNum:5:<$str(S$VIPConfig[0][3])>:-3:30:60>\
+ <ProgressBar:40:72:9:71:70:1:100:0:0:0:<$str(S$VIPConfig[0][2])>:<$str(S$VIPConfig[0][4])>:0:255:0:-2:%r%>\
+<imgex:9:39:40:41:310:0:/@进行充值><text:充值得好礼:215:16{AUTOCOLOR=250,251,253,254}>\  
+<Img:72:9:18:80:>\ 
+<Img:47:9:205:65:>\
+<text:会员礼包:88:67{FCOLOR=251}><text:会员特权:272:71{FCOLOR=251}>\
+<$str(s2)>
+<$str(s3)>
+<imgex:9:32:33:34:235:40:/@进入会员地图(1)><text:会员地图:160:51{FCOLOR=250}>
+<imgex:9:32:33:34:195:40:/@进入会员地图(2)><text:会员地图:120:51{FCOLOR=250}>\
+<imgex:9:32:33:34:235:63:/@打开远程仓库><text:远程仓库:160:74{FCOLOR=243}>
+<imgex:9:32:33:34:195:63:/@打开回收界面><text:远程回收:120:74{FCOLOR=243}>\
+<imgex:9:32:33:34:235:86:/@每日礼包领取><text:每日礼包:160:97{FCOLOR=254}>
+<Img:<$str(N$isShowMsg)>:9:200:96:@游戏消息屏蔽><text:屏蔽掉落提示:203:99{FCOLOR=254}/@游戏消息屏蔽>\
+
+[@进入会员地图]
+#IF
+  CHECKMEMBERLEVEL > 0
+#elseact
+  messagebox  你还不是会员,无法使用
+  break
+#if
+#act
+  $s_gets_str 会员系统.进入会员地图.sql,<$userID>,<$SCRIPTPARAM1> S$MapInfo
+#if
+  not $empty S$MapInfo[0][0]
+#act
+  $split S$MapInfo[0][0] S$MapInfo[0][1] S$MapInfo
+  mapmove S$MapInfo[0] S$MapInfo[1] S$MapInfo[2] 
+  
+[@每日礼包领取]
+#IF
+  CHECKMEMBERLEVEL > 0
+#elseact
+  messagebox  你还不是会员,无法使用
+  break
+[@领取会员升级礼包]
+#IF
+  CHECKMEMBERLEVEL > 0
+#elseact
+  messagebox  你还不是会员,无法使用
+  break
+#if
+  $s_execute 会员系统.领取会员礼包log.sql,<$userID>,<$SCRIPTPARAM1>
+#act
+  $s_gets_str 会员系统.领取会员礼包.sql,<$userID>,<$SCRIPTPARAM1>,1 S$GiftItems
+  mov N$GiftCount <$str(S$GiftItems.len)>
+
+#elseact
+  messagebox \\你已经领取过这个礼包了,或者你还没有到领取礼包的VIP等级!!  
+  Break
+#if
+  Large  N$GiftCount 0
+#act
+  give S$GiftItems[0][0] S$GiftItems[0][1]
+#if
+  Large  N$GiftCount 1
+#act
+  give S$GiftItems[1][0] S$GiftItems[1][1]
+#if
+  Large  N$GiftCount 2
+#act
+  give S$GiftItems[2][0] S$GiftItems[2][1]
+#if
+  Large  N$GiftCount 3
+#act
+  give S$GiftItems[3][0] S$GiftItems[3][1]  
+#if
+  Large  N$GiftCount 4
+#act
+  give S$GiftItems[4][0] S$GiftItems[4][1]  
+#if
+  Large  N$GiftCount 5
+#act
+  give S$GiftItems[5][0] S$GiftItems[5][1]  
+#if
+  Large  N$GiftCount 6
+#act
+  give S$GiftItems[6][0] S$GiftItems[6][1]  
+#if
+  Large  N$GiftCount 7
+#act
+  give S$GiftItems[7][0] S$GiftItems[7][1]  
+#if
+  Large  N$GiftCount 8
+#act
+  give S$GiftItems[8][0] S$GiftItems[8][1]  
+  
+#if
+  not equal N$GiftCount 0
+#act
+  SendCenterMsg 180 251 你领取了『Vip<$SCRIPTPARAM1>礼包』,获得了大量的物资! 0 
+  SendCenterMsg 253 251 <$USERNAME>领取了『Vip<$SCRIPTPARAM1>礼包』,获得了大量的物资! 1
+  goto @显示对话框  
 [@进行充值]
 #if
 #act
-  $pa_set2 Recharge 10
+  $pa_set2 Recharge 1000
   DELAYGOTO 1 @显示对话框
 
 [@打开回收界面]
@@ -42,11 +207,22 @@
   #call [..\QuestDiary\try\装备回收.txt] @装备回收初始化
 [@打开远程仓库]
 #IF
+  CHECKMEMBERLEVEL > 0
 #ACT
 OpenStorageView 1
 BREAK
+#elseact
+  messagebox  你还不是会员,无法使用
 [@取消选择]
 [@游戏消息屏蔽]
+#IF
+  CHECKMEMBERLEVEL > 0
+#elseact
+  messagebox  你还不是会员,无法使用
+  FILTERGLOBALMSG 1 0
+  break
+
+
 #IF
 equal N$isShowMsg 0
 #ACT
@@ -58,6 +234,11 @@ BREAK
 
 [@确定屏蔽]
 #IF
+  CHECKMEMBERLEVEL > 0
+#elseact
+  messagebox  你还不是会员,无法使用
+  break
+#IF
 #ACT
 FILTERGLOBALMSG 1 1
 SENDMSG 7 您已开启屏蔽全服掉落提示信息。
@@ -66,6 +247,11 @@ goto @显示对话框
 BREAK
 
 [@取消屏蔽]
+#IF
+  CHECKMEMBERLEVEL > 0
+#elseact
+  messagebox  你还不是会员,无法使用
+  break
 #IF
 #ACT
 FILTERGLOBALMSG 1 0

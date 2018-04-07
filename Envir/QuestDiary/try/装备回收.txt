@@ -1,6 +1,9 @@
 [@装备回收初始化]
 {
-#if
+#or
+  
+  CHECKMEMBERLEVEL > 0
+  ISONMAP 3
 #act
   goto @查询回收显示数值
   OPENMERCHANTBIGDLG 9 4 0 4 0 -40 1 365 21 1
@@ -66,7 +69,7 @@
 #act  
   $pa_get2 RecoveryGlobalSum N$GlobalRecoverySum
   $pa_get2 RecoveryUserSum N$UserRecoverySum
-  $s_gets_str 回收处理.回收比例查询.sql,<$str(N$RecoverySum)>,<$str(N$UserRecoverySum)>,<$str(N$GlobalRecoverySum)>,0 S$RecoveryRate
+  $s_gets_str 回收处理.回收比例查询.sql,<$str(N$RecoverySum)>,<$str(N$UserRecoverySum)>,<$str(N$GlobalRecoverySum)>,<$USERID> S$RecoveryRate
   $randomRang <$str(S$RecoveryRate[0][0])> S$RecoveryRate[0][0]
   $compute iif({0}=-1,0,iif({0}=0,5,iif({0}=1,10,iif({0}=2,15,iif({0}=3,20,iif({0}=4,30,iif({0}=5,50,iif({0}=6,0,0)))))))) <$str(S$RecoveryRate[0][0])> S$RecoveryRate[0][0]
   $percentage <$str(N$RecoveryBase)> 100,<$str(S$RecoveryRate[0][0])>,<$str(S$RecoveryRate[0][1])>,<$str(S$RecoveryRate[0][3])>  N$RecoveryBase
