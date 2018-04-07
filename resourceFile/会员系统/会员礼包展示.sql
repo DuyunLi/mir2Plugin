@@ -17,10 +17,15 @@ WITH GiftLevel AS (
                       2 type
                  FROM vipUser vu
                 WHERE vu.AccountID = '{0}'
+               UNION ALL
+               SELECT 1,
+                      3
            )
            t
-     GROUP BY t.level,type
-     ORDER BY t.level,type
+     GROUP BY type,
+              t.level
+     ORDER BY type,
+              t.level
      LIMIT 1
 )
 SELECT srcIdx,
