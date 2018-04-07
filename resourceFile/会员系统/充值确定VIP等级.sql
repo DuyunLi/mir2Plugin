@@ -18,7 +18,7 @@ REPLACE INTO vipUser  SELECT '{0}',
             ORDER BY vc.Level
        )
        t ON acc.acc = t.acc AND 
-            t.Amount < acc.balance
+            t.Amount <= acc.balance
  ORDER BY t.Level DESC
  LIMIT 1;
 

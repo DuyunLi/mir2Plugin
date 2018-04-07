@@ -19,7 +19,7 @@ SELECT Level,
                              serviceID = 13
                   )
                   balance,
-                  vc.UpRechargeAmount,
+                  CASE WHEN vu.level IS NULL THEN 0 ELSE vc.UpRechargeAmount END UpRechargeAmount,
                   ifnull(vc3.UpRechargeAmount, 0) v2Up,
                   vc.KillSpoilsRate ksr1,
                   vc.RecoveryRate rr1,
@@ -31,7 +31,7 @@ SELECT Level,
                   LEFT JOIN
                   vipUser vu ON vc.level = vu.level
                   LEFT JOIN
-                  vipConfig vc3 ON vc3.level = (vu.level + 1) 
+                  vipConfig vc3 ON vc3.level = (ifnull(vu.level, 0) + 1) 
             WHERE accountID = '{0}' OR 
                   vc.level = 1
             ORDER BY vu.UpdateOn DESC

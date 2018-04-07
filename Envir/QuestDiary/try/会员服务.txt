@@ -266,8 +266,8 @@
 #if
 #act
   messagebox  未开通充值渠道!
-; $pa_set2 Recharge 100
-; DELAYGOTO 1 @显示对话框
+ ; $pa_set2 Recharge 10
+ ;DELAYGOTO 1 @显示对话框
 
 [@打开回收界面]
 #if
