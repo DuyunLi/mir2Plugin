@@ -1,0 +1,4 @@
+[@main]
+#if
+#act
+  #call [..\QuestDiary\try\会员服务.txt] @会员服务初始化

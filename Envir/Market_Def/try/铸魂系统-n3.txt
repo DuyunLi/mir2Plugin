@@ -1,0 +1,4 @@
+[@main]
+#if
+#act
+  #call [..\QuestDiary\try\铸魂系统.txt] @铸魂系统初始化

@@ -5,38 +5,90 @@
 #if
 #act
   
-;  $executeGuid 8D090C7BA96F4D129CC43C9EB06FBCC7
-;  $executeGuid FFCDEA492F3F4E4BB7B9492F16922B6A
-
+  $executeGuid 8D090C7BA96F4D129CC43C9EB06FBCC7
+  $executeGuid FFCDEA492F3F4E4BB7B9492F16922B6A
+  mov S$MoveMarster[0][0]
+  mov S$MoveDetail[0][0]
+  mov S$MoveDetailInfo
+  $s_gets_str 传送门.传送类型.sql S$MoveMarster
+  $s_gets_str 传送门.传送地图按钮.sql,1 S$MoveDetail
   OPENMERCHANTBIGDLG 9 108 0 4 0 -40 1 492 23 1
   goto @显示对话框
+[@MoveMarster]
+#if
+#act
+  mov S$MoveDetail[0][0]
+  $s_gets_str 传送门.传送地图按钮.sql,<$SCRIPTPARAM1> S$MoveDetail
+  mov S$MoveDetailInfo 
+  goto @显示对话框
+[@MoveDetail]
+#if
+#act
+  mov S$MoveDetailInfo
+  $s_gets_str 传送门.传送条件与说明查询.sql,<$SCRIPTPARAM1> S$MoveDetailInfo
+#if
+  equal   <$str(S$MoveDetailInfo.len)> 0
+#act
+  messagebox 没有找到这个地图,请刷新后重试!
+  break  
+#if
+  equal  S$MoveDetailInfo[0][0] 1
+#act
+  $s_gets_str 传送门.传送目的地信息.sql,<$SCRIPTPARAM1> S$MoveDetailInfo
+  mapmove <$str(S$MoveDetailInfo[0][0])> <$str(S$MoveDetailInfo[0][1])> <$str(S$MoveDetailInfo[0][2])>
+  goto @显示传送信息
+  Close
+  break
+#if
+  equal  S$MoveDetailInfo[0][0] 0
+#act
+  inc S$MoveDetailInfo <text:掉率介绍:135:120{FCOLOR=243}>\
+  inc S$MoveDetailInfo <$str(S$MoveDetailInfo[0][5])>\
+  inc S$MoveDetailInfo <text:Boss介绍：<$str(S$MoveDetailInfo[0][3])>:300:88{FCOLOR=253}>\
+  inc S$MoveDetailInfo <text:精英介绍：<$str(S$MoveDetailInfo[0][4])>:300:93{FCOLOR=70}>\
+  inc S$MoveDetailInfo <text:进入需要：:300:98{FCOLOR=254}><text:等级大于<$str(S$MoveDetailInfo[0][1])>级:300:98{FCOLOR=254}>\<$str(S$MoveDetailInfo[0][2])>\
+  inc S$MoveDetailInfo <imgex:9:126:127:128:370:105:/@ClickMoveTo(<$str(S$MoveDetailInfo[0][6])>)>\
+  goto @显示对话框
+[@ClickMoveTo]
+#if
+#act
+  $s_gets_str 传送门.传送条件检测.sql,<$SCRIPTPARAM1> S$MoveDetailInfo
+#if
+  equal   <$str(S$MoveDetailInfo.len)> 0
+#act
+  messagebox 没有找到这个地图,请刷新后重试!
+  break  
+#if
+  not equal S$MoveDetailInfo[0][0] 0
+  CheckLevelEx < <$str(S$MoveDetailInfo[0][0])>
+#act
+  messagebox 为了你的安全,你的实力还不能进入这里!\进入这里需要等级:<$str(S$MoveDetailInfo[0][0])>以上!!!
+  break  
 
+#if
+  not equal S$MoveDetailInfo[0][2] 0
+  not CheckItem <$str(S$MoveDetailInfo[0][1])> <$str(S$MoveDetailInfo[0][2])>
+#act
+  messagebox 你并没有进入这里的凭证,无法进入!\进入这里需要[<$str(S$MoveDetailInfo[0][1])>x<$str(S$MoveDetailInfo[0][2])>]!!!
+  break      
+#elseact
+  take <$str(S$MoveDetailInfo[0][1])> <$str(S$MoveDetailInfo[0][2])>
+#if
+#act
+  $s_gets_str 传送门.传送目的地信息.sql,<$SCRIPTPARAM1> S$MoveDetailInfo
+  mapmove <$str(S$MoveDetailInfo[0][0])> <$str(S$MoveDetailInfo[0][1])> <$str(S$MoveDetailInfo[0][2])>
+  goto @显示传送信息
+  Close
+  break
+[@显示传送信息]
+#if
+  not $empty <$str(S$MoveDetailInfo[0][3])>
+#act
+  SendMsg 7 <$str(S$MoveDetailInfo[0][3])>
 [@显示对话框]
 #say
   <text:传送门:250:15{FCOLOR=7}>\
-<imgex:9:113:114:115:5:60:/@进入会员地图(1)><text:城镇地图:-70:72{FCOLOR=250}>
-<imgex:9:113:114:115:-141:95:/@进入会员地图(1)><text:练级地图:-215:107{FCOLOR=254}>
-<imgex:9:113:114:115:-287:130:/@进入会员地图(1)><text:危险地图:-362:142{FCOLOR=243}>
-<imgex:9:113:114:115:-433:165:/@进入会员地图(1)><text:险恶区域:-508:177{FCOLOR=253}>
-<imgex:9:113:114:115:-579:200:/@进入会员地图(1)><text:未知区域:-654:212{FCOLOR=249}>\
-<imgex:9:120:121:122:125:35:/@进入会员地图(1)><text:城镇地图:63:45{FCOLOR=251}>
-<imgex:9:120:121:122:90:35:/@进入会员地图(1)><text:城镇地图:28:45{FCOLOR=251}>
-<imgex:9:120:121:122:55:35:/@进入会员地图(1)><text:城镇地图:-7:45{FCOLOR=251}>
-<imgex:9:120:121:122:20:35:/@进入会员地图(1)><text:城镇地图:-42:45{FCOLOR=251}>\
-<imgex:9:120:121:122:125:65:/@进入会员地图(1)><text:城镇地图:63:75{FCOLOR=251}>
-<imgex:9:120:121:122:90:65:/@进入会员地图(1)><text:城镇地图:28:75{FCOLOR=251}>
-<imgex:9:120:121:122:55:65:/@进入会员地图(1)><text:城镇地图:-7:75{FCOLOR=251}>
-<imgex:9:120:121:122:20:65:/@进入会员地图(1)><text:城镇地图:-42:75{FCOLOR=251}>\
-<text:掉率介绍:135:105{FCOLOR=243}>\
-<ItemShow:0:1:130:110:-1>
-<ItemShow:1:1:140:110:-1>
-<ItemShow:2:1:150:110:-1>\
-<ItemShow:0:1:130:145:-1>
-<ItemShow:1:1:140:145:-1>
-<ItemShow:2:1:150:145:-1>\
-<text:Boss介绍：:300:58{FCOLOR=253}>\
-<text:精英介绍：:300:63{FCOLOR=70}>\
-<text:进入需要：:300:68{FCOLOR=254}><text:等级大于70级:300:68{FCOLOR=254}>\<text:僵尸头骨x100:360:69{FCOLOR=254}>\
-<imgex:9:126:127:128:370:75:/@进入会员地图(1)>\
-
+<$str(S$MoveMarster[0][0])>\
+<$str(S$MoveDetail[0][0])>\
+<$str(S$MoveDetailInfo)>\
 }

@@ -1,0 +1,4 @@
+[@main]
+#if
+#act
+  #call [..\QuestDiary\try\注灵系统.txt] @注灵系统初始化
