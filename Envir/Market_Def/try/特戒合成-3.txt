@@ -1,4 +1,0 @@
-[@main]
-#if
-#act
-  #call [..\QuestDiary\try\特戒合成.txt] @特戒合成初始化

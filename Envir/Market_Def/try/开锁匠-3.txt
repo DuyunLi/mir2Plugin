@@ -1,4 +1,0 @@
-[@main]
-#if
-#act
-  #call [..\QuestDiary\try\宝箱系统.txt] @宝箱查看初始化
