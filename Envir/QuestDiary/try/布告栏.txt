@@ -1,0 +1,216 @@
+[@布告栏初始化]
+{
+#if
+#act
+$executeGuid 8D090C7BA96F4D129CC43C9EB06FBCC7
+$executeGuid FFCDEA492F3F4E4BB7B9492F16922B6A
+  mov S0
+  mov P0 2
+  mov S1
+  OPENMERCHANTBIGDLG 9 107 0 4 0 -40 1 492 23 1
+  goto @ShowTextType
+  goto @显示对话框
+  
+[@显示对话框]
+#if
+#say
+  <text:布告栏:250:15{FCOLOR=7}>\
+  <imgex:9:113:114:115:5:60:/@SetTextType(1)><text:攻略查询:-70:72{FCOLOR=250}>\
+  <imgex:9:113:114:115:5:75:/@SetTextType(2)><text:提交攻略:-70:87{FCOLOR=243}>\
+  <imgex:9:113:114:115:5:90:/@SetTextType(3)><text:提交备注:-70:102{FCOLOR=243}>\
+  <imgex:9:113:114:115:5:105:/@SetTextType(4)><text:提交建议:-70:117{FCOLOR=243}>\
+  <imgex:9:113:114:115:5:120:/@SetTextType(5)><text:更新日志:-70:132{FCOLOR=251}>\
+<$str(S0)>\
+<$str(S1)>
+[@SetTextType]
+#if 
+ 
+#act 
+  mov S0 
+  mov P0 <$SCRIPTPARAM1>
+  goto @ShowTextType
+  goto @显示对话框
+[@ShowTextType]
+#if 
+#act 
+   mov S0
+   mov S1
+ 
+#if 
+  equal P0 1
+#act 
+  mov S0 <INPUTTEXT:1:180:140:170:18:-1:7:255:1:99:请填写查询关键字:查询内容:249><text:查询攻略:185:142:1/@查询攻略>\
+  inc S0 <imgex:8:916:916:917:245:151:/@backType1><imgex:8:919:919:918:260:151:/@nextType1>\
+  break
+#if 
+  equal P0 2
+#act
+   inc S0 <text:提交攻略通过审核可以获得奖励:140:140{FCOLOR=250}>\
+   inc S0 <text:点赞数量越多可以获得大量额外奖励:140:145{FCOLOR=250}>\
+   inc S1 <text:攻略关键字:115:-52{FCOLOR=250}><INPUTTEXT:1:120:-54:300:18:-1:7:255:1:99:请填写关键字:请填写关键字:249>\
+   inc S1 <text:空格之后的文字不会保存:180:-50{FCOLOR=7}>\
+   inc S1 <text:攻略第一行:115:-40{FCOLOR=250}><INPUTTEXT:2:120:-42:300:18:-1:7:255:1:99:请填写第一行攻略:请填写第一行攻略:249>\
+   inc S1 <text:攻略第二行:115:-35{FCOLOR=250}><INPUTTEXT:3:120:-37:300:18:-1:7:255:1:99:请填写第二行攻略:请填写第二行攻略:249>\
+   inc S1 <imgex:9:113:114:115:245:-30:*/@提交攻略><text:提交攻略:170:-18:{FCOLOR=251}>\
+   break
+#if 
+ equal P0 3
+#act 
+   inc S0 <text:提交装备备注通过审核可以获得奖励(每周更新2次装备备注):140:140{FCOLOR=250}>\
+   inc S0 <text:备注说明准确度越高,获得备注更新的几率越高:140:145{FCOLOR=251}>\
+   inc S1 <text:装备名字:115:-52{FCOLOR=250}><INPUTTEXT:1:120:-54:300:18:-1:7:255:1:99:请填写关键字:请填写关键字:249>\
+   inc S1 <text:备注第一行:115:-40{FCOLOR=250}><INPUTTEXT:2:120:-42:300:18:-1:7:255:1:99:请填写第一行攻略:请填写第一行攻略:249>\
+   inc S1 <text:备注第二行:115:-35{FCOLOR=250}><INPUTTEXT:3:120:-37:300:18:-1:7:255:1:99:请填写第二行攻略:请填写第二行攻略:249>\
+   inc S1 <text:备注第三行:115:-30{FCOLOR=250}><INPUTTEXT:4:120:-32:300:18:-1:7:255:1:99:请填写第三行攻略:请填写第三行攻略:249>\
+   inc S1 <text:备注第四行:115:-25{FCOLOR=250}><INPUTTEXT:5:120:-27:300:18:-1:7:255:1:99:请填写第四行攻略:请填写第四行攻略:249>\
+   inc S1 <imgex:9:113:114:115:245:-25:*/@提交备注><text:提交备注:170:-13:{FCOLOR=251}>\
+   break
+  
+#if 
+ equal P0 4
+#act 
+   inc S0 <text:提交游戏建议、BUG通过审核可以获得大量奖励:140:140{FCOLOR=250}>\
+   inc S0 <text:请勿提交无意义的建议,如果提交多次无意义建议将会进行惩罚:140:145{FCOLOR=251}>\
+   inc S1 <text:建议标题:115:-52{FCOLOR=250}><INPUTTEXT:1:120:-54:300:18:-1:7:255:1:99:请填写关键字:请填写关键字:249>\
+   inc S1 <text:建议第一行:115:-40{FCOLOR=250}><INPUTTEXT:2:120:-42:300:18:-1:7:255:1:99:请填写第一行攻略:请填写第一行攻略:249>\
+   inc S1 <text:建议第二行:115:-35{FCOLOR=250}><INPUTTEXT:3:120:-37:300:18:-1:7:255:1:99:请填写第二行攻略:请填写第二行攻略:249>\
+   inc S1 <text:建议第三行:115:-30{FCOLOR=250}><INPUTTEXT:4:120:-32:300:18:-1:7:255:1:99:请填写第三行攻略:请填写第三行攻略:249>\
+   inc S1 <text:建议第四行:115:-25{FCOLOR=250}><INPUTTEXT:5:120:-27:300:18:-1:7:255:1:99:请填写第四行攻略:请填写第四行攻略:249>\
+   inc S1 <imgex:9:113:114:115:245:-25:*/@提交建议><text:提交建议:170:-13:{FCOLOR=251}>\
+   break
+[@取消消息对话框]   
+[@提交攻略]
+#or 
+   CheckContainsText <$NPCINPUT(1)> '
+   CheckContainsText <$NPCINPUT(1)> ;
+   CheckContainsText <$NPCINPUT(1)> -
+   CheckContainsText <$NPCINPUT(2)> '
+   CheckContainsText <$NPCINPUT(2)> ;
+   CheckContainsText <$NPCINPUT(2)> -
+   CheckContainsText <$NPCINPUT(3)> '
+   CheckContainsText <$NPCINPUT(3)> ;
+   CheckContainsText <$NPCINPUT(3)> -
+#act 
+   messagebox  \\你输入的字符串不正确!\请不要输入符号!!!
+   break
+#if 
+ $s_execute 布告栏.新建用户输入信息.sql,1,<$NPCINPUT(1)>,<$NPCINPUT(2)>,<$NPCINPUT(3)>,,,<$userName>
+#act 
+    
+  messagebox  \\你已经提交了攻略信息,审查之后就能查询到!!!
+#elseact
+  messagebox  \\提交用户信息失败,请检查后重试!!!
+[@提交备注]
+#or 
+   CheckContainsText <$NPCINPUT(1)> '
+   CheckContainsText <$NPCINPUT(1)> ;
+   CheckContainsText <$NPCINPUT(1)> -
+   CheckContainsText <$NPCINPUT(2)> '
+   CheckContainsText <$NPCINPUT(2)> ;
+   CheckContainsText <$NPCINPUT(2)> -
+   CheckContainsText <$NPCINPUT(3)> '
+   CheckContainsText <$NPCINPUT(3)> ;
+   CheckContainsText <$NPCINPUT(3)> -
+   CheckContainsText <$NPCINPUT(4)> '
+   CheckContainsText <$NPCINPUT(4)> ;
+   CheckContainsText <$NPCINPUT(4)> -
+   CheckContainsText <$NPCINPUT(5)> '
+   CheckContainsText <$NPCINPUT(5)> ;
+   CheckContainsText <$NPCINPUT(5)> -
+#act 
+   messagebox  \\你输入的字符串不正确!\请不要输入符号!!!
+   break
+#if 
+ $s_execute 布告栏.新建用户输入信息.sql,2,<$NPCINPUT(1)>,<$NPCINPUT(2)>,<$NPCINPUT(3)>,<$NPCINPUT(4)>,<$NPCINPUT(5)>,<$userName>
+#act 
+    
+  messagebox  \\你已经提交了备注信息,审查之后就能查询到!!!
+#elseact
+  messagebox  \\提交用户信息失败,请检查后重试!!!
+[@提交建议]
+#or 
+   CheckContainsText <$NPCINPUT(1)> '
+   CheckContainsText <$NPCINPUT(1)> ;
+   CheckContainsText <$NPCINPUT(1)> -
+   CheckContainsText <$NPCINPUT(2)> '
+   CheckContainsText <$NPCINPUT(2)> ;
+   CheckContainsText <$NPCINPUT(2)> -
+   CheckContainsText <$NPCINPUT(3)> '
+   CheckContainsText <$NPCINPUT(3)> ;
+   CheckContainsText <$NPCINPUT(3)> -
+   CheckContainsText <$NPCINPUT(4)> '
+   CheckContainsText <$NPCINPUT(4)> ;
+   CheckContainsText <$NPCINPUT(4)> -
+   CheckContainsText <$NPCINPUT(5)> '
+   CheckContainsText <$NPCINPUT(5)> ;
+   CheckContainsText <$NPCINPUT(5)> -
+#act 
+   messagebox  \\你输入的字符串不正确!\请不要输入符号!!!
+   break
+#if 
+ $s_execute 布告栏.新建用户输入信息.sql,3,<$NPCINPUT(1)>,<$NPCINPUT(2)>,<$NPCINPUT(3)>,<$NPCINPUT(4)>,<$NPCINPUT(5)>,<$userName>
+#act 
+    
+  messagebox  \\你已经提交了建议信息,审查之后就能查询到!!!
+#elseact
+  messagebox  \\提交用户信息失败,请检查后重试!!!
+  [@查询攻略]
+#or 
+   CheckContainsText <$NPCINPUT(1)> '
+   CheckContainsText <$NPCINPUT(1)> ;
+   CheckContainsText <$NPCINPUT(1)> -
+#act 
+   messagebox  \\你输入的字符串不正确!\请不要输入符号!!!
+   break
+#elseact
+   mov P1 1
+   mov S2 <$NPCINPUT(1)>
+   goto @查询攻略翻页
+[@backType1]
+#if 
+   equal P1 1
+#act 
+   messagebox \\已经是第一页.\无法点击上一页!!!
+#elseact
+   dec P1 1
+   goto @查询攻略翻页  
+
+[@nextType1]
+#if 
+#act 
+   inc P1 1
+   goto @查询攻略翻页   
+[@查询攻略翻页]
+#if 
+#act 
+    mov S1
+    $s_gets_str 布告栏.查询攻略.sql,3,<$str(P1)>,<$str(S2)> S$SearchItems
+    mov P2 <$str(S$SearchItems.len)>
+#if 
+    equal P2 0 
+#act 
+    messagebox \\没有找到更多的攻略!\可以换一个关键字查询!!!
+    dec P1 1
+    break
+#if 
+    large P2 0
+#act 
+    inc s1 <$str(S$SearchItems[0][0])>
+
+#if 
+    large P2 1
+#act 
+    inc s1 <$str(S$SearchItems[1][0])>
+#if 
+    large P2 2
+#act 
+    inc s1 <$str(S$SearchItems[2][0])>
+#if 
+ 
+#act 
+  GOTO @显示对话框   
+[@InputBoxFilter]
+#ACT
+SendMsg 5 输入了非法字符
+
+}

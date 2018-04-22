@@ -3,7 +3,7 @@
 #or
   
   CHECKMEMBERLEVEL > 0
-  ISONMAP 3
+  ISONMAP n3
 #act
   goto @查询回收显示数值
   OPENMERCHANTBIGDLG 9 4 0 4 0 -40 1 365 21 1

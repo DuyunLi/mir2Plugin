@@ -7,5 +7,5 @@ INSERT INTO vipGiftLevelLog (
                                    {1},
                                    datetime('now', 'localtime') 
                               FROM VipUser vu
-                             WHERE vu.accountID = 'qweqwe7' AND 
+                             WHERE vu.accountID = '{0}' AND 
                                    vu.Level >= {1};
