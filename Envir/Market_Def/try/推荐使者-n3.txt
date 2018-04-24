@@ -1,0 +1,4 @@
+[@main]
+#if
+#act
+  #call [..\QuestDiary\try\推荐系统.txt] @推荐系统初始化

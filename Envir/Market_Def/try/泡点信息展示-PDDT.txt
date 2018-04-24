@@ -1,0 +1,16 @@
+[@main]
+#say
+当前系统时间<$LOGINTIME>\ \
+<你进入游戏时间>为：<$LOGINLONG>\ 
+<当前等级>：<$LEVEL>级\
+<当前PK点数>：<$PKPOINT>点，<泡点点数>：<$GAMEPOINT>点\
+<当前声望>：<$CREDITPOINT>点\
+<当前经验>：<$EXP><当前升级经验>：<$MAXEXP>\ \
+
+<返回安全区/@返回安全区>　　　<离开/@exit> 
+
+
+[@返回安全区]
+#if
+#act
+  mapmove n3 108 108  

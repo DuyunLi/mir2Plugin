@@ -9,6 +9,5 @@ WITH tsource AS (
      ORDER BY CreatedOn DESC
 )
 SELECT '<text:' || Title || ':215:-51&ltFCOLOR=250&gt> <text:[' || date || ']:215:-51&ltFCOLOR=7&gt>\\' || Text1 text
-  FROM tsource;
-
+  FROM tsource
  LIMIT {0} OFFSET {0} * ({1} - 1);

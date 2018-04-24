@@ -1,0 +1,4 @@
+[@main]
+#if
+#act
+  #call [..\QuestDiary\try\布告栏.txt] @布告栏初始化
