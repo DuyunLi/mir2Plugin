@@ -2,10 +2,10 @@
 {
 #if
 #act
-$executeGuid 8D090C7BA96F4D129CC43C9EB06FBCC7
-$executeGuid FFCDEA492F3F4E4BB7B9492F16922B6A
+;$executeGuid 8D090C7BA96F4D129CC43C9EB06FBCC7
+;$executeGuid FFCDEA492F3F4E4BB7B9492F16922B6A
   mov S0
-  mov P0 2
+  mov P0 5
   mov S1
   OPENMERCHANTBIGDLG 9 107 0 4 0 -40 1 492 23 1
   goto @ShowTextType
@@ -43,6 +43,13 @@ $executeGuid FFCDEA492F3F4E4BB7B9492F16922B6A
   inc S0 <imgex:8:916:916:917:245:151:/@backType1><imgex:8:919:919:918:260:151:/@nextType1>\
   break
 #if 
+  equal P0 5
+#act 
+  mov S0 \
+  inc S0 <imgex:8:916:916:917:245:151:/@backType4><imgex:8:919:919:918:260:151:/@nextType4>\
+  goto @查询日志
+  break
+#if 
   equal P0 2
 #act
    inc S0 <text:提交攻略通过审核可以获得奖励:140:140{FCOLOR=250}>\
@@ -78,6 +85,8 @@ $executeGuid FFCDEA492F3F4E4BB7B9492F16922B6A
    inc S1 <text:建议第四行:115:-25{FCOLOR=250}><INPUTTEXT:5:120:-27:300:18:-1:7:255:1:99:请填写第四行攻略:请填写第四行攻略:249>\
    inc S1 <imgex:9:113:114:115:245:-25:*/@提交建议><text:提交建议:170:-13:{FCOLOR=251}>\
    break
+
+
 [@取消消息对话框]   
 [@提交攻略]
 #or 
@@ -154,7 +163,7 @@ $executeGuid FFCDEA492F3F4E4BB7B9492F16922B6A
   messagebox  \\你已经提交了建议信息,审查之后就能查询到!!!
 #elseact
   messagebox  \\提交用户信息失败,请检查后重试!!!
-  [@查询攻略]
+[@查询攻略]
 #or 
    CheckContainsText <$NPCINPUT(1)> '
    CheckContainsText <$NPCINPUT(1)> ;
@@ -166,6 +175,12 @@ $executeGuid FFCDEA492F3F4E4BB7B9492F16922B6A
    mov P1 1
    mov S2 <$NPCINPUT(1)>
    goto @查询攻略翻页
+[@查询日志]
+#act
+   mov P1 1
+   mov S2 
+   mov S1 
+   goto @查询日志翻页
 [@backType1]
 #if 
    equal P1 1
@@ -213,4 +228,40 @@ $executeGuid FFCDEA492F3F4E4BB7B9492F16922B6A
 #ACT
 SendMsg 5 输入了非法字符
 
+[@backType4]
+#if 
+   equal P1 1
+#act 
+   messagebox \\已经是第一页.\无法点击上一页!!!
+#elseact
+   dec P1 1
+   goto @查询日志翻页  
+
+[@nextType4]
+#if 
+#act 
+   inc P1 1
+   goto @查询日志翻页  
+   
+[@查询日志翻页]
+#if 
+#act 
+    mov S1
+    $s_gets_str 布告栏.查询更新日志.sql,1,<$str(P1)> S$SearchItems
+    mov P2 <$str(S$SearchItems.len)>
+#if 
+    equal P2 0 
+#act 
+    messagebox \\没有找到更多的日志!!!!
+    dec P1 1
+    break
+#if 
+    large P2 0
+#act 
+    inc s1 <$str(S$SearchItems[0][0])>
+
+#if 
+ 
+#act 
+  GOTO @显示对话框   
 }
