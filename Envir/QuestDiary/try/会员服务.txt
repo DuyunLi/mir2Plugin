@@ -3,9 +3,9 @@
 #if
 #act
   OPENMERCHANTBIGDLG 9 69 0 4 0 -40 1 485 24 1
-  goto @显示对话框
+  goto @显示会员服务对话框
 
-[@显示对话框]
+[@显示会员服务对话框]
 #if
 #act
   $s_gets_str 会员系统.会员服务信息查询.sql,<$USERID> S$VIPConfig
@@ -203,7 +203,7 @@
   not equal N$GiftCount 0
 #act
   SendCenterMsg 253 251 <$USERNAME>领取了『Vip每日礼包』,获得了大量的物资! 1
-  goto @显示对话框    
+  goto @显示会员服务对话框    
   
 [@领取会员升级礼包]
 #IF
@@ -261,13 +261,13 @@
   not equal N$GiftCount 0
 #act
   SendCenterMsg 253 251 <$USERNAME>领取了『Vip<$SCRIPTPARAM1>礼包』,获得了大量的物资! 1
-  goto @显示对话框  
+  goto @显示会员服务对话框  
 [@进行充值]
 #if
 #act
   messagebox  未开通充值渠道!
  ; $pa_set2 Recharge 10
- ;DELAYGOTO 1 @显示对话框
+ ;DELAYGOTO 1 @显示会员服务对话框
 
 [@打开回收界面]
 #if
@@ -311,7 +311,7 @@ BREAK
 FILTERGLOBALMSG 1 1
 SENDMSG 7 您已开启屏蔽全服掉落提示信息。
 mov N$isShowMsg 1
-goto @显示对话框
+goto @显示会员服务对话框
 BREAK
 
 [@取消屏蔽]
@@ -325,6 +325,6 @@ BREAK
 FILTERGLOBALMSG 1 0
 SENDMSG 7 您已允许接收全服掉落提示信息。
   mov N$isShowMsg 0  
-  goto @显示对话框
+  goto @显示会员服务对话框
 BREAK
 }

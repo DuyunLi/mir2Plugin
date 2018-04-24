@@ -12,10 +12,10 @@
   mov N$NextRate 100
   ReturnBoxItem 0
   OPENMERCHANTBIGDLG 9 65 0 4 0 -40 1 520 50 1
-  goto @显示对话框
+  goto @显示强化系统对话框
 ;  SCREENEFFECT 300 400 10 410 18 1 100 1 1 
 
-[@显示对话框]
+[@显示强化系统对话框]
 
 #if
   CheckBoxItemCount 0  
@@ -83,7 +83,7 @@
 #act
   mov S$SynthesisBoxDialogStr
   mov S$SynthesisBoxDialogButtonStr
-  goto @显示对话框
+  goto @显示强化系统对话框
   
 [@ItemIntoBox0]
 #if
@@ -99,7 +99,7 @@
 #act
   mov S$SynthesisBoxDialogStr
   mov S$SynthesisBoxDialogButtonStr
-  goto @显示对话框
+  goto @显示强化系统对话框
   break
 
 #if
@@ -124,7 +124,7 @@
 #act
   messagebox 无法强化首饰盒与神佑装备!
   ReturnBoxItem  0
-  goto @显示对话框
+  goto @显示强化系统对话框
   break
    
   
@@ -133,7 +133,7 @@
 #act
   messagebox 当前物品无法强化!
   ReturnBoxItem  0
-  goto @显示对话框
+  goto @显示强化系统对话框
   break
   
   
@@ -147,7 +147,7 @@
 #act
   messagebox 当前物品无法强化!
   ReturnBoxItem  0
-  goto @显示对话框
+  goto @显示强化系统对话框
   break
 #if
   CheckStringlength <$str(S$EquipName)> <= 5
@@ -169,7 +169,7 @@
 #act
   messagebox 当前物品无法强化!
   ReturnBoxItem  0
-  goto @显示对话框
+  goto @显示强化系统对话框
   break  
   
   
@@ -196,7 +196,7 @@
   inc S$SynthesisBoxDialogStr <text:魔法攻击：<$BOXITEM[0].LMC>-<$str(N$MaxMC)>:350:-1{FCOLOR=255}><text:(+<$str(S$UpgradeSearchResult[0][8])>):352:-1{FCOLOR=250}>\
   inc S$SynthesisBoxDialogStr <text:道术攻击：<$BOXITEM[0].LSC>-<$str(N$MaxSC)>:350:1{FCOLOR=255}><text:(+<$str(S$UpgradeSearchResult[0][9])>):352:1{FCOLOR=250}>\
   inc S$SynthesisBoxDialogButtonStr <imgex:9:32:33:34:370:25:/@开始强化(1)><text:开始强化:295:36{FCOLOR=251}>\  
-  goto @显示对话框
+  goto @显示强化系统对话框
   break
 #or
   equal N$StdMode 10
@@ -225,7 +225,7 @@
   inc S$SynthesisBoxDialogStr <text:道术攻击：<$BOXITEM[0].LSC>-<$str(N$MaxSC)>:350:1{FCOLOR=255}><text:(+<$str(S$UpgradeSearchResult[0][9])>):352:1{FCOLOR=250}>\
   inc S$SynthesisBoxDialogButtonStr <imgex:9:32:33:34:370:25:/@开始强化(1)><text:开始强化:295:36{FCOLOR=251}>\   
   
-  goto @显示对话框
+  goto @显示强化系统对话框
   break
  
 
@@ -233,7 +233,7 @@
 #act
   messagebox 当前类型装备无法进行强化 
   ReturnBoxItem  0
-  goto @显示对话框
+  goto @显示强化系统对话框
   
 
   
@@ -241,7 +241,7 @@
 #if
 #act
  mov S$SynthesisBoxDialogButtonStr <imgex:9:35:35:35:370:25:><text:开始强化:295:36{FCOLOR=251}>\  
- goto @显示对话框
+ goto @显示强化系统对话框
  mov N$NextStep 1
  SHOWPROGRESSBARDLG 2 @强化进度条完成 正在强化,%d%... 1 @强化进度条中断
  DELAYGOTO 1800 @开始强化执行
@@ -250,7 +250,7 @@
 #if
   equal N$NextStep 1
 #elseact
-  goto @显示对话框
+  goto @显示强化系统对话框
   break  
 #if
 #act
@@ -537,15 +537,15 @@
   mov N$IsLuck 7
 #if
 #act
-  goto @显示对话框
+  goto @显示强化系统对话框
     
 [@使用守护符]
 #if
   EQUAL N$IsProtect 7
 #act
   mov N$IsProtect 6
-  goto @显示对话框
+  goto @显示强化系统对话框
 #elseact  
   mov N$IsProtect 7
-  goto @显示对话框
+  goto @显示强化系统对话框
 }

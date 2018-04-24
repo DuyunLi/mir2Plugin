@@ -5,8 +5,8 @@
   mov S$SynthesisBoxDialogStr
   ReturnBoxItem 0
   OPENMERCHANTBIGDLG 9 8 0 4 0 -20 1 405 35 1
-  goto @显示对话框
-[@显示对话框]
+  goto @显示特戒合成对话框
+[@显示特戒合成对话框]
   
 #if
   not CheckBoxItemCount 0  
@@ -27,7 +27,7 @@
 #if
 #act
   mov S$SynthesisBoxDialogStr
-  goto @显示对话框
+  goto @显示特戒合成对话框
   
 [@ItemIntoBox0]
 #if
@@ -42,7 +42,7 @@
   ReturnBoxItem  0
   Break
 #elseact
-  goto @显示对话框
+  goto @显示特戒合成对话框
     
 break  
 [@升级按钮点击]
@@ -132,7 +132,7 @@ break
 #act
   DelBoxItem 0
   give  <$str(S$Synthesis[0][1])> <$str(S$Synthesis[0][2])>
-  goto @显示对话框
+  goto @显示特戒合成对话框
   
 #if
   equal S$Synthesis[0][3] 1

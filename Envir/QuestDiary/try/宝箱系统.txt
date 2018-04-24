@@ -4,9 +4,9 @@
 #act
   mov S$DialogShowStr
   OPENMERCHANTBIGDLG 9 3 0 4 0 -40 1 485 70 1
-  goto @显示对话框
+  goto @显示宝箱查看对话框
   
-[@显示对话框]
+[@显示宝箱查看对话框]
 #if
 #say
   <text:请放入需要打开的宝箱：:80:75{FCOLOR=253}>\
@@ -17,7 +17,7 @@
 #if
 #act
   mov S$DialogShowStr
-  goto @显示对话框
+  goto @显示宝箱查看对话框
   
 [@ItemIntoBox0]
 #if
@@ -32,7 +32,7 @@
   ReturnBoxItem  0
   Break
 #elseact
-  goto @显示对话框
+  goto @显示宝箱查看对话框
 [@打开按钮点击]
 #if
   CheckBoxItemCount 0  

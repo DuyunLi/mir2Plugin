@@ -8,14 +8,14 @@
   $s_gets_str 传送门.传送类型.sql S$MoveMarster
   $s_gets_str 传送门.传送地图按钮.sql,1 S$MoveDetail
   OPENMERCHANTBIGDLG 9 108 0 4 0 -40 1 492 23 1
-  goto @显示对话框
+  goto @显示传送门对话框
 [@MoveMarster]
 #if
 #act
   mov S$MoveDetail[0][0]
   $s_gets_str 传送门.传送地图按钮.sql,<$SCRIPTPARAM1> S$MoveDetail
   mov S$MoveDetailInfo 
-  goto @显示对话框
+  goto @显示传送门对话框
 [@MoveDetail]
 #if
 #act
@@ -43,7 +43,7 @@
   inc S$MoveDetailInfo <text:精英介绍：<$str(S$MoveDetailInfo[0][4])>:300:93{FCOLOR=70}>\
   inc S$MoveDetailInfo <text:进入需要：:300:98{FCOLOR=254}><text:等级大于<$str(S$MoveDetailInfo[0][1])>级:300:98{FCOLOR=254}>\<$str(S$MoveDetailInfo[0][2])>\
   inc S$MoveDetailInfo <imgex:9:126:127:128:370:105:/@ClickMoveTo(<$str(S$MoveDetailInfo[0][6])>)>\
-  goto @显示对话框
+  goto @显示传送门对话框
 [@ClickMoveTo]
 #if
 #act
@@ -93,7 +93,7 @@
   not CheckItem 盟重传送石 1
 #act
   give 回城卷
-[@显示对话框]
+[@显示传送门对话框]
 #say
   <text:传送门:250:15{FCOLOR=7}>\
 <$str(S$MoveMarster[0][0])>\

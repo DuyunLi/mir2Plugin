@@ -5,8 +5,8 @@
   mov S$SynthesisBoxDialogStr
   ReturnBoxItem 0
   OPENMERCHANTBIGDLG 9 17 0 4 0 -40 1 460 50 1
-  goto @显示对话框
-[@显示对话框]
+  goto @显示铸魂系统对话框
+[@显示铸魂系统对话框]
 #if
 #say
   <text:武器、衣服铸魂:203:85{FCOLOR=253}>\
@@ -21,7 +21,7 @@
 #if
 #act
   mov S$SynthesisBoxDialogStr
-  goto @显示对话框
+  goto @显示铸魂系统对话框
   
 [@ItemIntoBox0]
 
@@ -70,7 +70,7 @@
   ReturnBoxItem  0
   Break
 #elseact
-  goto @显示对话框
+  goto @显示铸魂系统对话框
 [@确认按钮点击]
 #if
 #act
@@ -191,5 +191,5 @@
 #if  
 #act
   mov S$SynthesisBoxDialogStr 
-  goto @显示对话框
+  goto @显示铸魂系统对话框
 }
