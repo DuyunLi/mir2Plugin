@@ -16,6 +16,8 @@ FROM    soulAttribute attr
 WHERE   attr.isActive = 1
         AND sc.isActive = 1
         AND ect.isActive = 1
+        and (attr.stdmode= 0 or attr.stdmode = {10})
+        and (attr.srcIdx= 0 or attr.srcIdx = {11})
         and msc.level >= sc.level 
         and msc.level <= sc.level + 2
         AND {0} % 255 >= attr.level
