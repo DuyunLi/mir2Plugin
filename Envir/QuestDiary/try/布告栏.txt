@@ -2,16 +2,14 @@
 {
 #if
 #act
-;$executeGuid 8D090C7BA96F4D129CC43C9EB06FBCC7
-;$executeGuid FFCDEA492F3F4E4BB7B9492F16922B6A
   mov S0
   mov P0 5
   mov S1
   OPENMERCHANTBIGDLG 9 107 0 4 0 -40 1 492 23 1
   goto @ShowTextType
-  goto @显示对话框
+  goto @显示布告栏对话框
   
-[@显示对话框]
+[@显示布告栏对话框]
 #if
 #say
   <text:布告栏:250:15{FCOLOR=7}>\
@@ -29,7 +27,7 @@
   mov S0 
   mov P0 <$SCRIPTPARAM1>
   goto @ShowTextType
-  goto @显示对话框
+  goto @显示布告栏对话框
 [@ShowTextType]
 #if 
 #act 
@@ -223,7 +221,7 @@
 #if 
  
 #act 
-  GOTO @显示对话框   
+  GOTO @显示布告栏对话框   
 [@InputBoxFilter]
 #ACT
 SendMsg 5 输入了非法字符
@@ -263,5 +261,5 @@ SendMsg 5 输入了非法字符
 #if 
  
 #act 
-  GOTO @显示对话框   
+  GOTO @显示布告栏对话框   
 }

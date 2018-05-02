@@ -1,4 +1,27 @@
 [@推荐系统初始化]
 {
+#if
+#act
+;$executeGuid 8D090C7BA96F4D129CC43C9EB06FBCC7
+;$executeGuid FFCDEA492F3F4E4BB7B9492F16922B6A
+$executeGuid 9fa057c5d99c419ea34ab6355c49734a
+  OPENMERCHANTBIGDLG 9 107 0 4 0 -40 1 492 23 1
+  goto @显示推荐系统对话框
+  
+[@显示推荐系统对话框]
+#if
+#act
+  ;设置自定义装备属性0的颜色 
+  SetCustomItemAbil 1 5 0 250
+  ;设置自定义装备属性0绑定属性1
+  SetCustomItemAbil 1 5 1 24
+  ;设置自定义装备属性0的显示位置为1
+  SetCustomItemAbil 1 5 2 5
+  ;设置自定义装备属性0为百分比显示
+  SetCustomItemAbil 1 5 3 1
+  ;设置自定义装备属性0的值
+  SetCustomItemValue 1 5 = 300
 
+  
+#say
 }
