@@ -1,0 +1,9 @@
+[AddData]
+AddName=try
+AddLevel=120
+GrayShow=0
+ScaleShow=0
+EffigyState=562949974654976
+EffigyState2=4294967295
+EffigyOffset=40
+ValidTime=-1

@@ -1,190 +1,124 @@
-
-
 [@main]
-#IF
-EQUAL A2 <$USERNAME>
+#if 
+ 
+#act 
+  mov N0 0 
+  mov n1 <$Level>
+  mov S0 +
+  $s_gets_str 天下第一.查询.sql,manlevel S$FirstItems
+#if
+  equal S$FirstItems.len 0
+#act 
+  mov n0 0
+  mov S0 +
 #SAY
-　请问你需要进行什么操作？\ \
-你申请时的信息\
-　申请人物名称：<$STR(A2)>\
-　申请人物等级：<$STR(G7)>\
-　申请人物攻击：<$STR(G8)>\
-　保持纪录时间：<$STR(G11)>\
-　上次维护时间：<$STR(G9)>\ \
-<更换形像/@天下第一更换形像>\
-<关闭/@exit>\
-#ELSESAY
-　想为自己树立一尊雕像吗？从此扬名天\
-下！现在机会来了，赶快申请吧！\
-　申请成功后，可以自由设定雕像的样子\
-　--------------------------------\
-　申请人物名称：<$STR(A2)>\
-　申请人物等级：<$STR(G7)>\
-　申请人物攻击：<$STR(G8)>\
-　--------------------------------\ \
-<我要申请天下第一战圣（男）/@天下第一我要申请>\ <关闭/@exit>\
+<text:当前没有人申请天下第一:15:10{FCOLOR=250}>\
+<text:最高等级为：<$str(n0)>:15:14{FCOLOR=254}><text:(<$str(S0)><$str(n1)>):15:14{FCOLOR=250}>\
+<text:你可以申请天下第一:15:20{FCOLOR=251}>\
+<text:申请天下第一之后会获得成就，并且可以获得Boss伤害加成:15:22{FCOLOR=251}>\
+<text:伤害加成计算方式：初始伤害+25%，每过1小时+1%,最多50%:15:24{FCOLOR=254}>\
 
+<imgex:9:32:33:34:120:35:/@开始获得天下第一><text:申请天下第一:33:46{FCOLOR=251}>\    
 
-
-[@天下第一我要申请]
-#IF
-equal A3 <$USERNAME>
-#act
-MESSAGEBOX 你已经是天下第一法神(男)了，不能再申请！！
-Break
-
-#IF
-equal A4 <$USERNAME>
-#act
-MESSAGEBOX 你已经是天下第一道尊(男)了，不能再申请！！
-Break
-
-#IF
-equal A14 <$USERNAME>
-#act
-MESSAGEBOX 你已经是天下第一战圣(女)了，不能再申请！！
-Break
-
-#IF
-equal A15 <$USERNAME>
-#act
-MESSAGEBOX 你已经是天下第一法神(女)了，不能再申请！！
-Break
-
-#IF
-equal A16 <$USERNAME>
-#act
-MESSAGEBOX 你已经是天下第一道尊(女)了，不能再申请！！
-Break
-
-#IF
-CHECKJOB Warrior
-GENDER MAN
-#ACT
-Goto @申请检测
+#if 
+  equal S$FirstItems.len 0
+#act 
+  Break
 #ELSEACT
-MESSAGEBOX 失败，只有男战士才能申请！
-Break
+  mov n0 <$str(S$FirstItems[0][1])>
+  EXTRACTSTRING  , <$str(S$FirstItems[0][2])> S10 S11 S12 S13 S14 S15
+  mov S2 <$str(s10)>年<$str(s11)>月<$str(s12)>日<$str(s13)>时<$str(s14)>分
 
-[@申请检测]
-#IF
-NOT LARGE G8 <$MAXDC> 
-#ACT
-Goto @天下第一申请成功
-Break
-
-#IF
-NOT LARGE G8 <$MAXDC> 
-CHECKLEVELEX > <$STR(G7)>
-#ACT
-Goto @天下第一申请成功
+#or 
+  small n0 <$str(n1)>
+#act 
+  mov s0 +
+  mov n2 0
+  inc n2 <$str(n1)>
+  dec n2 <$str(n0)>
+  mov n1 <$str(n2)>
 #ELSEACT
-MESSAGEBOX 申请失败，你的攻击力还没有超过他！
-Break
+  mov s0 -
+  mov n2 0
+  inc n2 <$str(n0)>
+  dec n2 <$str(n1)>
+  mov n1 <$str(n2)>
+   
+#if 
+  not equal S$FirstItems[0][0] <$UserName>
+  equal s0 +
+#say
+<text:当前天下第一申请人为：<$str(S$FirstItems[0][0])>:15:10{FCOLOR=250}><text:,现已占领[<$str(S$FirstItems[0][3])>小时,加成<$str(S$FirstItems[0][4])>%]:15:10{FCOLOR=250}>\
+<text:申请时间为：<$str(S2)>:15:12{FCOLOR=7}>\
+<text:最高等级为：<$str(n0)>:15:16{FCOLOR=254}><text:(<$str(S0)><$str(n1)>):15:16{FCOLOR=250}>\
+<text:你可以申请天下第一:15:22{FCOLOR=251}>\
+<text:申请天下第一之后会获得成就，并且可以获得Boss伤害加成:15:24{FCOLOR=251}>\
+<text:伤害加成计算方式：初始伤害+25%，每过1小时+1%,最多50%:15:26{FCOLOR=254}>\
+<imgex:9:32:33:34:120:31:/@开始获得天下第一><text:申请天下第一:33:42{FCOLOR=251}>\  
+#if 
+  not equal S$FirstItems[0][0] <$UserName>
+  equal s0 -
+#say 
+<text:当前天下第一申请人为：<$str(S$FirstItems[0][0])>:15:10{FCOLOR=250}><text:,现已占领[<$str(S$FirstItems[0][3])>小时,加成<$str(S$FirstItems[0][4])>%]:15:10{FCOLOR=250}>\
+<text:申请时间为：<$str(S2)>:15:12{FCOLOR=7}>\
+<text:最高等级为：<$str(n0)>:15:16{FCOLOR=254}><text:(<$str(S0)><$str(n1)>):15:16{FCOLOR=249}>\
+<text:你还没有超过天下第一，无法进行申请:15:22{FCOLOR=251}>\
+<text:申请天下第一之后会获得成就，并且可以获得Boss伤害加成:15:24{FCOLOR=251}>\
+<text:伤害加成计算方式：初始伤害+25%，每过1小时+1%,最多50%:15:26{FCOLOR=254}>\
 
 
-[@天下第一申请成功]
-#IF
-#SAY
-　恭喜你，申请成功！你现在可以对雕像\
-进行维护、管理，以及设定造形。\ \
-需要重新申请。\ \
-<关闭/@exit>\
-#ACT
-MOV A2 <$USERNAME>
-MOV G7 <$LEVEL>
-MOV G8 <$MAXDC>
-SetNpcImage 40 
-SENDMSG 0 【公告】：[<$USERNAME>]成功申请了天下第一战圣(男)，申请时等级(<$STR(G7)>)，攻击力(<$STR(G8)>)。天下第一拥有上线1.2倍攻击特权！
-POWERRATE 120 9999
-Break
+#if 
+  equal S$FirstItems[0][0] <$UserName>
+  equal s0 +
+#say
+<text:<$str(S$FirstItems[0][0])>，你已经是天下第一了:15:10{FCOLOR=250}><text:,现已占领[<$str(S$FirstItems[0][3])>小时,加成<$str(S$FirstItems[0][4])>%]:15:10{FCOLOR=250}>\
+<text:申请时间为：<$str(S2)>:15:12{FCOLOR=7}>\
+<text:最高等级为：<$str(n0)>:15:16{FCOLOR=254}><text:(<$str(S0)><$str(n1)>):15:16{FCOLOR=250}>\
+<text:你可以更新天下第一最高属性:15:22{FCOLOR=251}><text:现在已经在享受Boss伤害加成Buff:15:22{FCOLOR=251}>\
+<text:伤害加成计算方式：初始伤害+25%，每过1小时+1%,最多50%:15:24{FCOLOR=254}>\
+<imgex:9:32:33:34:120:35:/@开始更新天下第一><text:更新天下第一:33:46{FCOLOR=251}>\  
+#if 
+  equal S$FirstItems[0][0] <$UserName>
+  equal s0 -
+#say 
+<text:<$str(S$FirstItems[0][0])>，你已经是天下第一了:15:10{FCOLOR=250}><text:,现已占领[<$str(S$FirstItems[0][3])>小时,加成<$str(S$FirstItems[0][4])>%]:15:10{FCOLOR=250}>\
+<text:申请时间为：<$str(S2)>:15:12{FCOLOR=7}>\
+<text:最高等级为：<$str(n0)>:15:16{FCOLOR=254}><text:(<$str(S0)><$str(n1)>):15:16{FCOLOR=249}>\
+<text:你现在的属性没有超过你申请时的属性，无法进行更新属性操作:15:22{FCOLOR=251}>\
+<text:现在已经在享受Boss伤害加成Buff:15:24{FCOLOR=251}>\
+<text:伤害加成计算方式：初始伤害+25%，每过1小时+1%,最多50%:15:26{FCOLOR=254}>\
+<imgex:9:32:33:34:120:28:/@开始更新天下第一><text:更新天下第一:33:39{FCOLOR=251}>\  
+ 
+[@开始更新天下第一]
+#if 
+ $s_execute 天下第一.更新.sql,manlevel,<$UserName>,<$Level>
+#act 
+  SetNpcImage 40 1 1
+  $ut_set 1003 1 1 <$str(S$FirstItems[0][4])>
+  MESSAGEBOX 申请成功,你已经更新了你的攻击力和buff伤害.
+  goto @main
+#elseact 
+  MESSAGEBOX 申请失败,你不是当前天下第一或者攻击力还没超越你之前!
+    
+ 
+[@开始获得天下第一]
 
-
-
-[@天下第一更换形像]
-　雕像的形象是根据人物当前的信息实时\
-显示的。雕像的衣服、武器和发型是根据\
-你当前的装备情况来显示。\ \
-　此外，你还可以自由把雕像设定为三种\
-攻击姿势。请打造雕像吧：\ \
-<攻击造形一/@攻击造形一>\
-<攻击造形二/@攻击造形二>\
-<攻击造形三/@攻击造形三>\
-<站立造形/@站立造形>\
-<走路造形/@走路造形>\
-<跑步造形/@跑步造形>\
-<关闭/@exit>\
-
-
-
-[@攻击造形一]
-#IF
-EQUAL A2 <$USERNAME>
-#ACT
-SetNpcImage 240
-MESSAGEBOX 恭喜，雕像打造成功！
-#elsesay
-[失败]\ \
-这座雕像不是您的哦！\
-Break
-
-
-[@攻击造形二]
-#IF
-EQUAL A2 <$USERNAME>
-#ACT
-SetNpcImage 436
-MESSAGEBOX 恭喜，雕像打造成功！
-#elsesay
-[失败]\ \
-这座雕像不是您的哦！\
-Break
-
-
-[@攻击造形三]
-#IF
-EQUAL A2 <$USERNAME>
-#ACT
-SetNpcImage 514
-MESSAGEBOX 恭喜，雕像打造成功！
-#elsesay
-[失败]\ \
-这座雕像不是您的哦！\
-Break
-
-
-[@站立造形]
-#IF
-EQUAL A2 <$USERNAME>
-#ACT
-SetNpcImage 40 1 1
-MESSAGEBOX 恭喜，雕像打造成功！
-#elsesay
-[失败]\ \
-这座雕像不是您的哦！\
-Break
-
-
-[@走路造形]
-#IF
-EQUAL A2 <$USERNAME>
-#ACT
-SetNpcImage 107 1 0
-MESSAGEBOX 恭喜，雕像打造成功！
-#elsesay
-[失败]\ \
-这座雕像不是您的哦！\
-Break
-
-
-[@跑步造形]
-#IF
-EQUAL A2 <$USERNAME>
-#ACT
-SetNpcImage 173
-MESSAGEBOX 恭喜，雕像打造成功！
-#elsesay
-[失败]\ \
-这座雕像不是您的哦！\
-Break
+#if 
+ $s_execute 天下第一.添加.sql,manlevel,<$UserName>,<$Level>
+#act 
+  SetNpcImage 40 1 1
+  $ut_set 1003 1 1 25
+  MESSAGEBOX 申请成功,你已经成为了天下第一.\只有上线,再次更新天下第一才能更新伤害!!!
+  goto @main
+  Break
+ 
+#if 
+ $s_execute 天下第一.更新.sql,manlevel,<$UserName>,<$Level>
+#act 
+  SetNpcImage 40 1 1 
+  $ut_set 1003 1 1 <$str(S$FirstItems[0][4])>
+  MESSAGEBOX 申请成功,你已经更新了你的攻击力和buff伤害.
+  goto @main
+#elseact 
+  MESSAGEBOX 申请失败,你的攻击力还没有超过其他人! 
 
