@@ -8,9 +8,9 @@ SELECT UserName,
                   Value,
                   strftime('%Y,%m,%d,%H,%M,%S,', CreatedOn) time,
                   CAST ( (julianday(datetime(CURRENT&ampTIMESTAMP, 'localtime') ) - julianday(CreatedOn) ) * 24 AS INT) t1,
-                  case when firstKey = 'manlevel' then 25 else 10 end b1,
+                  case when firstKey = 'manlevel' then 15 else 10 end b1,
                   case when firstKey = 'manlevel' then 1 else 0.5 end b2,
-                  case when firstKey = 'manlevel' then 25 else 30 end b3
+                  case when firstKey = 'manlevel' then 20 else 30 end b3
              FROM FirstHuman
             WHERE FirstKey = '{0}'
        )

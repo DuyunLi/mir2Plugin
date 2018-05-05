@@ -1,0 +1,258 @@
+[@转身系统初始化]
+{
+
+#if 
+     
+#act 
+    $executeGuid 8D090C7BA96F4D129CC43C9EB06FBCC7
+    $executeGuid FFCDEA492F3F4E4BB7B9492F16922B6A
+    OPENMERCHANTBIGDLG 9 134 0 4 0 -40 1 418 26 1
+    goto @查询转身系统数据
+[@查询转身系统数据]    
+#if 
+#act
+    mov n0 0
+    mov n1 0
+    mov s0 
+    mov s1
+    $s_gets_str 转身系统.查询转身等级.sql,<$UserName>,0 S$TestLevel   
+    $s_gets_str 转身系统.查询转身下一级属性.sql,<$UserName> S$NextDetail
+    mov N0 0
+#if
+   equal S$TestLevel.len 0
+#act 
+   sendmsg 5 \\出现错误,无法进行下一步,请联系管理员!!
+   break
+#elseact  
+   mov n0 <$str(S$TestLevel[0][0])>
+#if
+#act 
+  goto @显示转身系统对话框
+[@显示转身系统对话框] 
+
+#if 
+  small n0 11
+#act 
+  mov  n1 <$str(N0)>
+  dec n1 0
+  mov s0 
+  mov s2 152
+  mov s1 练气
+
+#if 
+  small n0 22
+  large n0 11
+#act 
+  mov  n1 <$str(N0)>
+  dec n1 11
+  mov s0 
+  mov s2 153
+  mov s1 筑基
+
+#if 
+  small n0 33
+  large n0 21
+#act 
+  mov  n1 <$str(N0)>
+  dec n1 22
+  mov s0 
+  mov s2 154
+  mov s1 金丹
+#if 
+  small n0 44
+  large n0 32
+#act 
+  mov  n1 <$str(N0)>
+  dec n1 33
+  mov s0 
+  mov s2 155
+  mov s1 化神
+#if 
+  small n0 55
+  large n0 43
+#act 
+  mov  n1 <$str(N0)>
+  dec n1 44
+  mov s0 
+  mov s2 156
+  mov s1 合体
+#if 
+  small n0 66
+  large n0 54
+#act 
+  mov  n1 <$str(N0)>
+  dec n1 55
+  mov s0 
+  mov s2 157
+  mov s1 渡劫
+#if 
+  small n0 77
+  large n0 65
+#act 
+  mov  n1 <$str(N0)>
+  dec n1 66
+  mov s0 
+  mov s2 158
+  mov s1 大乘
+
+#if 
+  small n0 88
+  large n0 76
+#act 
+  mov  n1 <$str(N0)>
+  dec n1 77
+  mov s0 
+  mov s2 158
+  mov s1 飞升
+#if 
+  small n0 99
+  large n0 87
+#act 
+  mov  n1 <$str(N0)>
+  dec n1 88
+  mov s0 
+  mov s2 158
+  mov s1 洞虚
+#if 
+  small n0 110
+  large n0 98
+#act 
+  mov  n1 <$str(N0)>
+  dec n1 99
+  mov s0 
+  mov s2 158
+  mov s1 至强
+ 
+#if  
+#act 
+  goto @转身系统镶嵌血脉
+#say
+   <text:当前<$str(s1)>期等级：:260:85{FCOLOR=251}><ImgNum:2:<$str(n1)>:-3:255:75>\
+   <text:练体增加属性：:225:90{FCOLOR=254}>\
+
+
+   <text:增加HPMax：:230:92{FCOLOR=7}>
+   <text:<$str(S$NextDetail[0][1])>:230:92{FCOLOR=255}>
+   <text:(+<$str(S$NextDetail[1][1])>):230:92{FCOLOR=250}>\
+
+   <text:增强防御：:230:93{FCOLOR=7}>
+   <text:<$str(S$NextDetail[0][3])>:230:93{FCOLOR=255}>
+   <text:(+<$str(S$NextDetail[1][3])>):230:93{FCOLOR=250}>
+   <text:-:233:93{FCOLOR=7}>
+   <text:<$str(S$NextDetail[0][4])>:236:93{FCOLOR=255}>
+   <text:(+<$str(S$NextDetail[1][4])>):236:93{FCOLOR=250}>\
+
+   <text:增强魔御：:230:94{FCOLOR=7}>
+   <text:<$str(S$NextDetail[0][5])>:230:94{FCOLOR=255}>
+   <text:(+<$str(S$NextDetail[1][5])>):230:94{FCOLOR=250}>
+   <text:-:233:94{FCOLOR=7}>
+   <text:<$str(S$NextDetail[0][6])>:236:94{FCOLOR=255}>
+   <text:(+<$str(S$NextDetail[1][6])>):236:94{FCOLOR=250}>\
+
+   <text:增强攻击：:230:108{FCOLOR=7}>
+   <text:<$str(S$NextDetail[0][7])>:230:108{FCOLOR=255}>
+   <text:(+<$str(S$NextDetail[1][7])>):230:108{FCOLOR=250}>
+   <text:-:233:108{FCOLOR=7}>
+   <text:<$str(S$NextDetail[0][8])>:236:108{FCOLOR=255}>
+   <text:(+<$str(S$NextDetail[1][8])>):236:108{FCOLOR=250}>\
+
+   <text:增强魔法：:230:109{FCOLOR=7}>
+   <text:<$str(S$NextDetail[0][9])>:230:109{FCOLOR=255}>
+   <text:(+<$str(S$NextDetail[1][9])>):230:109{FCOLOR=250}>
+   <text:-:233:109{FCOLOR=7}>
+   <text:<$str(S$NextDetail[0][10])>:236:109{FCOLOR=255}>
+   <text:(+<$str(S$NextDetail[1][10])>):236:109{FCOLOR=250}>\
+
+   <text:增强道术：:230:110{FCOLOR=7}>
+   <text:<$str(S$NextDetail[0][11])>:230:110{FCOLOR=255}>
+   <text:(+<$str(S$NextDetail[1][11])>):230:110{FCOLOR=250}>
+   <text:-:233:110{FCOLOR=7}>
+   <text:<$str(S$NextDetail[0][12])>:236:110{FCOLOR=255}>
+   <text:(+<$str(S$NextDetail[1][12])>):236:110{FCOLOR=250}>\
+
+
+   <text:修炼<$str(s1)>到下一段需要灵力：:225:150{FCOLOR=254}>\
+   <ProgressBar:230:160:9:135:136:1:100:0:0:0:<$str(S$TestLevel[0][1])>:1800:0:255:0:0:%r%:灵力充沛程度,积满100%即可升级>\
+   <imgex:9:116:117:118:280:170:/@开始炼体><text:点击炼体:215:180{FCOLOR=251}>\
+   <text:遇到灵丹妙药吃下可以加快灵力的累积,或者在泡点室打坐也可以累积灵力:20:215{FCOLOR=253}>\
+   <$str(s0)>
+
+[@开始炼体]
+#if 
+    $s_execute  转身系统.修改转身等级.sql,<$UserName>,0
+#act 
+   #call [..\QuestDiary\try\刷新人物转生类属性.txt] @RefreshNewLevelAttr
+   goto @查询转身系统数据
+#elseact
+   sendmsg 5 转身操作失败,请重试!
+[@转身系统镶嵌血脉]
+#if 
+#act 
+  inc s0 <Img:
+  inc s0 <$str(s2)>
+  inc s0 :9:97:-105:>\
+#if 
+  large n1 0
+#act
+  inc s0 <Img:
+  inc s0 <$str(s2)>
+  inc s0 :9:72:-87:>\
+#if 
+  large n1 1
+#act
+  inc s0 <Img:
+  inc s0 <$str(s2)>
+  inc s0 :9:45:-38:>\
+#if 
+  large n1 2
+#act
+  inc s0 <Img:
+  inc s0 <$str(s2)>
+  inc s0 :9:122:-115:>\
+#if 
+  large n1 3
+#act
+  inc s0 <Img:
+  inc s0 <$str(s2)>
+  inc s0 :9:145:-65:>\
+#if 
+  large n1 4
+#act
+  inc s0 <Img:
+  inc s0 <$str(s2)>
+  inc s0 :9:95:-125:>\
+#if 
+  large n1 5
+#act
+  inc s0 <Img:
+  inc s0 <$str(s2)>
+  inc s0 :9:95:-90:>\
+#if 
+  large n1 6
+#act
+  inc s0 <Img:
+  inc s0 <$str(s2)>
+  inc s0 :9:69:-55:>\
+#if 
+  large n1 7
+#act
+  inc s0 <Img:
+  inc s0 <$str(s2)>
+  inc s0 :9:69:-20:>\
+#if 
+  large n1 8
+#act
+  inc s0 <Img:
+  inc s0 <$str(s2)>
+  inc s0 :9:125:-85:>\
+#if 
+  large n1 9
+#act
+  inc s0 <Img:
+  inc s0 <$str(s2)>
+  inc s0 :9:139:-43:>\
+
+ 
+ 
+}
+ 
