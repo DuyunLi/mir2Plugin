@@ -1,7 +1,6 @@
 [@RefreshNewLevelAttr]
 {
 #if 
-     
 #act 
     $s_gets_str 转身系统.查询转身属性.sql,<$UserName>,0 S$NextDetail   
     mov N0 0

@@ -9,7 +9,8 @@ SetSndacasket 1
 ShowGodBless 1
 $pa_init
 
-$s_get_int 会员系统.会员当前等级.sql,<$USERID> N0
+$s_get_int 会员系统.会员当前等级.sql,<$USERName> N0
+#call [..\QuestDiary\try\刷新人物转生类属性.txt] @RefreshNewLevelAttr
 ;聊天框固定公告范本
 SENDTOPCHATBOARDMSG 0 253 255 65535 热血传奇欢迎您！
 
@@ -41,7 +42,103 @@ PLAYMAGICBALLEFFECT 8 1300 14 150 -1 0 1 0 0 0
 PLAYMAGICBALLEFFECT 8 1420 14 150 -1 1 1 0 0 0
 break
 
+
+#if
+  IsNewHuman 
+#act
+  ChangeLevel = 25
+  HumanHP + 65535 
+  HumanMP + 65535 
+  give 强效金创药 20
+  give 强效魔法药 1
+  give 盟重传送石 1
+  give 随机传送石 1
+  give 金币 100000
+  goto @HumanLogin
+  mapmove n3 105 105 
+  give 祈祷之刃
+  AutoTakeOnItem 祈祷之刃 1
+#if
+  gender man
+#act
+  give 轻型盔甲(男)
+  AutoTakeOnItem 轻型盔甲(男) 0
+#elseact 
+  give 轻型盔甲(女)
+  AutoTakeOnItem 轻型盔甲(女) 0
+    
+[@HumanLogin]
+
+#IF
+  CheckJob Warrior
+#act
+  CLEARSKILL  
+  ADDSKILL 基本剑术 3
+  ADDSKILL 攻杀剑术 3
+  ADDSKILL 刺杀剑术 3
+  ADDSKILL 半月弯刀 3
+  ADDSKILL 烈火剑法 3
+  ADDSKILL 野蛮冲撞 3
+#IF
+  CheckJob Wizardr
+#act
+  CLEARSKILL
+  ADDSKILL 雷电术 3
+  ADDSKILL 抗拒火环 3
+  ADDSKILL 诱惑之光 3
+  ADDSKILL 瞬息移动 3
+  ADDSKILL 火墙 3
+  ADDSKILL 疾光电影 3
+  ADDSKILL 地狱雷光 3
+  ADDSKILL 魔法盾 3
+  ADDSKILL 圣言术 3
+  ADDSKILL 冰咆哮 3
+#IF
+  CheckJob Taoist
+#act
+  CLEARSKILL
+  ADDSKILL 治愈术 3
+  ADDSKILL 精神力战法 3
+  ADDSKILL 施毒术 3
+  ADDSKILL 灵魂火符 3
+  ADDSKILL 隐身术 3
+  ADDSKILL 集体隐身术 3
+  ADDSKILL 幽灵盾 3
+  ADDSKILL 神圣战甲术 3
+  ADDSKILL 群体治疗术 3
+  ADDSKILL 召唤骷髅 3
+
+
 [@Startup]
 #if
 #act
   $pa_initsys
+
+
+[@OnTimer0]
+#if 
+  ISONMAP pddt
+#elseact 
+  SETOFFTIMER 0
+  sendmsg 5 不在地图了
+  break
+
+#if 
+  checklevelex < 129
+#act 
+  $pa_set2 BubblePointAcquisition 1
+  sendmsg 7 你冥想获得了灵力+1
+  break
+#if 
+  checklevelex < 139
+#act 
+  $pa_set2 BubblePointAcquisition 2
+  sendmsg 7 你冥想获得了灵力+2
+  break
+#if 
+  checklevelex < 199
+#act 
+  $pa_set2 BubblePointAcquisition 3 
+  sendmsg 7 你冥想获得了灵力+3
+  break
+ 

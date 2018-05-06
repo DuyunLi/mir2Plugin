@@ -1,0 +1,317 @@
+[@使用灵丹妙药初始化]
+{
+    
+[@StdModeFunc840]
+#if 
+#act 
+  mov N$UseIdx 840
+  $token_apply S$CheckUseToken 1
+  goto @使用林丹妙药func
+  mov N$UseIdx 0
+[@StdModeFunc839]
+#if 
+#act 
+  mov N$UseIdx 839
+  $token_apply S$CheckUseToken 1
+  goto @使用林丹妙药func
+  mov N$UseIdx 0
+[@StdModeFunc838]
+#if 
+#act 
+  mov N$UseIdx 838
+  $token_apply S$CheckUseToken 1
+  goto @使用林丹妙药func
+  mov N$UseIdx 0
+[@StdModeFunc837]
+#if 
+#act 
+  mov N$UseIdx 837
+  $token_apply S$CheckUseToken 1
+  goto @使用林丹妙药func
+  mov N$UseIdx 0
+[@StdModeFunc836]
+#if 
+#act 
+  mov N$UseIdx 836
+  $token_apply S$CheckUseToken 1
+  goto @使用林丹妙药func
+  mov N$UseIdx 0
+[@StdModeFunc835]
+#if 
+#act 
+  mov N$UseIdx 835
+  $token_apply S$CheckUseToken 1
+  goto @使用林丹妙药func
+  mov N$UseIdx 0
+[@StdModeFunc834]
+#if 
+#act 
+  mov N$UseIdx 834
+  $token_apply S$CheckUseToken 1
+  goto @使用林丹妙药func
+  mov N$UseIdx 0
+[@StdModeFunc833]
+#if 
+#act 
+  mov N$UseIdx 833
+  $token_apply S$CheckUseToken 1
+  goto @使用林丹妙药func
+  mov N$UseIdx 0
+[@StdModeFunc832]
+#if 
+#act 
+  mov N$UseIdx 832
+  $token_apply S$CheckUseToken 1
+  goto @使用林丹妙药func
+  mov N$UseIdx 0
+
+[@StdModeFunc831]
+#if 
+#act 
+  mov N$UseIdx 831
+  $token_apply S$CheckUseToken 1
+  goto @使用林丹妙药func
+  mov N$UseIdx 0
+[@StdModeFunc830]
+#if 
+#act 
+  mov N$UseIdx 830
+  $token_apply S$CheckUseToken 1
+  goto @使用林丹妙药func
+  mov N$UseIdx 0
+[@StdModeFunc829]
+#if 
+#act 
+  mov N$UseIdx 829
+  $token_apply S$CheckUseToken 1
+  goto @使用林丹妙药func
+  mov N$UseIdx 0
+[@StdModeFunc828]
+#if 
+#act 
+  mov N$UseIdx 828
+  $token_apply S$CheckUseToken 1
+  goto @使用林丹妙药func
+  mov N$UseIdx 0
+[@StdModeFunc827]
+#if 
+#act 
+  mov N$UseIdx 827
+  $token_apply S$CheckUseToken 1
+  goto @使用林丹妙药func
+  mov N$UseIdx 0
+[@StdModeFunc826]
+#if 
+#act 
+  mov N$UseIdx 826
+  $token_apply S$CheckUseToken 1
+  goto @使用林丹妙药func
+  mov N$UseIdx 0
+[@StdModeFunc825]
+#if 
+#act 
+  mov N$UseIdx 825
+  $token_apply S$CheckUseToken 1
+  goto @使用林丹妙药func
+  mov N$UseIdx 0
+[@StdModeFunc824]
+#if 
+#act 
+  mov N$UseIdx 824
+  $token_apply S$CheckUseToken 1
+  goto @使用林丹妙药func
+  mov N$UseIdx 0
+[@StdModeFunc823]
+#if 
+#act 
+  mov N$UseIdx 823
+  $token_apply S$CheckUseToken 1
+  goto @使用林丹妙药func
+  mov N$UseIdx 0
+[@StdModeFunc822]
+#if 
+#act 
+  mov N$UseIdx 822
+  $token_apply S$CheckUseToken 1
+  goto @使用林丹妙药func
+  mov N$UseIdx 0
+
+[@StdModeFunc821]
+#if 
+#act 
+  mov N$UseIdx 821
+  $token_apply S$CheckUseToken 1
+  goto @使用林丹妙药func
+  mov N$UseIdx 0
+[@StdModeFunc820]
+#if 
+#act 
+  mov N$UseIdx 820
+  $token_apply S$CheckUseToken 1
+  goto @使用林丹妙药func
+  mov N$UseIdx 0
+[@StdModeFunc819]
+#if 
+#act 
+  mov N$UseIdx 819
+  $token_apply S$CheckUseToken 1
+  goto @使用林丹妙药func
+  mov N$UseIdx 0
+[@StdModeFunc818]
+#if 
+#act 
+  mov N$UseIdx 818
+  $token_apply S$CheckUseToken 1
+  goto @使用林丹妙药func
+  mov N$UseIdx 0
+[@StdModeFunc817]
+#if 
+#act 
+  mov N$UseIdx 817
+  $token_apply S$CheckUseToken 1
+  goto @使用林丹妙药func
+  mov N$UseIdx 0
+[@StdModeFunc816]
+#if 
+#act 
+  mov N$UseIdx 816
+  $token_apply S$CheckUseToken 1
+  goto @使用林丹妙药func
+  mov N$UseIdx 0
+[@StdModeFunc815]
+#if 
+#act 
+  mov N$UseIdx 815
+  $token_apply S$CheckUseToken 1
+  goto @使用林丹妙药func
+  mov N$UseIdx 0
+[@StdModeFunc814]
+#if 
+#act 
+  mov N$UseIdx 814
+  $token_apply S$CheckUseToken 1
+  goto @使用林丹妙药func
+  mov N$UseIdx 0
+[@StdModeFunc813]
+#if 
+#act 
+  mov N$UseIdx 813
+  $token_apply S$CheckUseToken 1
+  goto @使用林丹妙药func
+  mov N$UseIdx 0
+[@StdModeFunc812]
+#if 
+#act 
+  mov N$UseIdx 812
+  $token_apply S$CheckUseToken 1
+  goto @使用林丹妙药func
+  mov N$UseIdx 0
+
+[@StdModeFunc811]
+#if 
+#act 
+  mov N$UseIdx 811
+  $token_apply S$CheckUseToken 1
+  goto @使用林丹妙药func
+  mov N$UseIdx 0
+[@StdModeFunc810]
+#if 
+#act 
+  mov N$UseIdx 810
+  $token_apply S$CheckUseToken 1
+  goto @使用林丹妙药func
+  mov N$UseIdx 0
+[@StdModeFunc809]
+#if 
+#act 
+  mov N$UseIdx 809
+  $token_apply S$CheckUseToken 1
+  goto @使用林丹妙药func
+  mov N$UseIdx 0
+[@StdModeFunc808]
+#if 
+#act 
+  mov N$UseIdx 808
+  $token_apply S$CheckUseToken 1
+  goto @使用林丹妙药func
+  mov N$UseIdx 0
+[@StdModeFunc807]
+#if 
+#act 
+  mov N$UseIdx 807
+  $token_apply S$CheckUseToken 1
+  goto @使用林丹妙药func
+  mov N$UseIdx 0
+[@StdModeFunc806]
+#if 
+#act 
+  mov N$UseIdx 806
+  $token_apply S$CheckUseToken 1
+  goto @使用林丹妙药func
+  mov N$UseIdx 0
+[@StdModeFunc805]
+#if 
+#act 
+  mov N$UseIdx 805
+  $token_apply S$CheckUseToken 1
+  goto @使用林丹妙药func
+  mov N$UseIdx 0
+[@StdModeFunc804]
+#if 
+#act 
+  mov N$UseIdx 804
+  $token_apply S$CheckUseToken 1
+  goto @使用林丹妙药func
+  mov N$UseIdx 0
+[@StdModeFunc803]
+#if 
+#act 
+  mov N$UseIdx 803
+  $token_apply S$CheckUseToken 1
+  goto @使用林丹妙药func
+  mov N$UseIdx 0
+[@StdModeFunc802]
+#if 
+#act 
+  mov N$UseIdx 802
+  $token_apply S$CheckUseToken 1
+  goto @使用林丹妙药func
+  mov N$UseIdx 0
+
+[@StdModeFunc801]
+#if 
+#act 
+  mov N$UseIdx 801
+  $token_apply S$CheckUseToken 1
+  goto @使用林丹妙药func
+  mov N$UseIdx 0
+[@使用林丹妙药func]
+#if 
+ not $token_check S$CheckUseToken
+#act 
+  SendMsg 5 操作错误,使用失败!!!
+ break
+#if 
+ equal N$UseIdx 0
+#act 
+  SendMsg 5 操作错误,使用失败!!!
+ break
+ 
+#if 
+  $s_execute 转身系统.增加使用药品次数.sql,<$userName>,<$str(N$UseIdx)>
+#act 
+  $s_gets_str 转身系统.查询药品效力.sql,<$userName>,<$str(N$UseIdx)> S$UseDetail
+#if 
+  equal S$UseDetail.len 0 
+#act 
+  SendMsg 5 操作错误,使用失败!!!
+  break
+#if 
+   equal S$UseDetail[0][0] 0
+#act 
+   SendMsg 7 你已经达到了使用的上限,再次使用无法增加灵力!!! 
+#ELSEACT 
+  $pa_set2 DrugAcquisition <$str(S$UseDetail[0][0])>
+   SendMsg 7 你使用了林丹妙药,灵力+<$str(S$UseDetail[0][0])>,药品随着使用次数增多,效力也会变小!!
+    
+}

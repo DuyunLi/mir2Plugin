@@ -81,20 +81,20 @@
 #if
   not $empty <$str(S$MoveDetailInfo[0][3])>
 #act
-  SendMsg 7 <$str(S$MoveDetailInfo[0][3])>
+  SendMsg 0 <$str(S$MoveDetailInfo[0][3])>
 
 #if
   equal S$MoveDetailInfo[0][0] PDDT
   CheckLevelEx < 120
 #act
   setautogetexp 2 333 0 PDDT 0 0 0 120
-  SendMsg 7 <$userName>进入了泡点地图,每2秒获得大量经验
+  SendMsg 0 <$userName>进入了泡点地图,每2秒获得大量经验
 #if 
   equal S$MoveDetailInfo[0][0] PDDT
   CheckLevelEx > 119
 #act 
   SetOnTimer 0 5
-  SendMsg 7 <$userName>进入了泡点地图,每5秒获得灵力
+  SendMsg 0 <$userName>进入了泡点地图,每5秒获得灵力
 
  
 #act 

@@ -8,9 +8,9 @@
 [@显示会员服务对话框]
 #if
 #act
-  $s_gets_str 会员系统.会员服务信息查询.sql,<$USERID> S$VIPConfig
-  $s_gets_str 会员系统.会员礼包展示.sql,<$USERID> S$GiftItems
-  $s_get_int 会员系统.会员每日礼包展示.sql,<$USERID> N$IsVipDayGift
+  $s_gets_str 会员系统.会员服务信息查询.sql,<$UserName> S$VIPConfig
+  $s_gets_str 会员系统.会员礼包展示.sql,<$UserName> S$GiftItems
+  $s_get_int 会员系统.会员每日礼包展示.sql,<$UserName> N$IsVipDayGift
   mov N$GiftCount <$str(S$GiftItems.len)>
   mov S1 
   mov S0 当前
@@ -140,7 +140,7 @@
   break
 #if
 #act
-  $s_gets_str 会员系统.进入会员地图.sql,<$userID>,<$SCRIPTPARAM1> S$MapInfo
+  $s_gets_str 会员系统.进入会员地图.sql,<$UserName>,<$SCRIPTPARAM1> S$MapInfo
 #if
   not $empty S$MapInfo[0][0]
 #act
@@ -155,9 +155,9 @@
   break
   
 #if
-  $s_execute 会员系统.领取会员每日礼包log.sql,<$userID>
+  $s_execute 会员系统.领取会员每日礼包log.sql,<$UserName>
 #act
-  $s_gets_str 会员系统.领取会员每日礼包.sql,<$userID> S$GiftItems
+  $s_gets_str 会员系统.领取会员每日礼包.sql,<$UserName> S$GiftItems
   mov N$GiftCount <$str(S$GiftItems.len)>
 #elseact
   messagebox \\你今天已经领取过这个礼包了,或者你还不是VIP!!  
@@ -212,9 +212,9 @@
   messagebox  你还不是会员,无法使用
   break
 #if
-  $s_execute 会员系统.领取会员礼包log.sql,<$userID>,<$SCRIPTPARAM1>
+  $s_execute 会员系统.领取会员礼包log.sql,<$UserName>,<$SCRIPTPARAM1>
 #act
-  $s_gets_str 会员系统.领取会员礼包.sql,<$userID>,<$SCRIPTPARAM1> S$GiftItems
+  $s_gets_str 会员系统.领取会员礼包.sql,<$UserName>,<$SCRIPTPARAM1> S$GiftItems
   mov N$GiftCount <$str(S$GiftItems.len)>
 
 #elseact
@@ -265,9 +265,9 @@
 [@进行充值]
 #if
 #act
-  messagebox  未开通充值渠道!
- ; $pa_set2 Recharge 10
- ;DELAYGOTO 1 @显示会员服务对话框
+ ; messagebox  未开通充值渠道!
+  $pa_set2 Recharge 10
+ DELAYGOTO 1 @显示会员服务对话框
 
 [@打开回收界面]
 #if
