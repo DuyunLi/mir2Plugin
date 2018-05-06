@@ -85,10 +85,20 @@
 
 #if
   equal S$MoveDetailInfo[0][0] PDDT
+  CheckLevelEx < 120
 #act
-  setautogetexp 2 333 0 PDDT 
-  SendMsg 7 <$userName>进入了泡点地图,每秒获得大量经验
-  
+  setautogetexp 2 333 0 PDDT 0 0 0 120
+  SendMsg 7 <$userName>进入了泡点地图,每2秒获得大量经验
+#if 
+  equal S$MoveDetailInfo[0][0] PDDT
+  CheckLevelEx > 119
+#act 
+  SetOnTimer 0 5
+  SendMsg 7 <$userName>进入了泡点地图,每5秒获得灵力
+
+ 
+#act 
+   
 #if
   not CheckItem 盟重传送石 1
 #act

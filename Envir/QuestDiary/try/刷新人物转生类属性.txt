@@ -19,9 +19,6 @@
     mov N$Index 0
 [@EachoNewLevelAttr]    
 #if 
-   not equal N$Index 0
 #act 
-    mov n1 <$str(N$Index)>
-    dec n1 1
-    $ut_set <$str(S$NextDetail[<$str(n1)>][0])> 10 <$str(S$NextDetail[<$str(n1)>][1])> <$str(S$NextDetail[<$str(n1)>][2])>
+    $ut_set <$str(S$NextDetail[<$str(N$Index)>][0])> 10 <$str(S$NextDetail[<$str(N$Index)>][1])> <$str(S$NextDetail[<$str(N$Index)>][2])>
 }

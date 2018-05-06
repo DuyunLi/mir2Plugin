@@ -1,6 +1,8 @@
-;此脚为功能脚本，用于实现各种与脚本有关的功能
+; ;此脚为功能脚本，用于实现各种与脚本有关的功能
 (@@InPutInteger @@InPutString @@useitemname @@OffLineMsg @@dealgold)
 ;----------------------------------------------------
+
+ #call [..\QuestDiary\try\使用灵丹妙药.txt] @使用灵丹妙药初始化
 
 [@KillPlay]
 #ACT
@@ -268,3 +270,19 @@ SENDMSG 6 命令停止挂机，使用快捷键“CTRL+ALT+X”开始挂机
 #if 
 #act 
   KILLMONBURSTRATE <$str(n2)> 0 0
+   
+; [@attackTick1]
+; #if 
+ 
+; #act 
+;   SendMsg 5 攻击间隔:<$str(S$Attack.tick)>
+;   SendMsg 5 检测间隔:<$str(S$Attack.Interval)>
+;   SendMsg 5 当前动作:<$str(S$Attack.CurrentAction)>
+;   SendMsg 5 上一个动作:<$str(S$Attack.BeforeAction)>
+; [@testTick] 
+; #if 
+ 
+; #act 
+;   SendMsg 5 攻击间隔:<$str(S$Attack.tick)>
+;   SendMsg 5 当前动作:<$str(S$Attack.CurrentAction)>
+;   SendMsg 5 上一个动作:<$str(S$Attack.BeforeAction)> ;

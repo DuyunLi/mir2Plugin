@@ -15,7 +15,7 @@
     mov n1 0
     mov s0 
     mov s1
-    $s_gets_str 转身系统.查询转身等级.sql,<$UserName>,0 S$TestLevel   
+    $s_gets_str 转身系统.查询转身等级.sql,<$UserName> S$TestLevel   
     $s_gets_str 转身系统.查询转身下一级属性.sql,<$UserName> S$NextDetail
     mov N0 0
 #if
@@ -172,16 +172,27 @@
 
 
    <text:修炼<$str(s1)>到下一段需要灵力：:225:150{FCOLOR=254}>\
-   <ProgressBar:230:160:9:135:136:1:100:0:0:0:<$str(S$TestLevel[0][1])>:1800:0:255:0:0:%r%:灵力充沛程度,积满100%即可升级>\
+   <ProgressBar:230:160:9:135:136:1:100:0:0:0:<$str(S$TestLevel[0][1])>:<$str(S$TestLevel[0][2])>:0:255:0:0:%r%:灵力充沛程度,积满100%即可升级>\
    <imgex:9:116:117:118:280:170:/@开始炼体><text:点击炼体:215:180{FCOLOR=251}>\
    <text:遇到灵丹妙药吃下可以加快灵力的累积,或者在泡点室打坐也可以累积灵力:20:215{FCOLOR=253}>\
    <$str(s0)>
 
 [@开始炼体]
+#if
+#act 
+   $s_gets_str 转身系统.查询转身等级.sql,<$UserName> S$TestLevel  
+#or 
+   equal S$TestLevel.len 0
+   not equal S$TestLevel[0][1] <$str(S$TestLevel[0][2])>
+#act 
+   messagebox \\你还没达到转身的条件,你的灵力值不够!!
+   break
 #if 
-    $s_execute  转身系统.修改转身等级.sql,<$UserName>,0
+   $s_execute 转身系统.修改转身等级.sql,<$UserName>,0
 #act 
    #call [..\QuestDiary\try\刷新人物转生类属性.txt] @RefreshNewLevelAttr
+   SendMsg 0 恭喜玩家{<$USERNAME>|251:249:1}成功的进行了一次转生!
+  
    goto @查询转身系统数据
 #elseact
    sendmsg 5 转身操作失败,请重试!
