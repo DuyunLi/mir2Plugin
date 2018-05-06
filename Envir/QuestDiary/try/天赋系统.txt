@@ -1,0 +1,83 @@
+[@天赋系统初始化]
+{
+#if 
+    
+#act 
+    $executeGuid 8D090C7BA96F4D129CC43C9EB06FBCC7
+    $executeGuid FFCDEA492F3F4E4BB7B9492F16922B6A
+    OPENMERCHANTBIGDLG 9 65 0 4 0 -40 1 520 50 1
+    mov n0 0
+    mov s0
+    mov s1
+    mov n0 1 
+    mov s0 HpMax 
+    goto @展示天赋详情
+[@显示天赋系统对话框]
+#if 
+   
+#say 
+  <text:超级天赋:240:40{FCOLOR=253}>\
+  <text:天赋属性列表：:50:100{FCOLOR=254}>\
+  <text:------------------------------------------:50:105{FCOLOR=86}>\
+
+  <text:HpMax(Lv10):57:105{FCOLOR=251}/@click天赋详情(1,HpMax)>\
+  <text:MpMax(Lv10):192:90{FCOLOR=251}/@click天赋详情(2,MpMax)>\
+
+  <text:攻击吸血(Lv10):57:92{FCOLOR=251}/@click天赋详情(3,攻击吸血)>\
+  <text:攻击吸蓝(Lv10):192:76{FCOLOR=251}/@click天赋详情(4,攻击吸蓝)>\
+  <text:------------------------------------------:50:78{FCOLOR=86}>\
+
+  <text:物理防御(Lv10):57:78{FCOLOR=251}/@click天赋详情(5,物理防御)>\
+  <text:魔法防御(Lv10):192:62{FCOLOR=251}/@click天赋详情(6,魔法防御)>\
+
+  <text:全属性(Lv10):57:64{FCOLOR=251}/@click天赋详情(7,全属性)>\
+  <text:------------------------------------------:50:66{FCOLOR=86}>\
+
+  <text:暴击伤害(Lv10):57:66{FCOLOR=251}/@click天赋详情(8,暴击伤害)>\
+  <text:Boss伤害(Lv10):192:50{FCOLOR=251}/@click天赋详情(9,Boss伤害)>\
+  
+  <text:真实伤害(Lv10):57:52{FCOLOR=251}/@click天赋详情(10,真实伤害)>\
+  <text:伤害加深(Lv10):192:36{FCOLOR=251}/@click天赋详情(11,伤害加深)>\
+  <text:------------------------------------------:50:38{FCOLOR=86}>\
+  
+
+  <text:经验倍率(Lv10):57:38{FCOLOR=251}/@click天赋详情(12,经验倍率)>\
+  <text:爆率倍率(Lv10):192:22{FCOLOR=251}/@click天赋详情(13,爆率倍率)>\
+  <text:------------------------------------------:50:24{FCOLOR=86}>\
+
+  <text:神之破甲(Lv10):57:24{FCOLOR=251}/@click天赋详情(14,神之破甲)>\
+  <text:神之护甲(Lv10):192:8{FCOLOR=251}/@click天赋详情(15,神之护甲)>\
+
+  <text:天赋获得：100级之后每升级10级将可以获得10点天赋属性点,可以进行加点:90:64{FCOLOR=70}>\
+  <text:加点说明：每一个天赋最多升级十次,等级越高,属性越高,需要的点数越高:80:79{FCOLOR=253}>\
+
+  <text:<$str(s0)>:397:-262{FCOLOR=251}>\
+  <text:当前天赋等级：:340:-210{FCOLOR=251}>\
+  <text:天赋加成属性：:340:-195{FCOLOR=251}>\
+  <text:下级加成属性：:340:-193{FCOLOR=251}>\
+  <text:升级需要点数：:340:-178{FCOLOR=251}>\
+  <text:剩余天赋点数：:340:-176{FCOLOR=251}>\
+  <$str(s1)>
+[@click天赋详情]
+#if 
+ 
+#act 
+ mov n0 <$SCRIPTPARAM1> 
+ mov s0 <$SCRIPTPARAM2> 
+ goto @展示天赋详情
+[@展示天赋详情]
+#if 
+ 
+#act 
+ mov s1 <imgex:9:32:33:34:370:-145:/@升级天赋(
+ inc s1 <$str(n0)>
+ inc s1 )><text:升级天赋:295:-134{FCOLOR=251}>\ 
+ goto @显示天赋系统对话框
+[@升级天赋]
+#if 
+ 
+#act 
+    sendmsg 5 点击了:<$SCRIPTPARAM1> 
+ 
+}
+   
