@@ -21,3 +21,29 @@
 #act 
     $ut_set <$str(S$NextDetail[<$str(N$Index)>][0])> 10 <$str(S$NextDetail[<$str(N$Index)>][1])> <$str(S$NextDetail[<$str(N$Index)>][2])>
 }
+
+[@RefreshNewLevelTalent]
+{
+#if 
+#act 
+    $s_gets_str 转身系统.查询天赋属性.sql,<$UserName> S$NextDetail   
+    mov N0 0
+#if 
+   equal S$NextDetail.len 0
+#act 
+   break
+#elseact
+   mov n0 <$str(S$NextDetail.len)>
+#if 
+   
+#act 
+    $each @EachoNewLevelTalent <$str(n0)> N$Index
+    ChangeHumAbility 1 = 1 1
+    mov N$Index 0
+[@EachoNewLevelTalent]    
+#if 
+#act 
+    $ut_set <$str(S$NextDetail[<$str(N$Index)>][0])> 11 <$str(S$NextDetail[<$str(N$Index)>][1])> <$str(S$NextDetail[<$str(N$Index)>][2])>
+
+ 
+}

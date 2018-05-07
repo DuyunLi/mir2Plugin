@@ -11,6 +11,7 @@ $pa_init
 
 $s_get_int 会员系统.会员当前等级.sql,<$USERName> N0
 #call [..\QuestDiary\try\刷新人物转生类属性.txt] @RefreshNewLevelAttr
+#call [..\QuestDiary\try\刷新人物转生类属性.txt] @RefreshNewLevelTalent
 ;聊天框固定公告范本
 SENDTOPCHATBOARDMSG 0 253 255 65535 热血传奇欢迎您！
 
@@ -120,25 +121,25 @@ break
   ISONMAP pddt
 #elseact 
   SETOFFTIMER 0
-  sendmsg 5 不在地图了
+  sendmsg 7 {<$USERNAME>你已经不在泡点地图,停止冥想|254:7:1}
   break
 
 #if 
   checklevelex < 129
 #act 
   $pa_set2 BubblePointAcquisition 1
-  sendmsg 7 你冥想获得了灵力+1
+  sendmsg 7 {你正在泡点地图冥想,获得了|254:7:1}{灵力+1|251:7:1}
   break
 #if 
   checklevelex < 139
 #act 
   $pa_set2 BubblePointAcquisition 2
-  sendmsg 7 你冥想获得了灵力+2
+  sendmsg 7 {你正在泡点地图冥想,获得了|254:7:1}灵力+2|251:7:1}
   break
 #if 
   checklevelex < 199
 #act 
   $pa_set2 BubblePointAcquisition 3 
-  sendmsg 7 你冥想获得了灵力+3
+  sendmsg 7 {你正在泡点地图冥想,获得了|254:7:1}灵力+3|251:7:1}
   break
  

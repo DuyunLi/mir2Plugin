@@ -9,6 +9,15 @@
 SendMsg 5 你杀人了?
 
 [@PlayLevelUp]
+#if 
+ 
+#act 
+ ;每次升级加十点
+#if 
+  checkLevelEx > 100 
+#act 
+  $pa_set2 UpLevelTalent 10
+  
 
 [@PlayDie]
 #IF
@@ -132,9 +141,9 @@ SENDMSG 6 命令停止挂机，使用快捷键“CTRL+ALT+X”开始挂机
   mov N0 0
   MOV N1 0
   MOV N2 0 
-  $s_get_int 会员系统.会员当前等级.sql,<$USERID> N0
-  $s_get_int 会员系统.充值确定VIP等级.sql,<$USERID> N1
-  $s_get_int 会员系统.会员当前等级.sql,<$USERID> N2
+  $s_get_int 会员系统.会员当前等级.sql,<$USERName> N0
+  $s_get_int 会员系统.充值确定VIP等级.sql,<$USERName> N1
+  $s_get_int 会员系统.会员当前等级.sql,<$USERName> N2
 #if
   CHECKMEMBERLEVEL < <$str(N2)>  
 #act
@@ -229,47 +238,63 @@ SENDMSG 6 命令停止挂机，使用快捷键“CTRL+ALT+X”开始挂机
   mov N$NextStep 0
 [@AttrUserAxact]
 #act 
-  $ut_get <$str(n0)> N1 N2
-  ChangeHumAbility 19 = <$str(n1)>
+  $ut_get <$str(n0)> N900 N901
+  ChangeHumAbility 19 = <$str(N900)>
 [@AttrUserAgile]
 #act 
-  $ut_get <$str(n0)> N1 N2
-  ChangeHumAbility 20 = <$str(n1)>
+  $ut_get <$str(n0)> N900 N901
+  ChangeHumAbility 20 = <$str(N900)>
 [@AttrUserSpeed]
 #act 
-  $ut_get <$str(n0)> N1 N2
-  mul N2 <$str(n1)> 10
-  ChangeSpeed 2 <$str(n1)>
+  $ut_get <$str(n0)> N900 N901
+  mul N901 <$str(N900)> 10
+  ChangeSpeed 2 <$str(N900)>
 [@AttrUserBlastHitRate]
 #act 
-  $ut_get <$str(n0)> N1 N2
+  $ut_get <$str(n0)> N900 N901
 #if 
-  equal N2 0
+  equal N901 0
 #act 
-  mov n2 1
+  mov N901 1
+#ELSEACT
+  inc N901 100
 #if 
 #act 
-  SetBlastHitRate <$str(n2)> 0
+  SetBlastHitRate <$str(N901)> 0
 [@AttrUserExpRate]
 #act 
-  $ut_get <$str(n0)> N1 N2
+  $ut_get <$str(n0)> N900 N901
 #if 
-  equal N2 0
+  equal N901 0
 #act 
-  mov n2 1
+  mov N901 1
+#ELSEACT
+  inc N901 100
 #if 
 #act 
-  KILLMONEXPRATE  <$str(n2)> 65535
+  $compute <$KILLMONEXPRATE>*100 $empty$ S$RateResult
+#or 
+  equal S$RateResult <$str(N901)>.0
+  equal S$RateResult <$str(N901)>.00
+#elseact 
+  KILLMONEXPRATE  <$str(N901)> 0 0
 [@AttrUserMonsterRate]
 #act 
-  $ut_get <$str(n0)> N1 N2
+  $ut_get <$str(n0)> N900 N901
 #if 
-  equal N2 0
+  equal N901 0
 #act 
-  mov n2 1
+  mov N901 1
+#ELSEACT
+  inc N901 100
 #if 
 #act 
-  KILLMONBURSTRATE <$str(n2)> 0 0
+  $compute <$KILLMONBURSTRATE>*100 $empty$ S$RateResult
+#or 
+  equal S$RateResult <$str(N901)>.0
+  equal S$RateResult <$str(N901)>.00
+#elseact 
+  KILLMONBURSTRATE <$str(N901)> 0 0
    
 ; [@attackTick1]
 ; #if 
