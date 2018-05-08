@@ -1,0 +1,26 @@
+REPLACE INTO UserHighestAttribute (
+                                      username,
+                                      type,
+                                      attrValue
+                                  )
+                                  SELECT t.n,
+                                         t.t,
+                                         t.v2
+                                    FROM (
+                                             SELECT v.v + ifnull(a.AttrValue, 0) v,
+                                                    v.t,
+                                                    v.n,
+                                                    v.v2
+                                               FROM (
+                                                        SELECT 0 v,
+                                                               '{1}' t,
+                                                               '{0}' n,
+                                                               {2} v2
+                                                    )
+                                                    v
+                                                    LEFT JOIN
+                                                    UserHighestAttribute a ON userName = v.n AND 
+                                                                              type = v.t
+                                         )
+                                         t
+                                   WHERE t.v < t.v2;
