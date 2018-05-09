@@ -1,0 +1,1 @@
+replace into skillUser (userName,srcIdx) values('{0}',{1})

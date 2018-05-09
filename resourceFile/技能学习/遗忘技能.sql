@@ -1,0 +1,1 @@
+delete from  skillUser where userName = '{0}' and srcIdx = {1}
