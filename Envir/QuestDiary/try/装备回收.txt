@@ -58,7 +58,8 @@
 #elseact
   mov N$RecoveryBase 0 
   mov N$RecoverySum 0 
-  $each @回收循环开启 <$str(S$RecoveryItems.len)> N0
+  mov N$Recovery 0
+  $each @回收循环开启 <$str(S$RecoveryItems.len)> N$Recovery
 #if
   equal N$RecoverySum 0 
   equal N$RecoveryBase 0 
@@ -88,7 +89,8 @@
 [@回收循环开启]
 #if
 #act
-  TakeBagItem <$str(S$RecoveryItems[<$str(N0)>][1])> 52 0 0 0 0 N1 0 1
-  $compute <$str(N$RecoveryBase)>+<$str(S$RecoveryItems[<$str(N0)>][0])>*<$str(N1)> $emoty$ N$RecoveryBase
-  inc N$RecoverySum <$str(N1)>
+  TakeBagItem <$str(S$RecoveryItems[<$str(N$Recovery)>][1])> 52 0 0 0 0 N200 0 1
+
+  $compute <$str(N$RecoveryBase)>+<$str(S$RecoveryItems[<$str(N$Recovery)>][0])>*<$str(N200)> $emoty$ N$RecoveryBase
+  inc N$RecoverySum <$str(N200)>
 }

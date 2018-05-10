@@ -312,6 +312,6 @@
    SendMsg 7 你已经达到了使用的上限,再次使用无法增加灵力!!! 
 #ELSEACT 
   $pa_set2 DrugAcquisition <$str(S$UseDetail[0][0])>
-   SendMsg 7 你使用了林丹妙药,灵力+<$str(S$UseDetail[0][0])>,药品随着使用次数增多,效力也会变小!!
+   SendMsg 7 你使用了灵丹妙药,灵力+<$str(S$UseDetail[0][0])>,药品随着使用次数增多,效力也会变小!!
     
 }

@@ -1,0 +1,182 @@
+[@技能修炼初始化]
+{
+#if 
+ 
+#act 
+    $executeGuid 8D090C7BA96F4D129CC43C9EB06FBCC7
+    $executeGuid FFCDEA492F3F4E4BB7B9492F16922B6A
+    OPENMERCHANTBIGDLG 9 159 0 4 0 -70 1 247 18 1
+ mov s221 
+    goto @技能修炼对话框显示
+[@技能修炼对话框显示]    
+#if 
+ 
+#act 
+    
+    $s_gets_str 技能学习.查询遗忘技能需要.sql,<$userName>,0 S$SkillDetail 
+ 
+#say
+    <ITEMBOX:0:9:5:120:145:50:50:4:#请放入技能书,最多学习其他职业三个技能>
+    <$str(s221)>\
+    <text:学习本职业技能可以任意学习:65:185{FColor=250}>\
+    <text:学习其他职业技能只能学习三个:60:187{FColor=251}>\
+    <imgex:9:120:121:122:95:191:/@开始学习><text:开始学习:34:200{FCOLOR=251}>\  
+#if 
+ equal S$SkillDetail.len 1 
+#say 
+<text:↓已学习,点击图标可遗忘技能↓:45:-4{FColor=251}>\
+<ItemShow:<$str(S$SkillDetail[0][0])>:0:110:-2:-1/@遗忘技能(<$str(S$SkillDetail[0][0])>,<$str(S$SkillDetail[0][1])>,<$str(S$SkillDetail[0][2])>)>\
+#if 
+ equal S$SkillDetail.len 2 
+#say 
+<text:↓已学习,点击图标可遗忘技能↓:45:-4{FColor=251}>\
+<ItemShow:<$str(S$SkillDetail[0][0])>:0:85:-2:-1/@遗忘技能(<$str(S$SkillDetail[0][0])>,<$str(S$SkillDetail[0][1])>,<$str(S$SkillDetail[0][2])>)>\
+<ItemShow:<$str(S$SkillDetail[1][0])>:0:135:-18:-1/@遗忘技能(<$str(S$SkillDetail[1][0])>,<$str(S$SkillDetail[1][1])>,<$str(S$SkillDetail[1][2])>)>\
+#if 
+ equal S$SkillDetail.len 3 
+#say 
+<text:↓已学习,点击图标可遗忘技能↓:45:-4{FColor=251}>\
+<ItemShow:<$str(S$SkillDetail[0][0])>:0:60:-2:-1/@遗忘技能(<$str(S$SkillDetail[0][0])>,<$str(S$SkillDetail[0][1])>,<$str(S$SkillDetail[0][2])>)>\
+<ItemShow:<$str(S$SkillDetail[1][0])>:0:110:-18:-1/@遗忘技能(<$str(S$SkillDetail[1][0])>,<$str(S$SkillDetail[1][1])>,<$str(S$SkillDetail[1][2])>)>\
+<ItemShow:<$str(S$SkillDetail[2][0])>:0:160:-34:-1/@遗忘技能(<$str(S$SkillDetail[2][0])>,<$str(S$SkillDetail[2][1])>,<$str(S$SkillDetail[2][2])>)>\
+[@遗忘技能]
+#if 
+ 
+#act 
+ mov n220 <$SCRIPTPARAM1>
+ mov S220
+ GetDBIdxItemFieldValue <$str(n220)> name S220
+ messagebox \\是否确认遗忘技能<$str(S220)>?\遗忘技能需要消耗『<$SCRIPTPARAM2>x<$SCRIPTPARAM3>』 @确认遗忘技能 @取消遗忘技能
+
+[@ItemIntoBox0] 
+#if 
+ CHECKSKILL <$BOXITEM[0].NAME> > 0 
+#act 
+ mov s221 
+ messagebox \\你已经学习了技能:<$BOXITEM[0].NAME>\无法重复学习!!技能书已经返回你的背包.
+ ReturnBoxItem 0
+#elseact
+    $s_gets_str 技能学习.查询学习技能需要.sql,<$userName>,<$BOXITEM[0].IDX> S$SkillResult 
+    GetDBItemFieldValue <$str(S$SkillResult[0][0])> idx S$SkillResult[0][0]
+     mov s221 <ItemShow:
+     inc s221 <$str(S$SkillResult[0][0])>:<$str(S$SkillResult[0][1])>
+     inc s221 :110:146:-1/> 
+    goto @技能修炼对话框显示
+[@取消遗忘技能]
+[@确认遗忘技能]
+#if 
+ 
+#act 
+ $s_gets_str 技能学习.查询遗忘技能需要.sql,<$userName>,<$str(n220)> S$SkillResult
+
+#if 
+ equal S$SkillResult.len 0
+#act 
+   messagebox \出现错误,请重试!!!
+   break
+   
+#if 
+  not CheckItem <$str(S$SkillResult[0][1])> <$str(S$SkillResult[0][2])>
+#act 
+   messagebox \你的包裹没没有发现『<$str(S$SkillResult[0][1])>x<$str(S$SkillResult[0][2])>』,请检查后重试!!!
+   break
+ 
+
+#if 
+   $s_execute 技能学习.遗忘技能.sql,<$userName>,<$str(S$SkillResult[0][0])>
+#act 
+  take <$str(S$SkillResult[0][1])> <$str(S$SkillResult[0][2])>
+  GetDBIdxItemFieldValue <$str(S$SkillResult[0][0])> name S220
+  DELSKILL <$str(S220)>
+  messagebox \\你已经成功的遗忘了技能了<$str(S220)>.
+  goto @技能修炼对话框显示
+  break
+   
+[@开始学习] 
+#if 
+  not CheckBoxItemCount 0
+#act 
+   messagebox \\请放入技能再点击学习!!!
+   break
+ 
+#if 
+  ;如果是战士
+  ;学习的技能也是本职业的,立即学习
+  CHECKJOB warrior
+  equal <$BOXITEM[0].Shape> 0
+#act 
+  ADDSKILL <$BOXITEM[0].NAME>
+  SKILLLEVEL <$BOXITEM[0].NAME> = 3
+  messagebox \\你已经成功的学习了<$BOXITEM[0].NAME>.
+  DelBoxItem 0
+  break
+#if 
+  ;如果是法师
+  CHECKJOB wizard
+  equal <$BOXITEM[0].Shape> 1
+#act 
+  ADDSKILL <$BOXITEM[0].NAME>
+  SKILLLEVEL <$BOXITEM[0].NAME> = 3
+  messagebox \\你已经成功的学习了<$BOXITEM[0].NAME>.
+  DelBoxItem 0
+  break
+
+#if
+  ;如果是道士
+  CHECKJOB taoist
+  equal <$BOXITEM[0].Shape> 2
+#act 
+  ADDSKILL <$BOXITEM[0].NAME>
+  SKILLLEVEL <$BOXITEM[0].NAME> = 3
+  messagebox \\你已经成功的学习了<$BOXITEM[0].NAME>.
+  DelBoxItem 0
+  break
+#if 
+ 
+#act 
+    $s_gets_str 技能学习.查询学习技能需要.sql,<$userName>,<$BOXITEM[0].IDX> S$SkillResult 
+#if 
+   equal S$SkillResult.len 0
+#act 
+   messagebox \出现错误,请重试!!!
+   break
+#if 
+ 
+#act 
+   messagebox \是否确认学习技能[<$BOXITEM[0].NAME>]?\学习<$BOXITEM[0].NAME>需要『<$str(S$SkillResult[0][0])>x<$str(S$SkillResult[0][1])>』\提示:学习非本职业技能越多,需要的资源越多! @确认学习技能 @取消遗忘技能
+[@确认学习技能]
+#if 
+  not CheckBoxItemCount 0
+#act 
+   messagebox \\请放入技能再点击学习!!!
+   break
+
+#if 
+ 
+#act 
+   $s_gets_str 技能学习.查询学习技能需要.sql,<$userName>,<$BOXITEM[0].IDX> S$SkillResult
+#if 
+   equal S$SkillResult.len 0
+#act 
+   messagebox \出现错误,请重试!!!
+   break
+#if 
+  not CheckItem <$str(S$SkillResult[0][0])> <$str(S$SkillResult[0][1])>
+#act 
+   messagebox \你的包裹没没有发现『<$str(S$SkillResult[0][0])>x<$str(S$SkillResult[0][1])>』,请检查后重试!!!
+   break
+ 
+
+#if 
+   $s_execute 技能学习.学习技能.sql,<$userName>,<$BOXITEM[0].IDX>
+#act 
+  take <$str(S$SkillResult[0][0])> <$str(S$SkillResult[0][1])>
+  ADDSKILL <$BOXITEM[0].NAME>
+  SKILLLEVEL <$BOXITEM[0].NAME> = 3
+  messagebox \\你已经成功的学习了<$BOXITEM[0].NAME>.
+  DelBoxItem 0
+  goto @技能修炼对话框显示
+  break
+ 
+   
+}

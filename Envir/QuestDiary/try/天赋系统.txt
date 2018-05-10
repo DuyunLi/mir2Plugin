@@ -3,8 +3,6 @@
 #if 
     
 #act 
-    $executeGuid 8D090C7BA96F4D129CC43C9EB06FBCC7
-    $executeGuid FFCDEA492F3F4E4BB7B9492F16922B6A
     OPENMERCHANTBIGDLG 9 65 0 4 0 -40 1 520 50 1
     $s_gets_str 转身系统.查询天赋等级.sql,<$UserName> S$AttrLevel
     mov n100 0

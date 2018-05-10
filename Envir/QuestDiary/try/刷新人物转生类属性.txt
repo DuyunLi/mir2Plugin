@@ -2,7 +2,7 @@
 {
 #if 
 #act 
-    $s_gets_str 转身系统.查询转身属性.sql,<$UserName>,0 S$NextDetail   
+    $s_gets_str 转身系统.查询转身属性.sql,<$UserName> S$NextDetail   
     mov N0 0
 #if 
    equal S$NextDetail.len 0
