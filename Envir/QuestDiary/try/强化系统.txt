@@ -446,7 +446,7 @@
   break
 #if
   equal N$UpgradeResult 1
-  equal N$UpgradeCount 5
+  equal N$UpgradeCount 8
   CheckFluteCount boxitem0 < 1
 #act
   SETFLUTECOUNT boxitem0 1
@@ -455,7 +455,7 @@
 
 #if
   equal N$UpgradeResult 1
-  equal N$UpgradeCount 9
+  equal N$UpgradeCount 12
   CheckFluteCount boxitem0 < 2
 #act
   SETFLUTECOUNT boxitem0 2
@@ -464,7 +464,7 @@
   
 #if
   equal N$UpgradeResult 1
-  equal N$UpgradeCount 13
+  equal N$UpgradeCount 15
   CheckFluteCount boxitem0 < 3
 #act
   SETFLUTECOUNT boxitem0 3

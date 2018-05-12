@@ -16,7 +16,7 @@ SELECT Level,
                       SELECT ifnull(sum(balance), 0) balance
                         FROM pointaudit
                        WHERE accountid = '{0}' AND 
-                             serviceID = 13
+                           typeid = 3 and balance > 0
                   )
                   balance,
                   CASE WHEN vu.level IS NULL THEN 0 ELSE vc.UpRechargeAmount END UpRechargeAmount,

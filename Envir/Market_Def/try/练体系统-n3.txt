@@ -1,0 +1,5 @@
+[@main]
+#if    
+#act 
+  #call [..\QuestDiary\try\转身系统.txt] @转身系统初始化
+  break

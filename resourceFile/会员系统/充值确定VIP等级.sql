@@ -6,7 +6,7 @@ REPLACE INTO vipUser  SELECT '{0}',
                   ifnull(sum(balance), 0) balance
              FROM pointaudit
             WHERE accountid = '{0}' AND 
-                  serviceID = 13
+                  typeid = 3 and balance > 0
        )
        acc
        LEFT JOIN

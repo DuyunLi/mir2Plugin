@@ -1,0 +1,73 @@
+
+[@CDK兑换]
+{
+#if 
+ 
+#say
+   <text:CDKey兑换:150:5{FCOLOR=254}>\
+   <text:你给我一串令牌,我可以帮你兑换令牌内包含的物资:20:10{FCOLOR=254}>\
+   <text:使用之前请确认背包内有足够多的空格!:20:13{FCOLOR=7}>\
+   <text:使用之前确认兑换角色!:20:13{FCOLOR=7}>\
+
+   <imgex:9:36:37:38:120:32:/@@InPutString27>\   
+
+[@InPutString27]
+#if 
+   equal s27 
+#act 
+  messagebox \\不能输入空的字符串,请重新检查后再试!!!
+  break
+
+#if 
+  $s_execute CDKey.使用CDKey.sql,<$str(s27)>,<$UserName>  
+#elseact
+  messagebox \\CDKEY不正确,或者已经被使用过了,请检查后再试!!!
+  break
+#if 
+#act 
+  $s_gets_str CDKey.查询CDKey.sql,<$str(s27)>,<$UserName> S$SDKDetail
+#if 
+  equal S$SDKDetail.len 0
+#act 
+  messagebox \\CDKEY不正确,请检查后再试!!!
+  break
+#if 
+ 
+#act 
+  sendmsg 7 兑换CDKey成功,物品已经发放到背包中!
+  mov N$SDKIndex 0
+  $each @循环读取CDK列表 <$str(S$SDKDetail.len)> N$SDKIndex 
+  mov N$SDKIndex 0
+
+[@循环读取CDK列表] 
+#if 
+  equal <$str(S$SDKDetail[<$str(N$SDKIndex)>][0])> -1
+#act 
+  $pa_set2 CDKGold <$str(S$SDKDetail[<$str(N$SDKIndex)>][1])>
+  sendmsg 5 获得元宝+<$str(S$SDKDetail[<$str(N$SDKIndex)>][1])>
+  break
+#if 
+  equal <$str(S$SDKDetail[<$str(N$SDKIndex)>][0])> -2
+#act 
+  $pa_set2 CDKRC <$str(S$SDKDetail[<$str(N$SDKIndex)>][1])>
+  sendmsg 5 获得荣耀币+<$str(S$SDKDetail[<$str(N$SDKIndex)>][1])>
+  break
+#if 
+  equal <$str(S$SDKDetail[<$str(N$SDKIndex)>][0])> -3
+#act 
+  $pa_set2 RechargeQuota <$str(S$SDKDetail[<$str(N$SDKIndex)>][1])>
+  $pa_set2 RechargeDeduction <$str(S$SDKDetail[<$str(N$SDKIndex)>][1])>
+  sendmsg 5 获得充值额度+<$str(S$SDKDetail[<$str(N$SDKIndex)>][1])>
+  break
+#if 
+  equal <$str(S$SDKDetail[<$str(N$SDKIndex)>][0])> -4
+#act 
+  $pa_set2 CDKBindEC <$str(S$SDKDetail[<$str(N$SDKIndex)>][1])>
+  sendmsg 5 获得绑定推荐币+<$str(S$SDKDetail[<$str(N$SDKIndex)>][1])>
+  break
+#if 
+#act 
+  give  <$str(S$SDKDetail[<$str(N$SDKIndex)>][0])> <$str(S$SDKDetail[<$str(N$SDKIndex)>][1])>
+  sendmsg 5 <$str(S$SDKDetail[<$str(N$SDKIndex)>][0])>,<$str(S$SDKDetail[<$str(N$SDKIndex)>][1])>
+  break
+}

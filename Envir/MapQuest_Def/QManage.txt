@@ -10,13 +10,22 @@ ShowGodBless 1
 $pa_init
 
 $s_get_int 会员系统.会员当前等级.sql,<$USERName> N0
+;聊天框固定公告范本
+;SENDTOPCHATBOARDMSG 0 253 255 65535 热血传奇欢迎您！
+
+
+$s_gets_str 会员系统.获取会员加成.sql,<$UserName> S$VipRate
+#if 
+  not equal S$VipRate.len 0
+#act 
+  $ut_set 10006 20 1 <$str(S$VipRate[0][1])>
+  $ut_set 10005 20 1 <$str(S$VipRate[0][0])>
+#if 
+#act 
+  
 #call [..\QuestDiary\try\刷新人物转生类属性.txt] @RefreshNewLevelAttr
 #call [..\QuestDiary\try\刷新人物转生类属性.txt] @RefreshNewLevelTalent
-;聊天框固定公告范本
-SENDTOPCHATBOARDMSG 0 253 255 65535 热血传奇欢迎您！
-
-
-
+ 
 ;血球触发功能，不需要可删除
 
 #if

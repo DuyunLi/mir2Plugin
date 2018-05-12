@@ -1,0 +1,16 @@
+Icon.wil
+Items.wil
+DnItems.wil
+Prguse.wil
+Prguse2.wil
+Prguse3.wil
+Items1.wil
+DoItems1.wil
+ui_n.wzl
+Dialog.Pak
+DialogEffect.Pak
+effect.Pak
+title.Pak
+UI1.WZL
+Magic10.wzl
+MagIcon.wzl
