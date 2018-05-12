@@ -3,10 +3,10 @@
 #if 
  
 #act 
-    $executeGuid 8D090C7BA96F4D129CC43C9EB06FBCC7
-    $executeGuid FFCDEA492F3F4E4BB7B9492F16922B6A
     OPENMERCHANTBIGDLG 9 159 0 4 0 -70 1 247 18 1
- mov s221 
+    mov s221 
+    mov S220
+    mov n220 0
     goto @技能修炼对话框显示
 [@技能修炼对话框显示]    
 #if 

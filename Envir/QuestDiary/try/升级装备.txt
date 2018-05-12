@@ -15,7 +15,7 @@
   <ITEMBOX:0:9:5:275:230:50:50:30,90,63,65,12,16,22:请放入成长型装备>\
   <text:可放入成长型装备:240:310{FCOLOR=251}>\
   <text:[:235:315{FCOLOR=251}>
-  <text:灵玉、灵石、官印:235:315{FCOLOR=250}>
+  <text:灵石、官印:235:315{FCOLOR=250}>
   <text:]:235:315{FCOLOR=251}>\
   <text:[:235:320{FCOLOR=251}>
   <text:盾牌、斗笠:235:320{FCOLOR=250}>
@@ -212,6 +212,7 @@ break
   SetCustomItemProgressbar boxitem0 <$str(N$BoxPosition)> 2 250
   SetCustomItemProgressbarValue  boxitem0 <$str(N$BoxPosition)> 3 = <$str(N$BoxLevel)>
   mov S$BoxName <$BOXITEM[0].Name>
+
 #if
   not equal S$SynthesisBoxMarster[0][4] 0  
   not $empty <$str(S$BoxName)>

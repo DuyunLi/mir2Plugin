@@ -1,0 +1,80 @@
+[@升级奖励系统初始化]
+{
+#if 
+ 
+#act 
+    $executeGuid 8D090C7BA96F4D129CC43C9EB06FBCC7
+    $executeGuid FFCDEA492F3F4E4BB7B9492F16922B6A
+    OPENMERCHANTBIGDLG 9 129 0 4 0 0 1 391 8 1
+    goto @升级奖励系统对话框显示
+[@升级奖励系统对话框显示]
+#if 
+#act 
+  $s_gets_str 天下第一.查看等级奖励.sql,<$UserName>,1 S$LevelDetail $js_天下第一.查询等级奖励view.js,<$Level>
+#say
+<$str(S$LevelDetail)>
+[@领取礼包]
+#if 
+ 
+#act 
+  $s_gets_str 天下第一.查看等级奖励.sql,<$UserName>,1 S$LevelDetail
+ 
+#if 
+  $s_execute 天下第一.领取等级奖励.sql,<$UserName>,<$Level> 
+#elseact 
+  messagebox \\领取失败,你还未达到等级,或者已经领取过该奖励!!!
+  break
+#act 
+  mov N230 0
+  mov N230 <$str(S$LevelDetail.len)>
+  SendMsg 5 <$str(S$LevelDetail.len)>
+
+#if 
+  large N230 0
+#act 
+  giveidx <$str(S$LevelDetail[0][1])> <$str(S$LevelDetail[0][2])>
+#if 
+  large N230 1
+#act 
+  giveidx <$str(S$LevelDetail[1][1])> <$str(S$LevelDetail[1][2])>
+#if 
+  large N230 2
+#act 
+  giveidx <$str(S$LevelDetail[2][1])> <$str(S$LevelDetail[2][2])>
+#if 
+  large N230 3
+#act 
+  giveidx <$str(S$LevelDetail[3][1])> <$str(S$LevelDetail[3][2])>
+#if 
+  large N230 4
+#act 
+  giveidx <$str(S$LevelDetail[4][1])> <$str(S$LevelDetail[4][2])>
+  
+#if 
+  large N230 5
+#act 
+  giveidx <$str(S$LevelDetail[5][1])> <$str(S$LevelDetail[5][2])>
+#if 
+  large N230 6
+#act 
+  giveidx <$str(S$LevelDetail[6][1])> <$str(S$LevelDetail[6][2])>
+#if 
+  large N230 7
+#act 
+  giveidx <$str(S$LevelDetail[7][1])> <$str(S$LevelDetail[7][2])>
+#if 
+  large N230 8
+#act 
+  giveidx <$str(S$LevelDetail[8][1])> <$str(S$LevelDetail[8][2])>
+#if 
+  large N230 9
+#act 
+  giveidx <$str(S$LevelDetail[9][1])> <$str(S$LevelDetail[9][2])>
+
+#if 
+  large N230 0
+#act 
+    SendMsg 6 你成功的领取了[<$str(S$LevelDetail[0][0])>]级的等级奖励,获得了大量的物资!
+    SendMsg 1 %s成功的领取了[<$str(S$LevelDetail[0][0])>]级的等级奖励,获得了大量的物资!
+    goto @升级奖励系统对话框显示
+}   
