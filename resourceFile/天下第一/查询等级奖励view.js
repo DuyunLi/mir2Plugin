@@ -1,15 +1,16 @@
-
+var getDefault = function(){
+    var str = "<text:你已经将所有奖励都领取完毕:30:55{FCOLOR=250}>\\";
+    str += "<imgex:9:32:33:34:210:83:/@exit>\n";
+    str += "<text:关闭:147:94{FCOLOR=251}> \\\n";
+    return str;
+}
 var format = function (data, ps) {
     if (data[0].length == 0) {
-        return "";
+        return getDefault();
     }
     var items = data[0];
-    if (items[0].length == 0) {
-        var str = "<text:你已经将所有奖励都领取完毕:30:55{FCOLOR=250}>\\";
-
-        str += "<imgex:9:32:33:34:205:83:/@exit>\n";
-        str += "<text:关闭:140:94{FCOLOR=251}> \\\n";
-        return str;
+    if (items.length == 0) {
+        return getDefault();
     }
     var str = "";
     var currentLevel = ps[0];
