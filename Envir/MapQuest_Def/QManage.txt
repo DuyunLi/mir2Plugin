@@ -3,10 +3,6 @@
 CHECKLEVELEX > 0
 #ACT
 ;#CALL [\游戏登陆\登陆脚本.txt] @登陆设置
-
-activationcasket  
-SetSndacasket 1
-ShowGodBless 1
 $pa_init
 
 $s_get_int 会员系统.会员当前等级.sql,<$USERName> N0
@@ -34,7 +30,7 @@ CHECKLEVELEX > 28
 #act
 PLAYMAGICBALLEFFECT 8 1300 14 150 -1 0 1 0 0 0
 PLAYMAGICBALLEFFECT 8 1320 14 150 -1 1 1 0 0 0
-break
+
 
 #if
 CHECKJOB wizard
@@ -42,7 +38,7 @@ CHECKLEVELEX > 1
 #act
 PLAYMAGICBALLEFFECT 8 1300 14 150 -1 0 1 0 0 0
 PLAYMAGICBALLEFFECT 8 1320 14 150 -1 1 1 0 0 0
-break
+
 
 #if
 CHECKJOB taoist
@@ -50,9 +46,31 @@ CHECKLEVELEX > 1
 #act
 PLAYMAGICBALLEFFECT 8 1300 14 150 -1 0 1 0 0 0
 PLAYMAGICBALLEFFECT 8 1420 14 150 -1 1 1 0 0 0
-break
 
 
+#if 
+  not CheckShowGodBless 
+#act 
+  activationcasket  
+  SetSndacasket 1
+  ShowGodBless 1
+  OpenGodBless 0
+  OpenGodBless 1
+  OpenGodBless 2
+  OpenGodBless 3
+  OpenGodBless 4
+  OpenGodBless 5
+  OpenGodBless 6
+  OpenGodBless 7
+  OpenGodBless 8
+  OpenGodBless 9
+  OpenGodBless 10
+  OpenGodBless 11
+  sendmsg 5 开启神佑
+#if 
+  not IsNewHuman
+#act 
+  break
 #if
   IsNewHuman 
 #act
@@ -69,11 +87,16 @@ break
   give 祈祷之刃
   AutoTakeOnItem 祈祷之刃 1
 #if
+  IsNewHuman 
   gender man
 #act
   give 轻型盔甲(男)
   AutoTakeOnItem 轻型盔甲(男) 0
-#elseact 
+#if 
+ 
+  IsNewHuman 
+  not gender man
+#act 
   give 轻型盔甲(女)
   AutoTakeOnItem 轻型盔甲(女) 0
     

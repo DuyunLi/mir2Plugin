@@ -3,8 +3,6 @@
 #if 
  
 #act 
-    $executeGuid 8D090C7BA96F4D129CC43C9EB06FBCC7
-    $executeGuid FFCDEA492F3F4E4BB7B9492F16922B6A
     OPENMERCHANTBIGDLG 9 129 0 4 0 0 1 391 8 1
     goto @升级奖励系统对话框显示
 [@升级奖励系统对话框显示]

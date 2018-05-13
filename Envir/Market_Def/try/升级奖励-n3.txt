@@ -1,0 +1,4 @@
+[@main]
+#if
+#act
+  #call [..\QuestDiary\try\升级奖励.txt] @升级奖励系统初始化

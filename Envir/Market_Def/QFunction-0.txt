@@ -10,13 +10,23 @@ SendMsg 5 你杀人了?
 
 [@PlayLevelUp]
 #if 
+  $s_execute 天下第一.更新最高属sql,<$UserName>,Level,<$Level>
+#elseact 
+  break
+#if 
  
 #act 
- ;每次升级加十点
+  $s_get_int 天下第一.查询是否有等级奖励未领取.sql,<$UserName>,<$Level> N$CanLevelDetail
+#if 
+  equal N$CanLevelDetail 0
+#elseact 
+  SendCenterMsg 180 251 你还有升级礼拜未领取,快去安全区领取吧! 0
+ 
 #if 
   checkLevelEx > 100 
 #act 
   $pa_set2 UpLevelTalent 10
+  sendmsg 7 恭喜你升级了,送你10点天赋属性点,快去安全区进行加点吧!!
   
 
 [@PlayDie]
@@ -60,12 +70,25 @@ BREAK
 [@STDMODEFUNC700]
 #if
 #act
+OPENMERCHANTBIGDLG 9 65535 0 4 0 0 0 391 8 1
  mapmove n3 108 108
 [@STDMODEFUNC701]
 #if
 #act
  messagebox 暂未开放!
 
+[@STDMODEFUNC900]
+#if
+#act
+  $s_get_int 会员系统.查询充值额度.sql,<$userName> S$Recharge
+#if 
+  equal S$Recharge[0][0] 0
+#act 
+  $pa_set2 RechargeQuota 6
+  $pa_set2 RechargeDeduction 6
+#elseact
+   messagebox \\你已经充值过了,无法使用令牌成为会员!
+   give 初级会员令牌 1  
 [@RevMaster]
 对方想拜你为师，你是否想收此人为徒？ \ \
 『<同意/@ResposeMaster>』 \
@@ -134,26 +157,40 @@ SENDMSG 6 命令停止挂机，使用快捷键“CTRL+ALT+X”开始挂机
 #act
   $pa_get2 GameGold N$ResultPoint
   gamegold = <$str(N$ResultPoint)>
+[@updatePoint4]
+#if
+#act
+  $pa_get2 BRecharge N$ResultPoint
+  GAMEGIRD = <$str(N$ResultPoint)>
   
 [@updatePoint3]
 #if
 #act
-  mov N0 0
-  MOV N1 0
-  MOV N2 0 
-  $s_get_int 会员系统.会员当前等级.sql,<$USERName> N0
-  $s_get_int 会员系统.充值确定VIP等级.sql,<$USERName> N1
-  $s_get_int 会员系统.会员当前等级.sql,<$USERName> N2
+  $pa_get2 Recharge N$ResultPoint
+  GAMEDIAMOND = <$str(N$ResultPoint)>
+  mov N210 0
+  MOV N211 0
+  MOV N212 0 
+  $s_get_int 会员系统.会员当前等级.sql,<$USERName> N210
+  $s_get_int 会员系统.充值确定VIP等级.sql,<$USERName> N211
+  $s_get_int 会员系统.会员当前等级.sql,<$USERName> N212
 #if
-  CHECKMEMBERLEVEL < <$str(N2)>  
+  CHECKMEMBERLEVEL < <$str(N212)>  
 #act
-  SETMEMBERLEVEL = <$str(N2)>  
+  SETMEMBERLEVEL = <$str(N212)>  
 #if
-  Small N0 <$str(N2)>
+  Small N210 <$str(N212)>
 #act
-  SendMsg 7 会员等级提升,请在会员服务中查看Vip<$str(N2)>特权!!!
+  SendMsg 7 会员等级提升,请在会员服务中查看Vip<$str(N212)>特权!!!
+  $s_gets_str 会员系统.获取会员加成.sql,<$UserName> S$VipRate
+#if 
+  not equal S$VipRate.len 0
+#act 
+  $ut_set 10006 20 1 <$str(S$VipRate[0][1])>
+  $ut_set 10005 20 1 <$str(S$VipRate[0][0])>
+
 #if
-  not equal N0 <$str(N2)>
+  not equal N210 <$str(N212)>
 #act 
   RECYCFENGHAO Vip1 1
   RECYCFENGHAO Vip2 1
@@ -165,9 +202,9 @@ SENDMSG 6 命令停止挂机，使用快捷键“CTRL+ALT+X”开始挂机
   RECYCFENGHAO Vip8 1
   RECYCFENGHAO Vip9 1
   RECYCFENGHAO Vip10 1
-  GiveFengHao Vip<$str(N2)> 1
+  GiveFengHao Vip<$str(N212)> 1
 #if
-  CheckActiveFengHao Vip<$str(N2)>  
+  CheckActiveFengHao Vip<$str(N212)>  
 #act
   goto @ActiveTitleVip
   
