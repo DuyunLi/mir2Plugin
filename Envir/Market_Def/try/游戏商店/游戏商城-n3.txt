@@ -1,0 +1,6 @@
+
+[@main]
+#if
+#act
+  mov n250 2
+  #call [..\QuestDiary\try\系统商店.txt] @系统商店初始化

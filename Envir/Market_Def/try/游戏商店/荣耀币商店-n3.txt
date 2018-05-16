@@ -2,5 +2,5 @@
 [@main]
 #if
 #act
-  mov n250 1
+  mov n250 3
   #call [..\QuestDiary\try\系统商店.txt] @系统商店初始化

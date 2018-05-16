@@ -7,6 +7,9 @@
     $executeGuid FFCDEA492F3F4E4BB7B9492F16922B6A
     OPENMERCHANTBIGDLG 9 159 0 4 0 -70 1 247 18 1
 
+
+sendmsg 5 <$ClientWidth>,<$ClientHeight>
+
 [@活动大厅对话框显示]
 #if 
  

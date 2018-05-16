@@ -1,0 +1,138 @@
+[@系统商店初始化]
+{
+#if 
+#act 
+    OPENMERCHANTBIGDLG 9 169 0 0 0 10 1 310 20 1
+    GetNpcName S250
+    mov n251 172
+    mov n252 174
+    mov n253 0
+    mov n254 1
+    mov S251
+    mov S252
+    mov n255 0
+    mov n256 0
+    GOTO @显示系统商店对话框
+[@显示系统商店对话框]
+#if 
+ 
+#act 
+  $s_gets_str 可视化商店.查询物品.sql,7,<$str(n254)>,<$userName>,<$str(n250)> S252 $js_可视化商店.查询物品.view.js,7
+
+#if 
+    equal n250 1
+    ;金币
+#act 
+    mov n251 172
+    mov n252 181
+    mov N253 <$GOLDCOUNT>
+#if 
+    equal n250 2
+    ;元宝
+#act 
+    mov n251 173
+    mov n252 182
+    $pa_get2 GameGold N253
+#if 
+    equal n250 3
+    ;充值币
+#act 
+    mov n251 174
+    mov n252 183
+    $pa_get2 Recharge N253
+#if 
+    equal n250 4
+    ;绑定充值币
+#act 
+    mov n251 170
+    mov n252 179
+    $pa_get2 BRecharge N253
+
+#if 
+#say 
+    <Img:<$str(n251)>:9:148:50:-1><ImgNum:1:<$str(n253)>:-3:150:50>\
+<$str(S252)>    
+; <Img:<$str(n252)>:9:60:57:-1>
+; <ItemShow:1128:0:-230:54:-1>
+; <imgex:9:167:167:168:-70:66:/@backPage>\
+; <text:强化石x1:112:46{FCOLOR=250}>\
+; <ImgNum:1:500:-3:110:44>\
+
+[@backPage]
+#if 
+  equal n254 1
+#act 
+  messagebox \\这已经是第一页了
+#elseact 
+    dec n254 1
+    GOTO @显示系统商店对话框
+[@nextPage]
+#if 
+  
+#act 
+    inc n254 1
+    GOTO @显示系统商店对话框
+[@InPutInteger31]
+#if 
+ 
+#act 
+  sendmsg 5 <$str(N31)>,<$SCRIPTPARAM1>,<$SCRIPTPARAM2>,<$SCRIPTPARAM3>
+[@clickitem]
+#if 
+#act
+    mov n255 <$SCRIPTPARAM1>
+    mov n256 <$SCRIPTPARAM3>
+    messagebox \是否确认购买<$SCRIPTPARAM2>x<$SCRIPTPARAM3>,请确保背包有空位 @confirmShopItem @cancelShopItem
+
+[@cancelShopItem]
+#if 
+ 
+#act 
+ 
+[@confirmShopItem]
+#if 
+  equal n255 0
+#act  
+  messagebox \\购买出错,请重试!
+  break
+#if 
+  CheckBagSize 1
+#elseact 
+  messagebox \\背包没有多余的位置,请清理背包后重试!
+  break
+#if 
+  
+#act 
+  $s_gets_str 可视化商店.购买物品.sql,<$str(n255)>,<$userName> S$ShopItems
+  mov n255 0
+#if 
+ equal S$ShopItems.len 0
+#act 
+  messagebox \\购买出错,请重试!
+  break
+#if 
+  equal <$str(S$ShopItems[0][3])> ShopGameGold
+  CHECKGOLD <$str(S$ShopItems[0][2])>
+#act 
+  giveidx <$str(S$ShopItems[0][0])> <$str(S$ShopItems[0][1])>
+  take 金币 <$str(S$ShopItems[0][2])>
+  sendmsg 7 你成功的购买了<$str(S$ShopItems[0][4])>x<$str(S$ShopItems[0][1])>.
+  break
+#if 
+  equal <$str(S$ShopItems[0][3])> ShopGameGold
+#act 
+  messagebox \\你的余额不足,请检查后重试!
+  break
+   
+
+#if 
+  $pa_set <$str(S$ShopItems[0][3])> <$str(S$ShopItems[0][2])>
+#act 
+  giveidx <$str(S$ShopItems[0][0])> <$str(S$ShopItems[0][1])>
+  sendmsg 7 你成功的购买了<$str(S$ShopItems[0][4])>x<$str(S$ShopItems[0][1])>.
+  break
+#elseact  
+  messagebox \\你的余额不足,请检查后重试!
+  break
+}    
+ 

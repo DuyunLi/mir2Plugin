@@ -3,6 +3,14 @@
 CHECKLEVELEX > 0
 #ACT
 ;#CALL [\游戏登陆\登陆脚本.txt] @登陆设置
+
+DELBUTTON 1 0
+mov n0 <$ClientWidth>
+dec n0 50
+mov n1 <$ClientHeight>
+dec n1 56
+ADDBUTTON 9 1 65535 103 102 <$str(n0)> <$str(n1)> 0 -1 251#游戏商铺\250#快速购买
+
 $pa_init
 
 $s_get_int 会员系统.会员当前等级.sql,<$USERName> N0
