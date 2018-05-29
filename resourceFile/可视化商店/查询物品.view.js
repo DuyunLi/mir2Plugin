@@ -17,7 +17,7 @@ var format = function(data,ps)
 
   for (var index = 0; index < items.length; index++) {
     
-    if(index == items.length -1)
+    if(items.length > 7 && index == items.length -1)
     {
       continue ;
     }
