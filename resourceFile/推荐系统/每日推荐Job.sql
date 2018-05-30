@@ -9,7 +9,7 @@ WITH paSource AS (
            JOIN
            pointservice ps ON ps.id = pa.ServiceID
      WHERE ps.Name IN ('Recovery', 'CDKGold', 'Recharge', 'CDKRC') AND 
-           strftime('%Y-%m-%d', CURRENT_TIMESTAMP, 'localtime') = strftime('%Y-%m-%d', pa.CreatedOn) AND 
+           strftime('%Y-%m-%d', CURRENT_TIMESTAMP, 'localtime', '-1 day') = strftime('%Y-%m-%d', pa.CreatedOn) AND 
            pa.Balance > 0
      GROUP BY u.userName,
               u.TargerUser
@@ -32,8 +32,10 @@ tsource AS (
 tview AS (
     SELECT t.UserName,
            t.target,
-           t.Recovery * ( (CASE WHEN GameGoldRate > 100 THEN 100 ELSE GameGoldRate END) ) / 100 GameGoldRate,
-           t.Recharge * ( (CASE WHEN RechargeRate > 50 THEN 50 ELSE RechargeRate END) ) / 100 RechargeRate
+           t.Recovery,
+           ( (CASE WHEN GameGoldRate > 100 THEN 100 ELSE GameGoldRate END) ) GameGoldRate,
+           t.Recharge,
+           ( (CASE WHEN RechargeRate > 50 THEN 50 ELSE RechargeRate END) ) RechargeRate
       FROM tsource t
 )
 INSERT INTO refereeItem (
@@ -43,11 +45,27 @@ INSERT INTO refereeItem (
                             Recharge,
                             GenerateDate,
                             Status,
-                            ReceiveDate
+                            ReceiveDate,
+                            remark
                         )
-                        SELECT *,
+                        SELECT tview.UserName,
+                               tview.target,
+                               Recovery * GameGoldRate / 200,
+                               Recharge * RechargeRate / 200,
                                datetime(CURRENT_TIMESTAMP, 'localtime'),
                                0,
-                               NULL
+                               NULL,
+                               Recovery || ',' || GameGoldRate || ',' || Recharge || ',' || RechargeRate
+                          FROM tview
+                         WHERE GameGoldRate + RechargeRate != 0
+                        UNION ALL
+                        SELECT tview.target,
+                               tview.UserName,
+                               Recovery * GameGoldRate / 200,
+                               Recharge * RechargeRate / 200,
+                               datetime(CURRENT_TIMESTAMP, 'localtime'),
+                               0,
+                               NULL,
+                               Recovery || ',' || GameGoldRate || ',' || Recharge || ',' || RechargeRate
                           FROM tview
                          WHERE GameGoldRate + RechargeRate != 0;

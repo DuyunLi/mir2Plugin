@@ -25,13 +25,13 @@
   equal S$VIPConfig[0][0] 0
 #act
   mov S0 下一
-  inc S1 ^253#下一等级特权:^253#-爆率+<$str(S$VIPConfig[0][8])>%、回收比例+<$str(S$VIPConfig[0][9])>%、经验加成+<$str(S$VIPConfig[0][10])>%^253#-可以进入专属地图^253#-可以领取每日大礼包
+  inc S1 ^253#下一等级特权:^253#-爆率+<$str(S$VIPConfig[0][8])>%、回收比例+<$str(S$VIPConfig[0][9])>%、经验加成+<$str(S$VIPConfig[0][10])>%^253#-推荐系统元宝回收回馈加成+<$str(S$VIPConfig[0][13])>%^253#-推荐系统充值币回馈加成+<$str(S$VIPConfig[0][14])>%^253#-可以进入专属地图^253#-可以领取每日大礼包
 
 #if
   equal S$VIPConfig[0][0] 10
 #act
     mov s0 当前 
-  inc S1 250#Vip<$str(S$VIPConfig[0][0])>等级特权:^250#-爆率+<$str(S$VIPConfig[0][5])>%、回收比例+<$str(S$VIPConfig[0][6])>%、经验加成+<$str(S$VIPConfig[0][7])>%^250#-可以进入专属地图^250#-可以领取每日大礼包
+  inc S1 250#Vip<$str(S$VIPConfig[0][0])>等级特权:^250#-爆率+<$str(S$VIPConfig[0][5])>%、回收比例+<$str(S$VIPConfig[0][6])>%、经验加成+<$str(S$VIPConfig[0][7])>%^250#-推荐系统元宝回收回馈加成+<$str(S$VIPConfig[0][11])>%^250#-推荐系统充值币回馈加成+<$str(S$VIPConfig[0][12])>%^250#-可以进入专属地图^250#-可以领取每日大礼包
 #or
   equal S$VIPConfig[0][0] 1
   equal S$VIPConfig[0][0] 2
@@ -44,8 +44,8 @@
   equal S$VIPConfig[0][0] 9
 #act
   mov s0 当前 
-  inc S1 250#Vip<$str(S$VIPConfig[0][0])>等级特权:^250#-爆率+<$str(S$VIPConfig[0][5])>%、回收比例+<$str(S$VIPConfig[0][6])>%、经验加成+<$str(S$VIPConfig[0][7])>%^250#-可以进入专属地图^250#-可以领取每日大礼包
-  inc S1 ^-^253#下一等级特权:^253#-爆率+<$str(S$VIPConfig[0][8])>%、回收比例+<$str(S$VIPConfig[0][9])>%、经验加成+<$str(S$VIPConfig[0][10])>%^253#-可以进入专属地图^253#-可以领取每日大礼包
+  inc S1 250#Vip<$str(S$VIPConfig[0][0])>等级特权:^250#-爆率+<$str(S$VIPConfig[0][5])>%、回收比例+<$str(S$VIPConfig[0][6])>%、经验加成+<$str(S$VIPConfig[0][7])>%^250#-推荐系统元宝回收回馈加成+<$str(S$VIPConfig[0][11])>%^250#-推荐系统充值币回馈加成+<$str(S$VIPConfig[0][12])>%^250#-可以进入专属地图^250#-可以领取每日大礼包
+  inc S1 ^-^253#下一等级特权:^253#-爆率+<$str(S$VIPConfig[0][8])>%、回收比例+<$str(S$VIPConfig[0][9])>%、经验加成+<$str(S$VIPConfig[0][10])>%^253#-推荐系统元宝回收回馈加成+<$str(S$VIPConfig[0][13])>%^253#-推荐系统充值币回馈加成+<$str(S$VIPConfig[0][14])>%^253#-可以进入专属地图^253#-可以领取每日大礼包
 #if
   equal N$GiftCount 0
 #act

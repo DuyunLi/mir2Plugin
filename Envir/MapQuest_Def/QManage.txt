@@ -174,12 +174,12 @@ PLAYMAGICBALLEFFECT 8 1420 14 150 -1 1 1 0 0 0
   checklevelex < 139
 #act 
   $pa_set2 BubblePointAcquisition 2
-  sendmsg 7 {你正在泡点地图冥想,获得了|254:7:1}灵力+2|251:7:1}
+  sendmsg 7 {你正在泡点地图冥想,获得了|254:7:1}{灵力+2|251:7:1}
   break
 #if 
   checklevelex < 199
 #act 
   $pa_set2 BubblePointAcquisition 3 
-  sendmsg 7 {你正在泡点地图冥想,获得了|254:7:1}灵力+3|251:7:1}
+  sendmsg 7 {你正在泡点地图冥想,获得了|254:7:1}{灵力+3|251:7:1}
   break
  

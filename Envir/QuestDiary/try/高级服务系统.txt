@@ -62,7 +62,7 @@
 #if 
   equal <$str(S$SDKDetail[<$str(N$SDKIndex)>][0])> -4
 #act 
-  $pa_set2 CDKBindEC <$str(S$SDKDetail[<$str(N$SDKIndex)>][1])>
+  $pa_set2 CDKBindRC <$str(S$SDKDetail[<$str(N$SDKIndex)>][1])>
   sendmsg 5 获得绑定推荐币+<$str(S$SDKDetail[<$str(N$SDKIndex)>][1])>
   break
 #if 

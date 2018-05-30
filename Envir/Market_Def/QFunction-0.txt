@@ -332,7 +332,12 @@ SENDMSG 6 命令停止挂机，使用快捷键“CTRL+ALT+X”开始挂机
   equal S$RateResult <$str(N901)>.00
 #elseact 
   KILLMONBURSTRATE <$str(N901)> 0 0
-   
+[@ButtonClick1]
+
+#if
+#act
+  mov n250 1
+  #call [..\QuestDiary\try\系统商店.txt] @系统商店初始化   
 ; [@attackTick1]
 ; #if 
  

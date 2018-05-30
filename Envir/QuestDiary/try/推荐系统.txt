@@ -1,25 +1,98 @@
 [@推荐系统初始化]
 {
+;个人站点注册获取ip
+;第一次登陆即绑定ip
+;
 #if
 #act
-;$executeGuid 9fa057c5d99c419ea34ab6355c49734a
-  OPENMERCHANTBIGDLG 9 107 0 4 0 -40 1 492 23 1
-;  goto @显示推荐系统对话框
+  $executeGuid 8D090C7BA96F4D129CC43C9EB06FBCC7
+  $executeGuid FFCDEA492F3F4E4BB7B9492F16922B6A
+  
+  OPENMERCHANTBIGDLG 9 188 0 4 0 -40 1 305 23 1
+  mov S$RecommendResult[0][0] 0
+  mov S$RecommendResult[0][1] 0
+  mov S$RecommendResult[0][2] 0
+  mov S$RecommendResult[0][3] 0
+  mov S$RecommendResult[0][4] 0
+  mov S$RecommendResult[0][5] 0
+  mov S$RecommendResult[0][6] 0
+  mov S$RecommendResult[0][7] 1
+  mov S$RecommendResult.len 0
+  $s_gets_str 推荐系统.查询推荐奖励.sql,<$UserName> S$RecommendResult
+  goto @显示推荐系统对话框
   
 [@显示推荐系统对话框]
 #if
 #act
-  ;设置自定义装备属性0的颜色 
-  SetCustomItemAbil 1 5 0 250
-  ;设置自定义装备属性0绑定属性1
-  SetCustomItemAbil 1 5 1 10
-  ;设置自定义装备属性0的显示位置为1
-  SetCustomItemAbil 1 5 2 5
-  ;设置自定义装备属性0为百分比显示
-  SetCustomItemAbil 1 5 3 1
-  ;设置自定义装备属性0的值
-  SetCustomItemValue 1 5 = 30
-
   
 #say
+  <ImgNum:5:<$str(S$RecommendResult[0][0])>:-3:190:156>\
+  <ImgNum:5:<$str(S$RecommendResult[0][1])>:-3:190:163>\
+  <ImgNum:5:<$str(S$RecommendResult[0][2])>:-3:190:170>\
+  <ImgNum:2:<$str(S$RecommendResult[0][3])>:-7:187:172>\
+  <ImgNum:2:<$str(S$RecommendResult[0][4])>:-7:187:178>\
+  <ImgNum:9:<$str(S$RecommendResult[0][5])>:-5:187:207>\
+  <ImgNum:9:<$str(S$RecommendResult[0][6])>:-5:187:222>\
+#if 
+  equal S$RecommendResult.len 0
+#say 
+  <imgex:9:32:33:34:120:233:-1/@注册推荐人><text:注册推荐人:40:244{FCOLOR=251}>\  
+#if 
+  not equal S$RecommendResult.len 0
+  equal S$RecommendResult[0][7] 0
+#say
+  <imgex:9:32:33:34:120:233:-1/@领取奖励><text:领取奖励:45:244{FCOLOR=251}>\  
+#if 
+  not equal S$RecommendResult.len 0
+  not equal S$RecommendResult[0][7] 0
+#say
+  <img:35:9:120:233:-1><text:已领取:50:244{FCOLOR=251}>\  
+#if 
+#say
+  <text:查看推荐地址:230:235:-1/@显示推荐地址> 
+ 
+[@注册推荐人] 
+#if 
+ $s_execute 推荐系统.加入推荐系统.sql,<$UserName>
+#act 
+  messagebox \你成功的加入了推荐系统\招募到玩家可以获得大量回馈!
+  goto @显示推荐地址
+  goto @推荐系统初始化
+#elseact
+  messagebox \\你已经加入过推荐系统,无法重复加入!
+[@显示推荐地址]
+#if 
+#act 
+  sendmsg 7 你的推荐地址为:(点击即可在聊天框)
+  sendmsg 7 www.baidu.com
+ 
+[@领取奖励]
+#if 
+  $s_execute 推荐系统.领取推荐奖励.sql,<$UserName>
+#act 
+  $s_gets_str 推荐系统.当天已获取推荐币.sql,<$UserName> S$RecommendResult
+#elseact
+  messagebox \\你今天已经领取过奖励或者没有奖励可以领取!!! 
+  goto @推荐系统初始化
+  break
+#if 
+  not equal S$RecommendResult.len 0
+#act 
+  $pa_set2 RecommendGold <$str(S$RecommendResult[0][0])>
+  $pa_set2 RecommendBindRC <$str(S$RecommendResult[0][1])>
+  SendCenterMsg 180 251 你已经领取了今天的推荐奖励：元宝x<$str(S$RecommendResult[0][0])>,推荐币x<$str(S$RecommendResult[0][1])>! 0 
+  SendCenterMsg 253 251 <$USERNAME>已经领取了今天的推荐奖励：元宝x<$str(S$RecommendResult[0][0])>,推荐币x<$str(S$RecommendResult[0][1])>! 1 
+
+#elseact
+  messagebox \你今天已经领取过奖励或者没有奖励可以领取!!! 
+  goto @推荐系统初始化
+  break
+#if 
+  $s_execute 推荐系统.更新推荐总数.sql,<$userName> 
+#act  
+#if 
+#act 
+  goto @推荐系统初始化
+  break
+   
 }

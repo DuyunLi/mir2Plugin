@@ -3,17 +3,51 @@
 #if 
  
 #act 
-    $executeGuid 8D090C7BA96F4D129CC43C9EB06FBCC7
-    $executeGuid FFCDEA492F3F4E4BB7B9492F16922B6A
-    OPENMERCHANTBIGDLG 9 159 0 4 0 -70 1 247 18 1
+    ;  $executeGuid 8D090C7BA96F4D129CC43C9EB06FBCC7
+    ;  $executeGuid FFCDEA492F3F4E4BB7B9492F16922B6A
+    $s_gets_str 活游戏动.查询活动.sql,5 S$CampaignResult $js_活游戏动.显示活动.js,<$ClientWidth>,<$ClientHeight>
 
+ #if 
+   $empty S$CampaignResult 
+ #say
+     \ \当前没有活动,请稍后再试!
+     \ \<关闭/@exit>
+ #elseact
+    OPENMERCHANTBIGDLG 9 65535 0 0 0 -20 0 0 18 1  
+    goto  @活动大厅对话框显示
 
-sendmsg 5 <$ClientWidth>,<$ClientHeight>
 
 [@活动大厅对话框显示]
-#if 
- 
+#if
 #say
-    1 
-     
+    <$str(S$CampaignResult)>
+[@参与活动]
+#if 
+#act 
+   mov n0 0
+   $s_gets_str 活游戏动.查询活动是否开放.sql,<$SCRIPTPARAM1> S$CampaignResult
+
+#if
+  not equal S$CampaignResult.len 0
+  equal S$CampaignResult[0][0] <$SCRIPTPARAM1>
+#act 
+   MAPMOVE  S$CampaignResult[0][1] S$CampaignResult[0][2] S$CampaignResult[0][3]
+#elseact
+    messagebox \\活动还未开放,你是不是点击错误了?
+    break
+    
+#if
+  equal S$CampaignResult[0][1] pddt
+  CheckLevelEx < 120
+#act
+  setautogetexp 2 333 0 PDDT 0 0 0 120
+  SendMsg 0 <$userName>进入了泡点地图,每2秒获得大量经验
+#if 
+  equal S$CampaignResult[0][1] pddt
+  CheckLevelEx > 119
+#act 
+  SetOnTimer 0 5
+  SendMsg 0 <$userName>进入了泡点地图,每5秒获得灵力
+ 
+
 }
