@@ -8,7 +8,11 @@ SELECT Level,
        kr1,
        ksr2,
        rr2,
-       kr2
+       kr2,
+       rgr1,
+       rbr1,
+       rgr2,
+       rbr2
   FROM (
            SELECT vu.Level,
                   vc.icon,
@@ -24,9 +28,13 @@ SELECT Level,
                   vc.KillSpoilsRate ksr1,
                   vc.RecoveryRate rr1,
                   vc.KillExpRate kr1,
+                  vc.RefereeGoldRate rgr1,
+                  vc.RefereeBindRCRate rbr1,
                   ifnull(vc3.KillSpoilsRate, 0) ksr2,
                   ifnull(vc3.RecoveryRate, 0) rr2,
-                  ifnull(vc3.KillExpRate, 0) kr2
+                  ifnull(vc3.KillExpRate, 0) kr2,
+                  ifnull(vc3.RefereeGoldRate, 0) rgr2,
+                  ifnull(vc3.RefereeBindRCRate, 0) rbr2
              FROM vipConfig vc
                   LEFT JOIN
                   vipUser vu ON vc.level = vu.level
