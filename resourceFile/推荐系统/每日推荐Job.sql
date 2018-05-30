@@ -35,7 +35,7 @@ tview AS (
            t.Recovery,
            ( (CASE WHEN GameGoldRate > 100 THEN 100 ELSE GameGoldRate END) ) GameGoldRate,
            t.Recharge,
-           ( (CASE WHEN RechargeRate > 50 THEN 50 ELSE RechargeRate END) ) RechargeRate
+           ( (CASE WHEN RechargeRate > 75 THEN 75 ELSE RechargeRate END) ) RechargeRate
       FROM tsource t
 )
 INSERT INTO refereeItem (

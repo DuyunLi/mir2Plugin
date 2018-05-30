@@ -10,13 +10,14 @@ WITH pa AS (
 )
 UPDATE refereeUser
    SET gameGoldCount = (
-           SELECT Gold
+           SELECT ifnull(sum(Gold),0)
              FROM pa
             WHERE pa.UserName = refereeUser.UserName
        ),
        RechargeCount = (
-           SELECT BindRC
+           SELECT ifnull(sum(BindRC),0)
              FROM pa
             WHERE pa.UserName = refereeUser.UserName
-       )
+       ),
+       humanCount = (select ifnull(count(*),0) from refereeUser u where u.TargerUser =refereeUser.UserName )
  WHERE userName = '{0}';
