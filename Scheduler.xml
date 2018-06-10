@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<tasks>
+  <task name="" onceIn="false" every="5" type="ss" at="01:10" goto="@abc" >
+    <job onceIn="false" every="1" type="ss" goto="@abc1"/>
+    <job onceIn="false" every="1" type="ss" goto="@abc2"/>
+    <job onceIn="false" every="1" type="ss" goto="@abc3"/>
+    <job onceIn="false" every="1" type="ss" goto="@abc4"/>
+    <job onceIn="false" every="1" type="ss" goto="@abc5"/>
+    <job onceIn="false" every="1" type="ss" goto="@abc6"/>
+  </task>
+</tasks>
