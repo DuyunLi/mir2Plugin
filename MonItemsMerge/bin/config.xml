@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <import>D:\System\Documents\Visual Studio 2017\Projects\MirPlugin\MonItemsMerge\Excel\MonItems.xlsx</import>
+  <source>D:\System\Desktop\ttt\MonItems</source>
+  <target>D:\System\Desktop\ttt\output</target>
+  <lastDate>2018-04-19 02:43:48</lastDate>
+  <ext>txt</ext>
+</root>

@@ -1,0 +1,242 @@
+[@升级装备初始化]
+{
+#if
+#act
+  ReturnBoxItem 0
+  mov S$SynthesisBoxDialogStr
+  OPENMERCHANTBIGDLG 9 16 0 4 0 -70 1 585 35 1
+  mov S$testStr 10
+  goto @显示升级装备对话框
+ [@显示升级装备对话框] 
+ #if
+ #say
+  
+  <text:升级成长型装备:245:30>\
+  <ITEMBOX:0:9:5:275:230:50:50:30,90,63,65,12,16,22:请放入成长型装备>\
+  <text:可放入成长型装备:240:310{FCOLOR=251}>\
+  <text:[:235:315{FCOLOR=251}>
+  <text:灵玉、灵石、官印:235:315{FCOLOR=250}>
+  <text:]:235:315{FCOLOR=251}>\
+  <text:[:235:320{FCOLOR=251}>
+  <text:盾牌、斗笠:235:320{FCOLOR=250}>
+  <text:]:235:320{FCOLOR=251}>\
+  <text:成长型装备升级后不会丢失原有强化属性:180:325{FCOLOR=253}>\
+#if
+#say
+  <$str(S$SynthesisBoxDialogStr)>
+
+[@ItemOutBox0]
+#if
+#act
+  mov S$SynthesisBoxDialogStr
+  goto @显示升级装备对话框
+  
+[@ItemIntoBox0]
+#if
+#act
+;物品的id
+  mov N$BoxIdx <$BOXITEM[0].Idx>
+;物品的当前等级
+  mov N$BoxLevel 0
+  
+  GetCustomItemProgressbarValue boxitem0 0 3 <$str(N$BoxLevel)>
+  mov N$BoxLevel2 0
+  GetCustomItemProgressbarValue boxitem0 1 3 <$str(N$BoxLevel2)>
+  mov S$SynthesisBoxDialogStr 
+  $s_gets_str 升级成长型装备.查询.主体.sql,<$str(N$BoxIdx)>,<$str(N$BoxLevel)>,<$str(N$BoxLevel2)>|升级成长型装备.查询.材料.sql,<$str(N$BoxIdx)>,<$str(N$BoxLevel)>,<$str(N$BoxLevel2)> S$SynthesisBoxDialogStr $js_升级成长型装备.查询.view
+#if
+   $empty <$str(S$SynthesisBoxDialogStr)> 
+#act
+  messagebox 当前物品无法升级!
+  ReturnBoxItem  0
+  Break
+#elseact
+  goto @显示升级装备对话框
+    
+break  
+[@upequipitem]
+#if
+  CheckBoxItemCount 0  
+#elseact
+  messagebox 请放入需要升级的物品!
+  Break
+#if
+#act
+;物品的id
+  mov N$BoxIdx <$SCRIPTPARAM1>
+  mov N$BoxPosition <$SCRIPTPARAM2>
+  mov N$OhterLevel 0
+#if
+  equal N$BoxIdx 0
+#act
+  messagebox 当前物品无法升级!
+  ReturnBoxItem  0
+  Break
+#or
+  equal N$BoxPosition 0
+  equal N$BoxPosition 1
+#elseact
+  messagebox 当前物品无法升级!
+  ReturnBoxItem  0
+  Break   
+#if
+  equal N$BoxPosition 0
+#act
+  GetCustomItemProgressbarValue boxitem0 1 3 <$str(N$OhterLevel)>
+#elseact
+  GetCustomItemProgressbarValue boxitem0 0 3 <$str(N$OhterLevel)>
+
+  
+#if
+#act
+;物品的当前等级
+  mov N$BoxLevel 0
+  GetCustomItemProgressbarValue boxitem0 <$str(N$BoxPosition)> 3 <$str(N$BoxLevel)>
+  $s_gets_str 升级成长型装备.执行.主体.sql,<$str(N$BoxIdx)>,<$str(N$BoxLevel)> S$SynthesisBoxMarster
+  $s_gets_str 升级成长型装备.执行.材料.sql,<$str(N$BoxIdx)>,<$str(N$BoxLevel)> S$SynthesisBoxDetail
+  mov N$SynthesisBoxDetailCount <$str(S$SynthesisBoxDetail.len)>
+  mov S$AttrName 
+#if
+  equal S$SynthesisBoxMarster.len 0
+#act
+  messagebox 当前物品无法升级!
+  ReturnBoxItem  0
+  Break
+
+#if
+  not $pa_get GameGold >= <$str(S$SynthesisBoxMarster[0][0])> N$Result
+#act
+  SendMsg 5 你的元宝不够,你当前元宝数量是:<$str(N$Result)>,无法进行锻造!
+  Break
+
+
+#if
+  Large N$SynthesisBoxDetailCount 0
+  not checkitem <$str(S$SynthesisBoxDetail[0][0])> <$str(S$SynthesisBoxDetail[0][1])> 
+#act
+  messagebox 你没有『<$str(S$SynthesisBoxDetail[0][0])>』x<$str(S$SynthesisBoxDetail[0][1])>无法进行升级!
+  break
+
+#if
+  Large N$SynthesisBoxDetailCount 1
+  not checkitem <$str(S$SynthesisBoxDetail[1][0])> <$str(S$SynthesisBoxDetail[1][1])> 
+#act
+  messagebox 你没有『<$str(S$SynthesisBoxDetail[1][0])>』x<$str(S$SynthesisBoxDetail[1][1])>无法进行升级!
+  break
+#if
+  Large N$SynthesisBoxDetailCount 2
+  not checkitem <$str(S$SynthesisBoxDetail[2][0])> <$str(S$SynthesisBoxDetail[2][1])> 
+#act
+  messagebox 你没有『<$str(S$SynthesisBoxDetail[2][0])>』x<$str(S$SynthesisBoxDetail[2][1])>无法进行升级!
+  break
+  
+#if
+  Large N$SynthesisBoxDetailCount 3
+  not checkitem <$str(S$SynthesisBoxDetail[3][0])> <$str(S$SynthesisBoxDetail[3][1])> 
+#act
+  messagebox 你没有『<$str(S$SynthesisBoxDetail[3][0])>』x<$str(S$SynthesisBoxDetail[3][1])>无法进行升级!
+  break
+
+
+#if
+  Large N$SynthesisBoxDetailCount 0
+#act
+  take <$str(S$SynthesisBoxDetail[0][0])> <$str(S$SynthesisBoxDetail[0][1])>
+
+#if
+  Large N$SynthesisBoxDetailCount 1
+#act
+  take <$str(S$SynthesisBoxDetail[1][0])> <$str(S$SynthesisBoxDetail[1][1])>
+    
+#if
+  Large N$SynthesisBoxDetailCount 2
+#act
+  take <$str(S$SynthesisBoxDetail[2][0])> <$str(S$SynthesisBoxDetail[2][1])>
+    
+#if
+  Large N$SynthesisBoxDetailCount 3
+#act
+  take <$str(S$SynthesisBoxDetail[3][0])> <$str(S$SynthesisBoxDetail[3][1])>
+                     
+#if
+  not equal S$SynthesisBoxMarster[0][0] 0
+#act
+ $pa_set2 SynthesisGameGold <$str(S$SynthesisBoxMarster[0][0])>  
+#if
+  equal S$SynthesisBoxMarster[0][2]  0
+#act
+  ;攻击倍率,修改装备持久达到
+  mov N$TempDura <$str(S$SynthesisBoxMarster[0][1])>
+  mul N$TempDura <$str(N$TempDura)> 100
+  ChangeItemDura boxitem0 = <$str(N$TempDura)> 0
+  CHANGEITEMADDVALUE  boxitem0 14 = <$str(N$TempDura)>
+#if
+  equal S$SynthesisBoxMarster[0][2]  1
+#act
+  ;　全属性,修改装备自定义属性的6,7,8
+  CHANGEITEMADDVALUE  boxitem0 2 = <$str(S$SynthesisBoxMarster[0][1])>
+  CHANGEITEMADDVALUE  boxitem0 3 = <$str(S$SynthesisBoxMarster[0][1])>
+  CHANGEITEMADDVALUE  boxitem0 4 = <$str(S$SynthesisBoxMarster[0][1])>
+#if
+  equal S$SynthesisBoxMarster[0][2]  2
+#act
+  ;暴击几率,修改元素
+  SetNewItemValue   boxitem0 0 = <$str(S$SynthesisBoxMarster[0][1])>
+#if
+  equal S$SynthesisBoxMarster[0][2]  3
+#act
+  ;忽视防御,修改元素
+  SetNewItemValue   boxitem0 4 = <$str(S$SynthesisBoxMarster[0][1])>
+#if
+  equal S$SynthesisBoxMarster[0][2]  4
+#act
+  ;血量加成,修改装备自定义属性的6
+  SetNewItemValue  boxitem0 7 = <$str(S$SynthesisBoxMarster[0][1])>
+#if
+  equal S$SynthesisBoxMarster[0][2]  5
+#act
+  ;物理减伤,修改装备元素
+  SetNewItemValue   boxitem0 2 = <$str(S$SynthesisBoxMarster[0][1])>
+#if
+  equal S$SynthesisBoxMarster[0][2]  6
+#act
+  ;魔法减伤,修改装备元素
+  SetNewItemValue   boxitem0 3 = <$str(S$SynthesisBoxMarster[0][1])>
+#if
+#act
+  $compute iif({0}=0,'{2}：{1}%',iif({0}=1,'{3}：{1}',iif({0}=2,'{4}：{1}%',iif({0}=3,'{5}：{1}%',iif({0}=4,'{6}：{1}%',iif({0}=5,'{7}：{1}%',iif({0}=6,'{8}：{1}%',''))))))) <$str(S$SynthesisBoxMarster[0][2])>,<$str(S$SynthesisBoxMarster[0][1])>,攻击倍率,　全属性,暴击几率,忽视防御,血量加成,物理减伤,魔法减伤 S$AttrName
+  inc N$BoxLevel 1
+  LockUpdateItem boxitem0
+  SetCustomItemProgressbar boxitem0 <$str(N$BoxPosition)> 0 1
+  SetCustomItemProgressbar boxitem0 <$str(N$BoxPosition)> 1 成长等级：Lv%i\<$str(S$AttrName)>
+  SetCustomItemProgressbar boxitem0 <$str(N$BoxPosition)> 2 250
+  SetCustomItemProgressbarValue  boxitem0 <$str(N$BoxPosition)> 3 = <$str(N$BoxLevel)>
+  mov S$BoxName <$BOXITEM[0].Name>
+#if
+  not equal S$SynthesisBoxMarster[0][4] 0  
+  not $empty <$str(S$BoxName)>
+#act
+  ChangeItemName boxitem0 <$str(S$BoxName)>+<$str(N$BoxLevel)>
+#if
+  not equal S$SynthesisBoxMarster[0][3] 0
+  not $empty <$str(S$BoxName)>
+#act
+  SendMsg 6 你成功的升级装备『<$str(S$BoxName)>』,属性获得了极大的提升,<$str(S$AttrName)>!
+  SendMsg 1 %s成功的升级装备『<$str(S$BoxName)>』,属性获得了极大的提升,<$str(S$AttrName)>!
+  mov S$BoxName
+
+#if
+  not equal S$SynthesisBoxMarster[0][5] 0
+  Large N$BoxLevel <$str(N$OhterLevel)>
+#act 
+  SetItemLooks boxitem0 = <$str(S$SynthesisBoxMarster[0][5])>
+#if
+  not equal S$SynthesisBoxMarster[0][6] 0
+#act 
+  SETITEMEFFECT  boxitem0 <$str(S$SynthesisBoxMarster[0][6])>
+#if
+#act
+  UpdateItem boxitem0
+  goto @ItemIntoBox0
+  
+}
