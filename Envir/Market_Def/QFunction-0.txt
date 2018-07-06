@@ -226,7 +226,7 @@ SENDMSG 6 命令停止挂机，使用快捷键“CTRL+ALT+X”开始挂机
 #if
   CHECKMEMBERLEVEL > 0
 #act
-  SetIcon 0 9 87 32 22 1 0 1 300 0
+  SetIcon 0 9 87 32 22 1 0 0 300 0
   
   
 [@锻造进度条完成]
